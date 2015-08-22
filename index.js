@@ -11,15 +11,17 @@ let menu;
 
 app.on('ready', function() {
   menu = new Menu();
+
   menu.append(new MenuItem({
     label: 'Test'
   }));
+
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600
   });
-  console.log('calling ls');
-  callJava('HelloWorld');
+
+  callJava('resources/boa/boa-runner.jar');
   //mainWindow.setMenu(menu);
 
   mainWindow.loadUrl(`file://${__dirname}/index.html`);
@@ -33,14 +35,7 @@ app.on('ready', function() {
 
 
 function callJava(uri) {
-  var cp = child_process.exec(`java ${uri}`, function(error, stdout, stderr) {
+  var cp = child_process.exec(`java -jar ${uri}`, function(error, stdout, stderr) {
     console.log('stdout: ' + stdout);
-    var returnObj = JSON.parse(stdout);
-    console.log('parsed');
-    console.log(returnObj.sum);
-    console.log('stderr: ' + stderr);
-    if(error != null) {
-      console.log('exec error: ' + error);
-    }
   });
 }

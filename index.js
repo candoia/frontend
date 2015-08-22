@@ -35,6 +35,9 @@ app.on('ready', function() {
 function callJava(uri) {
   var cp = child_process.exec(`java ${uri}`, function(error, stdout, stderr) {
     console.log('stdout: ' + stdout);
+    var returnObj = JSON.parse(stdout);
+    console.log('parsed');
+    console.log(returnObj.sum);
     console.log('stderr: ' + stderr);
     if(error != null) {
       console.log('exec error: ' + error);

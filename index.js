@@ -32,10 +32,23 @@ app.on('ready', function() {
   console.log(`The current version of io.js is ${process.version}`);
 });
 
+function parseToJSON(boa) {
+  let lines = boa.split('\n');
+  for (let line of lines) {
+    console.log(line);
+    let matches = line.match(/\[(.*?)\]/g);
+    if (matches) {
+      for (let match of matches) {
+        console.log(match);
+      }
+    }
+  }
+}
 
 
 function callJava(uri) {
   var cp = child_process.exec(`java -jar ${uri}`, function(error, stdout, stderr) {
     console.log('stdout: ' + stdout);
+    let json = parseToJSON(stdout);
   });
 }

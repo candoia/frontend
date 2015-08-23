@@ -21,26 +21,35 @@ app.on('ready', function() {
     height: 680
   });
 
-  callJava('resources/boa/boa-runner.jar');
+  let work = callJava('resources/boa/boa-runner.jar');
+  work.then(function(json) {
+    console.log(JSON.stringify(json, null, '\t'));
+  });
+
   //mainWindow.setMenu(menu);
 
   mainWindow.loadUrl(`file://${__dirname}/index.html`);
 
-  console.log(`The current version of io.js is ${process.version}`);
+  console.log(`~~ The current version of io.js is ${process.version}`);
 });
 
 function parseToJSON(raw) {
-  let json = {};
-
-  let lines = raw.split('\n');
-  let delims = /\[|=|\]/;
+  let json = new Object;
   let parsed = [];
+  let lines = raw.split('\n');
+  let delims = /\[|\]|\t|\s+|\r/;
 
   for (let line of lines) {
-    line = line.replace(/\s+/g, '');
+    line = line.replace(/\ = /g, ' ');
     let matches = line.split(delims);
     // var exists = (n) => !!n; not implemented in io.js currently
+
+    // remove empty strings/elements
     matches = matches.filter(function(n) { return !!n; });
+
+    // coerce into strings
+    matches = matches.map(function(n) { return "" + n });
+
     if (matches.length > 0) {
       parsed.push(matches);
     }
@@ -48,33 +57,27 @@ function parseToJSON(raw) {
 
   for (let chunk of parsed) {
     let pntr = json;
+    let val = chunk.pop();
     for (let i = 0; i < chunk.length; i++) {
       let key = chunk[i];
-      if (key in pntr) {
-        pntr = pntr[key];
-      } else {
-        if (i == chunk.length - 2) {
-          pntr[key] = chunk[chunk.length -1];
-          pntr = pntr[key];
-          break;
-        } else {
-          pntr[key] = {};
-          pntr = pntr[key];
-        }
+      if (!(key in pntr)) {
+        pntr[key] = i == chunk.length - 1 ? val : new Object;
       }
+      pntr = pntr[key];
     }
   }
-
-  console.log(json);
 
   return json;
 }
 
 function callJava(uri) {
   // todo sanitize uri so user apps cannot execute random code
-  var cp = child_process.exec(`java -jar ${uri}`, function(error, stdout,
-          stderr) {
-    console.log('stdout: ' + stdout);
-    let json = parseToJSON(stdout);
+  let promise = new Promise(function(resolve, reject) {
+    child_process.exec(`java -jar ${uri} -new`, function(error, stdout,
+            stderr) {
+      let json = parseToJSON(stdout);
+      resolve(json);
+    });
   });
+  return promise;
 }

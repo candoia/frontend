@@ -1,2 +1,3 @@
-# candaia-env
-Candoia Environment
+# frontend
+Candoia IDE-independent Platform
+- currently planned as a Chromium application.

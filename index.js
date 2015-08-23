@@ -1,3 +1,10 @@
+/*
+ *
+ *                          ~ CANDOIA FRONTEND ~
+ *
+ *
+ */
+
 'use strict';
 const app = require('app');
 const BrowserWindow = require('browser-window');

@@ -67,6 +67,7 @@ function parseToJSON(raw) {
 
   console.log(json);
 
+  return json;
 }
 
 function callJava(uri) {

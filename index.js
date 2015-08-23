@@ -17,37 +17,62 @@ app.on('ready', function() {
   }));
 
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600
+    width: 920,
+    height: 680
   });
 
   callJava('resources/boa/boa-runner.jar');
   //mainWindow.setMenu(menu);
 
   mainWindow.loadUrl(`file://${__dirname}/index.html`);
-  mainWindow.on('move', function() {
-    //console.log(mainWindow.getTitle());
-  });
 
   console.log(`The current version of io.js is ${process.version}`);
 });
 
-function parseToJSON(boa) {
-  let lines = boa.split('\n');
+function parseToJSON(raw) {
+  let json = {};
+
+  let lines = raw.split('\n');
+  let delims = /\[|=|\]/;
+  let parsed = [];
+
   for (let line of lines) {
-    console.log(line);
-    let matches = line.match(/\[(.*?)\]/g);
-    if (matches) {
-      for (let match of matches) {
-        console.log(match);
+    line = line.replace(/\s+/g, '');
+    let matches = line.split(delims);
+    // var exists = (n) => !!n; not implemented in io.js currently
+    matches = matches.filter(function(n) { return !!n; });
+    if (matches.length > 0) {
+      parsed.push(matches);
+    }
+  }
+
+  for (let chunk of parsed) {
+    let pntr = json;
+    for (let i = 0; i < chunk.length; i++) {
+      let key = chunk[i];
+      if (key in pntr) {
+        pntr = pntr[key];
+      } else {
+        if (i == chunk.length - 2) {
+          pntr[key] = chunk[chunk.length -1];
+          pntr = pntr[key];
+          break;
+        } else {
+          pntr[key] = {};
+          pntr = pntr[key];
+        }
       }
     }
   }
+
+  console.log(json);
+
 }
 
-
 function callJava(uri) {
-  var cp = child_process.exec(`java -jar ${uri}`, function(error, stdout, stderr) {
+  // todo sanitize uri so user apps cannot execute random code
+  var cp = child_process.exec(`java -jar ${uri}`, function(error, stdout,
+          stderr) {
     console.log('stdout: ' + stdout);
     let json = parseToJSON(stdout);
   });

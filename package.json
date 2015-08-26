@@ -2,7 +2,7 @@
   "name": "candoia-env",
   "version": "0.1.0",
   "description": "Candoia Environment",
-  "main": "index.js",
+  "main": "env/main.js",
   "scripts": {
     "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"

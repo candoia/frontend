@@ -12,9 +12,15 @@ const Menu = require('menu');
 const MenuItem = require('menu-item');
 const child_process = require('child_process');
 const Boa = require('./boa-wrapper');
+const ipc = require('ipc');
 
 let mainWindow;
 let menu;
+
+ipc.on('synchronous-message', function(event, arg) {
+
+});
+
 
 app.on('ready', function() {
   mainWindow = new BrowserWindow({
@@ -29,6 +35,5 @@ app.on('ready', function() {
   }).catch(function(reason) {
     console.log(`boa-wrapper failed: ${reason}`);
   });
-
   mainWindow.loadUrl(`file://${__dirname}/index.html`);
 });

@@ -7,7 +7,7 @@
  * promise. The promise gets resolved with the resulting JSON.
  */
 'use strict';
-const child_process = require('child_process');
+const cp = require('child_process');
 
 function parseToJSON(raw) {
   let json = new Object;
@@ -50,7 +50,7 @@ let Public = {
   'run' : function run(uri) {
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
-      child_process.exec(`java -jar resources/boa/boa-runner.jar -old`,
+      cp.exec(`java -jar resources/boa/boa-runner.jar -old`,
         function(error, stdout, stderr) {
           let json = parseToJSON(stdout);
           resolve(json);

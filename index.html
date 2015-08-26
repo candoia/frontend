@@ -16,8 +16,16 @@
       <h1>Hello World</h1>
     </div>
 
+    <webview id="app-view" src="./apps/impactful-commits/main.html" preload="./preload.js" ></webview>
+
+
     <script>
-    require('./apps/impactful-commits/main.js');
+      "use strict";
+      let webView = document.getElementById('app-view');
+      webView.addEventListener('console-message', function(e) {
+        console.log(e.message);
+      });
+
     </script>
   </body>
 </html>

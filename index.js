@@ -22,11 +22,6 @@ ipc.on('synchronous-message', function(event, arg) {
   event.returnValue = arg + ' main process addition';
 });
 
-ipc.on('run-boa', function(event, url) {
-  Boa.run(url).then(function(json) {
-    event.returnValue = json;
-  });
-});
 
 
 app.on('ready', function() {

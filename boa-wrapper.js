@@ -8,6 +8,7 @@
  */
 'use strict';
 const cp = require('child_process');
+const ipc = require('ipc');
 
 function parseToJSON(raw) {
   let json = new Object;
@@ -60,5 +61,11 @@ let Public = {
     return promise;
   }
 }
+
+ipc.on('boa', function(event, arg) {
+  Public.run(url).then(function(json) {
+    event.returnValue = json;
+  });
+});
 
 module.exports = Public;

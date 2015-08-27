@@ -2,20 +2,27 @@
 <html>
   <head>
     <title>Candoia</title>
+    <link rel='stylesheet' type='text/css' href='src/css/font-awesome.min.css'>
+    <link rel='stylesheet' type='text/css' href='src/css/work-sans.css'>
+    <link rel='stylesheet' type='text/css' href='src/css/scaffolding.css'>
     <link rel='stylesheet' type='text/css' href='src/css/candoia.css'>
   </head>
   <body>
-    <div class='side-panel'>
-      <ul>
-        <li>
-          <p>item 1</p>
-        </li>
-      </ul>
+    <div class='panel-container'>
+      <div class='panel-left'>
+        <ul class='tree'>
+          <li><i class='fa fa-lg fa-fw fa-book'></i> bootstrap</li>
+          <li><i class='fa fa-lg fa-fw fa-book'></i> candoia-frontend</li>
+          <li><i class='fa fa-lg fa-fw fa-book'></i> jfire</li>
+          <li><i class='fa fa-lg fa-fw fa-book'></i> lightweight-rest</li>
+        </ul>
+        <div class='resize-handle'></div>
+      </div>
+      <div class='panel-right'>
+        <h1>Hello World <i class='fa fa-fw fa-camera'></i></h1>
+        <webview class='app-container' id='app-container' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
+      </div>
     </div>
-    <div class='main-panel'>
-      <h1>Hello World</h1>
-    </div>
-    <webview id='app-view' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
     <script>
       'use strict';
       let webView = document.getElementById('app-view');
@@ -23,5 +30,6 @@
         console.log(e.message);
       });
     </script>
+    <script src='src/js/ui.js'></script>
   </body>
 </html>

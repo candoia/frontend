@@ -19,6 +19,7 @@ ipc.on('synchronous-message', function(event, arg) {
   event.returnValue = arg + ' main process addition';
 });
 
+
 app.on('ready', function() {
   mainWindow = new BrowserWindow({
     width: 920,

@@ -1,3 +1,6 @@
 "use strict";
 global.ipc = require('ipc');
-global.temp = "jack";
+global.api = {
+  boa: require('./boa/boa')
+};
+global.temp = "jack"

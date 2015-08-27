@@ -1,7 +1,9 @@
-// define(['ipc'], function(ipc) {
-//
-//   return {
-//     'run': ipc.sendSync(
-//   }
-//
-// });
+"use strict";
+
+let Public = {
+  'run': function(url) {
+    return ipc.sendSync('boa-run', url);
+  }
+}
+
+module.exports = Public;

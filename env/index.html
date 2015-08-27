@@ -24,8 +24,7 @@
       </div>
     </div>
     <script>
-      'use strict';
-      let webView = document.getElementById('app-view');
+      var webView = document.getElementById('app-container');
       webView.addEventListener('console-message', function(e) {
         console.log(e.message);
       });

@@ -15,27 +15,31 @@
   min-width    : 100px;
   border-right : 1px solid #ccc;
 
-  background-color : #ebebeb;
+  background-color    : #ebebeb;
+  -webkit-user-select : none;
 }
 
 .panel-right {
   position : relative;
   display  : table-cell;
   height   : 100%;
+  z-index  : 2;
+  padding  : 16px;
 
   overflow-y : auto;
+  -webkit-user-select : none;
 }
 
 .resize-handle {
   cursor   : ew-resize;
-  width    : 8px;
+  width    : 12px;
   top      : 0;
   bottom   : 0;
-  right    : 0;
+  right    : -6px;
   z-index  : 3;
 
   position : absolute;
-  -webkit-user-select : none;
+  -webkit-user-select : all;
 }
 
 .app-container {

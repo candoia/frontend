@@ -1,8 +1,52 @@
-"use strict";
+'use strict';
 
-let url = 'my-boa-script.boa';
-let json = api.boa.run(url);
 
-console.log(JSON.stringify(json, null, '\t'))
 let packageContents = api.meta.getPackage('impactful-commits');
 console.log(JSON.stringify(packageContents, null, '\t'));
+
+
+// retreive some data from BOA
+let json = api.boa.run('my-boa-script.boa');
+
+// manipulate the output
+json = json['NOA'];
+
+
+let projectIds = Object.keys(json);
+for (let i in projectIds) {
+  let key = projectIds[i];
+
+  // create a header tag
+  let h3 = document.createElement('h3');
+  h3.innerHTML = `Project ${key}`;
+  document.body.appendChild(h3);
+
+
+  // convert the data to a format that chart.js uses
+  let labels = [];
+  let dataset = [];
+
+  for (let j in json[key]) {
+    labels.push(j);
+    dataset.push(json[key][j]);
+  }
+
+  let chartData = {
+    labels: labels,
+    datasets: [{
+      fillColor: '#ff8080',
+      strokeColor: '#bf6060',
+      data: dataset
+    }]
+  }
+
+  // create a canvas and add it to the DOM for chart.js
+  let canvas = document.createElement('canvas');
+  canvas.setAttribute('width', '800px');
+  canvas.setAttribute('height', '600px');
+  canvas.id = `dataset-${i}`;
+  document.body.appendChild(canvas);
+
+  let ctx = canvas.getContext('2d');
+  new Chart(ctx).Bar(chartData);
+}

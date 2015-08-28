@@ -1,0 +1,56 @@
+{
+  "apps": [
+    {
+      "name": "impactful-commits",
+      "path": "apps/impactful-commits",
+      "entry": "main"
+    },
+    {
+      "name": "impactful-commits",
+      "path": "apps/impactful-commits",
+      "entry": "main"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "Tomcat",
+      "url": ""
+    },
+    {
+      "name": "Hadoop",
+      "url": ""
+    },
+    {
+      "name": "JUnit",
+      "url": ""
+    },
+    {
+      "name": "SLF4j",
+      "url": ""
+    },
+    {
+      "name": "bootstrap",
+      "url": ""
+    },
+    {
+      "name": "Node.js",
+      "url": ""
+    },
+    {
+      "name": "Grunt",
+      "url": ""
+    },
+    {
+      "name": "JQuery",
+      "url": ""
+    },
+    {
+      "name": "PMD",
+      "url": ""
+    },
+    {
+      "name": "JEdit",
+      "url": ""
+    }
+  ]
+}

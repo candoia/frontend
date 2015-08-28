@@ -10,7 +10,7 @@
   <body>
     <div class='panel-container'>
       <div class='panel-left' id='panel-left'>
-        <ul class='tree'>
+        <ul id='repo-tree'class='tree'>
           <li><i class='fa fa-lg fa-fw fa-book'></i> bootstrap</li>
           <li><i class='fa fa-lg fa-fw fa-book'></i> candoia-frontend</li>
           <li><i class='fa fa-lg fa-fw fa-book'></i> jfire</li>
@@ -20,12 +20,32 @@
       </div>
       <div class='panel-right'>
         <h1>Hello World <i class='fa fa-fw fa-camera'></i></h1>
+        <div id="shortcut-container">
+
+        </div>
         <webview class='app-container' id='app-container' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
       </div>
     </div>
     <script>
       'use strict';
       let fs = require('fs');
+      let bootstrap = require('./src/js/bootstrap');
+
+      for(let appI in bootstrap.appData.apps) {
+        let currentApp = bootstrap.appData.apps[appI];
+        document.getElementById('shortcut-container').appendChild(document.createElement("a").appendChild(document.createElement("p").appendChild(document.createTextNode(currentApp.name))));
+      }
+
+      for(let repoI in bootstrap.appData.repositories) {
+        let currentRepo = bootstrap.appData.repositories[repoI];
+        let item = document.createElement("li");
+        let attr = document.createAttribute("class");
+        attr.value = "fa fa-lg fa-fw fa-book";
+        //item.appendChild(document.createElement("i").setAttributeNode(attr));
+        item.appendChild(document.createTextNode(currentRepo.name));
+        document.getElementById('repo-tree').appendChild(item);
+      }
+
       let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
 
       var webview = document.getElementById('app-container');

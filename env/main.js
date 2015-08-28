@@ -11,6 +11,7 @@ const BrowserWindow = require('browser-window');
 const Boa = require('../modules/boa/boa-backend');
 const meta = require('../modules/app-meta/app-meta-backend');
 const ipc = require('ipc');
+const bootstrap = require('./src/js/bootstrap');
 
 let mainWindow;
 let menu;

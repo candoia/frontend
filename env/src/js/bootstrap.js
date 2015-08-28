@@ -1,8 +1,8 @@
 /*
  *
  *                          ~ CANDOIA BOOTSTRAP ~
- * loads data for initial run of frontend.
  *
+ * loads data for initial run of frontend.
  */
 "use strict";
 const fs = require('fs');

@@ -2,19 +2,16 @@
  *
  *                          ~ CANDOIA FRONTEND ~
  *
- *
+ * This file is the entrypoint for candoia frontend. It sets up the main browser
+ * window and populates it with an HTML file.
  */
-
 'use strict';
+
 const app = require('app');
 const BrowserWindow = require('browser-window');
-const Boa = require('../modules/boa/boa-backend');
-const meta = require('../modules/app-meta/app-meta-backend');
-const ipc = require('ipc');
-const bootstrap = require('./src/js/bootstrap');
 
+// TODO move this to it's own module
 let mainWindow;
-let menu;
 
 app.on('ready', function() {
   mainWindow = new BrowserWindow({

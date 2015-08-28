@@ -23,33 +23,36 @@
     </div>
     <script>
       'use strict';
+
       let fs = require('fs');
       let bootstrap = require('./src/js/bootstrap');
 
-      for(let appI in bootstrap.appData.apps) {
-        let currentApp = bootstrap.appData.apps[appI];
-        document.getElementById('shortcut-container').appendChild(document.createElement("a").appendChild(document.createElement("p").appendChild(document.createTextNode(currentApp.name))));
+      let dom = {
+        byId: document.getElementById.bind(document),
+        query: document.querySelectorAll.bind(document),
+        create: document.createElement.bind(document)
       }
 
-      for(let repoI in bootstrap.appData.repositories) {
-        let currentRepo = bootstrap.appData.repositories[repoI];
-        let item = document.createElement("li");
-        item.innerHTML = `<i class='fa fa-lg fa-fw fa-book'></i> ${currentRepo.name}`
-        document.getElementById('repo-tree').appendChild(item);
+      for(let app of bootstrap.appData.apps) {
+        dom.byId('shortcut-container').innerHTML = `<a href="#">${app.name}</a>`;
       }
+
+      for(let repo of bootstrap.appData.repositories) {
+        let item = dom.create('li');
+        item.innerHTML = `<i class='fa fa-lg fa-fw fa-book'></i> ${repo.name}`
+        dom.byId('repo-tree').appendChild(item);
+      }
+
+
 
       let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
-
       var webview = document.getElementById('app-container');
-
       webview.addEventListener('console-message', function(e) {
         console.log(e.message);
       });
-
       webview.addEventListener('dom-ready', function() {
         webview.insertCSS(scaff);
         // webview.openDevTools();
-
       });
     </script>
     <script src='src/js/ui.js'></script>

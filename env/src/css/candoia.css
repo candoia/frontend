@@ -1,6 +1,7 @@
 .main-container {
   display : block;
-  background-color : #ebebeb;
+  /*background-color : #ebebeb;*/
+  background-color : #EFEFEF;
   color : #474747;
   overflow : hidden;
   height : 100%;
@@ -30,8 +31,6 @@
 
 .panel {
   display : block;
-
-  background-color : #ebebeb;
 }
 
 .panel-container.left .panel,
@@ -47,9 +46,9 @@
 }
 
 .pane-container.master {
-  padding-bottom: 8px;
-  padding-right: 8px;
   background-color : #647d8f;
+  border-bottom : 1px solid #AAC6DC;
+  border-right : 1px solid #AAC6DC;
 }
 
 .pane-container .pane-axis {
@@ -78,10 +77,9 @@
   -webkit-flex : 1;
 
   background-color : #fff;
-  margin-top : 8px;
-  margin-left : 8px;
   padding : 8px;
-  border : 1px solid #596f80;
+  border-top : 1px solid #AAC6DC;
+  border-left : 1px solid #AAC6DC;
 }
 
 /*.panel-left {

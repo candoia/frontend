@@ -10,6 +10,9 @@
 const app = require('app');
 const BrowserWindow = require('browser-window');
 
+require('../modules/boa/boa-backend');
+require('../modules/app-meta/app-meta-backend');
+
 // TODO move this to it's own module
 let mainWindow;
 

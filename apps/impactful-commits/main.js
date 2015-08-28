@@ -4,7 +4,6 @@
 let packageContents = api.meta.getPackage('impactful-commits');
 console.log(JSON.stringify(packageContents, null, '\t'));
 
-
 // retreive some data from BOA
 let json = api.boa.run('my-boa-script.boa');
 

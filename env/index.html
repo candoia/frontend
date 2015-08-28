@@ -8,17 +8,99 @@
     <link rel='stylesheet' type='text/css' href='src/css/candoia.css'>
   </head>
   <body>
-    <div class='panel-container'>
-      <div class='panel-left' id='panel-left'>
-        <ul id='repo-tree'class='tree'></ul>
-        <div class='resize-handle' id='resize-handle'></div>
-      </div>
-      <div class='panel-right'>
-        <h1>Hello World <i class='fa fa-fw fa-camera'></i></h1>
-        <div id="shortcut-container">
-
+    <div class='main-container'>
+      <div class='axis axis-horizontal'>
+        <div class='panel-container left'>
+          <div class='panel left'>
+            <p>
+              <ul id='repo-tree'class='tree'></ul>
+            </p>
+            <div style='width: 200px;'></div>
+          </div>
         </div>
-        <webview class='app-container' id='app-container' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
+        <div class='axis axis-vertical'>
+          <div class='panel-container top'>
+            <div class='panel top'>
+              <div style='padding: 0 8px;'>
+                <p style='float: left;'>
+                  <i class='fa fa-fw fa-lg fa-commenting'></i>
+                </p>
+                <p style='float: left; padding-left: 8px;'>
+                  <i class='fa fa-fw fa-lg fa-tags'></i>
+                </p>
+                <p style='float: right;'>
+                  <input type='text'></input>
+                  <i class='fa fa-fw fa-lg fa-search'></i>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class='pane-container master'>
+            <div class='pane-axis horizontal' style='flex-grow: 1'>
+              <div class='pane-axis vertical' style='flex-grow: 1'>
+                <div class='pane'>
+                  <div class='pane-content'>
+                    <h2> Pane A </h2>
+                    <webview class='app-container' id='app-container' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
+                  </div>
+                </div>
+                <div class='pane'>
+                  <div class='pane-content'>
+                    <h2> Pane B </h2>
+                  </div>
+                </div>
+              </div>
+              <div class='pane'>
+                <div class='pane-content'>
+                  <h2> Pane C </h2>
+                </div>
+              </div>
+              <div class='pane-axis vertical' style='flex-grow: 1'>
+                <div class='pane'>
+                  <div class='pane-content'>
+                    <h2> Pane D </h2>
+                    <div id="shortcut-container"></div>
+                  </div>
+                </div>
+                <div class='pane-axis horizontal' style='flex-grow: 1'>
+                  <div class='pane'>
+                    <div class='pane-content'>
+                      <h2> Pane E </h2>
+                      <br />
+                      <p>
+                        <i class='fa fa-fw fa-spinner fa-pulse'></i>
+                      </p>
+                    </div>
+                  </div>
+                  <div class='pane'>
+                    <div class='pane-content'>
+                      <h2> Pane F </h2>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='panel-container bottom'>
+            <div class='panel bottom'>
+              <div style='padding: 0 8px;'>
+                <p style='float: left'>
+                   Help
+                  <i class='fa fa-fw fa-life-bouy'></i>
+                </p>
+                <p style='float: left; padding-left: 16px;'>
+                   Configuration
+                  <i class='fa fa-fw fa-cog'></i>
+                </p>
+                <p style='float: right'>
+                  There is an update avaliable!
+                  <i class='fa fa-fw fa-warning'></i>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='panel-container right'></div>
       </div>
     </div>
     <script>
@@ -55,6 +137,6 @@
         // webview.openDevTools();
       });
     </script>
-    <script src='src/js/ui.js'></script>
+    <!-- <script src='src/js/ui.js'></script> -->
   </body>
 </html>

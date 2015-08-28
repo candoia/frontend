@@ -10,12 +10,7 @@
   <body>
     <div class='panel-container'>
       <div class='panel-left' id='panel-left'>
-        <ul id='repo-tree'class='tree'>
-          <li><i class='fa fa-lg fa-fw fa-book'></i> bootstrap</li>
-          <li><i class='fa fa-lg fa-fw fa-book'></i> candoia-frontend</li>
-          <li><i class='fa fa-lg fa-fw fa-book'></i> jfire</li>
-          <li><i class='fa fa-lg fa-fw fa-book'></i> lightweight-rest</li>
-        </ul>
+        <ul id='repo-tree'class='tree'></ul>
         <div class='resize-handle' id='resize-handle'></div>
       </div>
       <div class='panel-right'>
@@ -39,10 +34,7 @@
       for(let repoI in bootstrap.appData.repositories) {
         let currentRepo = bootstrap.appData.repositories[repoI];
         let item = document.createElement("li");
-        let attr = document.createAttribute("class");
-        attr.value = "fa fa-lg fa-fw fa-book";
-        //item.appendChild(document.createElement("i").setAttributeNode(attr));
-        item.appendChild(document.createTextNode(currentRepo.name));
+        item.innerHTML = `<i class='fa fa-lg fa-fw fa-book'></i> ${currentRepo.name}`
         document.getElementById('repo-tree').appendChild(item);
       }
 

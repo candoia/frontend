@@ -20,62 +20,52 @@
         </div>
         <div class='axis axis-vertical'>
           <div class='panel-container top'>
-            <div class='panel top'>
-              <div style='padding: 0 8px;'>
-                <p style='float: left;'>
-                  <i class='fa fa-fw fa-lg fa-commenting'></i>
-                </p>
-                <p style='float: left; padding-left: 8px;'>
-                  <i class='fa fa-fw fa-lg fa-tags'></i>
-                </p>
-                <p style='float: right;'>
-                  <input type='text'></input>
-                  <i class='fa fa-fw fa-lg fa-search'></i>
-                </p>
-              </div>
-            </div>
+            <div class='panel top'></div>
           </div>
           <div class='pane-container master'>
             <div class='pane-axis horizontal' style='flex-grow: 1'>
               <div class='pane-axis vertical' style='flex-grow: 1'>
                 <div class='pane'>
-                  <div class='pane-content'>
-                    <h2> Pane A </h2>
-                    <webview class='app-container' id='app-container' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
+                  <div class='pane-content' style='flex-grow: 1'>
+                    <h2>
+                      Top Performers
+                      <i class='close fa fa-fw fa-close'></i>
+                    </h2>
                   </div>
                 </div>
-                <div class='pane'>
+                <div class='pane' style='flex-grow: 1'>
                   <div class='pane-content'>
-                    <h2> Pane B </h2>
+                    <h2>
+                      Pane B
+                      <i class='close fa fa-fw fa-close'></i>
+                    </h2>
                   </div>
                 </div>
               </div>
-              <div class='pane'>
+              <div class='pane' style='flex-grow: 1'>
                 <div class='pane-content'>
-                  <h2> Pane C </h2>
+                  <h2>
+                    Pane C
+                    <i class='close fa fa-fw fa-close'></i>
+                  </h2>
                 </div>
               </div>
               <div class='pane-axis vertical' style='flex-grow: 1'>
-                <div class='pane'>
+                <div class='pane' style='flex-grow: 1'>
                   <div class='pane-content'>
-                    <h2> Pane D </h2>
+                    <h2>
+                      Pane D
+                      <i class='close fa fa-fw fa-close'></i>
+                    </h2>
                     <div id="shortcut-container"></div>
                   </div>
                 </div>
-                <div class='pane-axis horizontal' style='flex-grow: 1'>
-                  <div class='pane'>
-                    <div class='pane-content'>
-                      <h2> Pane E </h2>
-                      <br />
-                      <p>
-                        <i class='fa fa-fw fa-spinner fa-pulse'></i>
-                      </p>
-                    </div>
-                  </div>
-                  <div class='pane'>
-                    <div class='pane-content'>
-                      <h2> Pane F </h2>
-                    </div>
+                <div class='pane' style='flex-grow: 1'>
+                  <div class='pane-content'>
+                    <h2>
+                      Pane E
+                      <i class='close fa fa-fw fa-close'></i>
+                    </h2>
                   </div>
                 </div>
               </div>
@@ -83,16 +73,20 @@
           </div>
           <div class='panel-container bottom'>
             <div class='panel bottom'>
-              <div style='padding: 0 8px;'>
+              <div class='footer'>
                 <p style='float: left'>
                    Help
                   <i class='fa fa-fw fa-life-bouy'></i>
                 </p>
-                <p style='float: left; padding-left: 16px;'>
+                <p style='float: left;'>
                    Configuration
                   <i class='fa fa-fw fa-cog'></i>
                 </p>
-                <p style='float: right'>
+                <p style='float: right;'>
+                  <input type='text'></input>
+                  <i class='fa fa-fw fa-lg fa-search'></i>
+                </p>
+                <p style='float: right;'>
                   There is an update avaliable!
                   <i class='fa fa-fw fa-warning'></i>
                 </p>
@@ -101,7 +95,6 @@
           </div>
         </div>
         <div class='panel-container right'>
-          <div style='width: 8px;'></div>
         </div>
       </div>
     </div>
@@ -129,15 +122,15 @@
 
 
 
-      let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
-      var webview = document.getElementById('app-container');
-      webview.addEventListener('console-message', function(e) {
-        console.log(e.message);
-      });
-      webview.addEventListener('dom-ready', function() {
-        webview.insertCSS(scaff);
-        // webview.openDevTools();
-      });
+      // let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
+      // var webview = document.getElementById('app-container');
+      // webview.addEventListener('console-message', function(e) {
+      //   console.log(e.message);
+      // });
+      // webview.addEventListener('dom-ready', function() {
+      //   webview.insertCSS(scaff);
+      //   // webview.openDevTools();
+      // });
     </script>
     <!-- <script src='src/js/ui.js'></script> -->
   </body>

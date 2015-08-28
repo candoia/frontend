@@ -46,7 +46,7 @@
 }
 
 .pane-container.master {
-  background-color : #647d8f;
+  overflow : hidden;
   border-bottom : 1px solid #AAC6DC;
   border-right : 1px solid #AAC6DC;
 }
@@ -77,46 +77,10 @@
   -webkit-flex : 1;
 
   background-color : #fff;
-  padding : 8px;
   border-top : 1px solid #AAC6DC;
   border-left : 1px solid #AAC6DC;
 }
 
-/*.panel-left {
-  position : relative;
-  display  : table-cell;
-  width    : 200px;
-
-  table-layout : fixed;
-  min-width    : 100px;
-  border-right : 1px solid #ccc;
-
-  background-color    : #ebebeb;
-  -webkit-user-select : none;
-}
-
-.panel-right {
-  position : relative;
-  display  : table-cell;
-  height   : 100%;
-  z-index  : 2;
-
-  overflow-y : auto;
-  -webkit-user-select : none;
-}
-
-.resize-handle {
-  cursor   : ew-resize;
-  width    : 12px;
-  top      : 0;
-  bottom   : 0;
-  right    : -6px;
-  z-index  : 3;
-
-  position : absolute;
-  -webkit-user-select : all;
-}
-*/
 .app-container {
   position : relative;
   width    : 100%;
@@ -133,4 +97,27 @@
 .tree li {
   padding : 4px 0;
   color   : #555;
+}
+
+.pane-content > h2 {
+  margin  : 0;
+  padding : 8px;
+  font-weight : 500;
+  font-size : 15px;
+  border-bottom : 1px solid #f5f5f5;
+}
+
+.footer > p {
+  font-size : 14px;
+  margin : 8px;
+  color : #666;
+}
+
+.close {
+  float  : right;
+  color  : #ccc;
+  cursor : pointer;
+}
+.close:hover {
+  color : #E89595;
 }

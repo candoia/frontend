@@ -25,47 +25,70 @@
           <div class='pane-container master'>
             <div class='pane-axis horizontal' style='flex-grow: 1'>
               <div class='pane-axis vertical' style='flex-grow: 1'>
-                <div class='pane'>
-                  <div class='pane-content' style='flex-grow: 1'>
-                    <h2>
-                      Top Performers
-                      <i class='close fa fa-fw fa-close'></i>
-                    </h2>
+                <div class='pane' style='flex-grow: 1'>
+                  <div class='pane-header'>
+                    Top Performers
+                    <i class='close fa fa-fw fa-close'></i>
+                  </div>
+                  <div class='pane-content'>
+                    <div class='pane-body-container'>
+                      <div class='pane-body'>
+                        Hello World
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class='pane' style='flex-grow: 1'>
+                  <div class='pane-header'>
+                    Pane B
+                    <i class='close fa fa-fw fa-close'></i>
+                  </div>
                   <div class='pane-content'>
-                    <h2>
-                      Pane B
-                      <i class='close fa fa-fw fa-close'></i>
-                    </h2>
+                    <div class='pane-body-container'>
+                      <div class='pane-body'>
+                        Hello World
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
               <div class='pane' style='flex-grow: 1'>
+                <div class='pane-header'>
+                  Pane C
+                  <i class='close fa fa-fw fa-close'></i>
+                </div>
                 <div class='pane-content'>
-                  <h2>
-                    Pane C
-                    <i class='close fa fa-fw fa-close'></i>
-                  </h2>
+                  <div class='pane-body-container'>
+                    <!-- <div class='pane-body'> -->
+                      <webview class='pane-body app-container' id='app-container' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
+                    <!-- </div> -->
+                  </div>
                 </div>
               </div>
               <div class='pane-axis vertical' style='flex-grow: 1'>
                 <div class='pane' style='flex-grow: 1'>
+                  <div class='pane-header'>
+                    Pane D
+                    <i class='close fa fa-fw fa-close'></i>
+                  </div>
                   <div class='pane-content'>
-                    <h2>
-                      Pane D
-                      <i class='close fa fa-fw fa-close'></i>
-                    </h2>
-                    <div id="shortcut-container"></div>
+                    <div class='pane-body-container'>
+                      <div class='pane-body'>
+                        <div id="shortcut-container"></div>
+                        Hello World
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class='pane' style='flex-grow: 1'>
+                  <div class='pane-header'>
+                    Impactful Commits
+                    <i class='close fa fa-fw fa-close'></i>
+                  </div>
                   <div class='pane-content'>
-                    <h2>
-                      Pane E
-                      <i class='close fa fa-fw fa-close'></i>
-                    </h2>
+                    <div class='pane-body-container'>
+                      <webview class='pane-body app-container' id='app-container' src='../apps/impactful-commits/main.html' preload='../modules/preload.js' ></webview>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -109,6 +132,7 @@
         query: document.querySelectorAll.bind(document),
         create: document.createElement.bind(document)
       }
+      NodeList.prototype.forEach = Array.prototype.forEach;
 
       for(let app of bootstrap.appData.apps) {
         dom.byId('shortcut-container').innerHTML = `<a href="#">${app.name}</a>`;
@@ -122,15 +146,18 @@
 
 
 
-      // let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
-      // var webview = document.getElementById('app-container');
+      let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
+      var webviews = dom.query('.app-container');
+      console.log(webviews);
       // webview.addEventListener('console-message', function(e) {
       //   console.log(e.message);
       // });
-      // webview.addEventListener('dom-ready', function() {
-      //   webview.insertCSS(scaff);
-      //   // webview.openDevTools();
-      // });
+      webviews.forEach(function(view) {
+        view.addEventListener('dom-ready', function() {
+          view.insertCSS(scaff);
+          // webview.openDevTools();
+        });
+      });
     </script>
     <!-- <script src='src/js/ui.js'></script> -->
   </body>

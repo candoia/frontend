@@ -67,14 +67,6 @@
   display : -webkit-flex;
   -webkit-flex: 1;
   -webkit-flex-direction: column;
-  overflow : visible;
-}
-
-.pane-content {
-  min-height : 0;
-  min-width : 0;
-  position : relative;
-  -webkit-flex : 1;
 
   background-color : #fff;
   border-top : 1px solid #AAC6DC;
@@ -99,12 +91,40 @@
   color   : #555;
 }
 
-.pane-content > h2 {
+
+.pane-header {
   margin  : 0;
   padding : 8px;
+  overflow-y : hidden;
   font-weight : 500;
   font-size : 15px;
   border-bottom : 1px solid #f5f5f5;
+}
+
+.pane-content {
+  position : relative;
+  display : -webkit-flex;
+  min-height : 0;
+  min-width : 0;
+  flex-grow : 1;
+  flex-shrink : 1;
+}
+
+.pane-body-container {
+  display : -webkit-flex;
+  position : absolute;
+  top : 0;
+  right : 0;
+  bottom : 0;
+  left : 0;
+  -webkit-flex : 1;
+  overflow : auto;
+}
+
+.pane-body {
+  padding : 8px;
+  width : 100%;
+  min-height : 100%;
 }
 
 .footer > p {

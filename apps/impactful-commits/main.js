@@ -10,6 +10,7 @@ let json = api.boa.run('my-boa-script.boa');
 // manipulate the output
 json = json['NOA'];
 
+let content = document.getElementById('content');
 
 let projectIds = Object.keys(json);
 for (let i in projectIds) {
@@ -18,7 +19,7 @@ for (let i in projectIds) {
   // create a header tag
   let h3 = document.createElement('h3');
   h3.innerHTML = `Project ${key}`;
-  document.body.appendChild(h3);
+  content.appendChild(h3);
 
 
   // convert the data to a format that chart.js uses
@@ -41,10 +42,10 @@ for (let i in projectIds) {
 
   // create a canvas and add it to the DOM for chart.js
   let canvas = document.createElement('canvas');
-  canvas.setAttribute('width', '800px');
-  canvas.setAttribute('height', '600px');
+  canvas.setAttribute('width', '400px');
+  canvas.setAttribute('height', '300px');
   canvas.id = `dataset-${i}`;
-  document.body.appendChild(canvas);
+  content.appendChild(canvas);
 
   let ctx = canvas.getContext('2d');
   new Chart(ctx).Bar(chartData);

@@ -3,6 +3,22 @@
 ::selection { background: none repeat scroll 0% 0% #FFE1F4; }
 ::-moz-selection { background: none repeat scroll 0% 0% #FFE1F4; }
 
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background : none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #567a7a;
+  border-radius: 5px;
+  border: 3px solid #fff;
+  width: 10px;
+}
+
 html {
   position    : relative;
   height      : 100vh;

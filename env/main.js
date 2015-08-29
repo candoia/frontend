@@ -22,5 +22,5 @@ app.on('ready', function() {
     height: 680
   });
   mainWindow.loadUrl(`file://${__dirname}/index.html`);
-  mainWindow.setMenu(null);
+  // mainWindow.setMenu(null);
 });

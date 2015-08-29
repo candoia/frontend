@@ -33,20 +33,51 @@
                   <div class='pane-content'>
                     <div class='pane-body-container'>
                       <div class='pane-body'>
-                        Hello World
+                        <div class='app-content' style="text-align:center;">
+                          <h4>Top Users by Commits</h4>
+                          <canvas id="pane-a" height='320px' width='320px'></canvas>
+                          <table style='width:100%;text-align:left;'>
+                            <thead>
+                              <tr>
+                                <th>User</th>
+                                <th>Number of Commits</th>
+                                <th>Most Changed File</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>Dalton Mills</td>
+                                <td>150</td>
+                                <td>main.html</td>
+                              </tr>
+                              <tr>
+                                <td>David Johnston</td>
+                                <td>100</td>
+                                <td>ui.js</td>
+                              </tr>
+                              <tr>
+                                <td>Trey Erenberger</td>
+                                <td>50</td>
+                                <td>bootstrap.js</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class='pane' style='flex-grow: 1'>
                   <div class='pane-header'>
-                    Pane B
+                    Number of Public Methods
                     <i class='close fa fa-fw fa-close'></i>
                   </div>
                   <div class='pane-content'>
                     <div class='pane-body-container'>
                       <div class='pane-body'>
-                        Hello World
+                        <div class='app-content'>
+                          <canvas id="pane-npm" height='320px' width='320px'></canvas>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -54,7 +85,7 @@
               </div>
               <div class='pane' style='flex-grow: 1'>
                 <div class='pane-header'>
-                  Pane C
+                  Number of Attributes
                   <i class='close fa fa-fw fa-close'></i>
                 </div>
                 <div class='pane-content'>
@@ -82,7 +113,7 @@
                 </div>
                 <div class='pane' style='flex-grow: 1'>
                   <div class='pane-header'>
-                    Impactful Commits
+                    Number of Attributes
                     <i class='close fa fa-fw fa-close'></i>
                   </div>
                   <div class='pane-content'>
@@ -121,6 +152,7 @@
         </div>
       </div>
     </div>
+    <script src="../apps/impactful-commits/lib/chart.min.js"></script>
     <script>
       'use strict';
 
@@ -152,6 +184,51 @@
       // webview.addEventListener('console-message', function(e) {
       //   console.log(e.message);
       // });
+
+      var pieA = new Chart(dom.byId('pane-a').getContext('2d')).Pie([
+          {
+              value: 300,
+              color:"#F7464A",
+              highlight: "#FF5A5E",
+              label: "Dalton Mills"
+          },
+          {
+              value: 50,
+              color: "#46BFBD",
+              highlight: "#5AD3D1",
+              label: "Trey Erenberger"
+          },
+          {
+              value: 100,
+              color: "#FDB45C",
+              highlight: "#FFC870",
+              label: "David Johnston"
+          }
+      ], {
+        responsive: false
+      });
+      var pieB = new Chart(dom.byId('pane-npm').getContext('2d')).Pie([
+          {
+              value: 300,
+              color:"#F7464A",
+              highlight: "#FF5A5E",
+              label: "Dalton Mills"
+          },
+          {
+              value: 50,
+              color: "#46BFBD",
+              highlight: "#5AD3D1",
+              label: "Trey Erenberger"
+          },
+          {
+              value: 100,
+              color: "#FDB45C",
+              highlight: "#FFC870",
+              label: "David Johnston"
+          }
+      ], {
+        responsive: false
+      });
       webviews.forEach(function(view) {
         view.addEventListener('dom-ready', function() {
           view.insertCSS(scaff);

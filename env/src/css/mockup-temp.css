@@ -4,3 +4,11 @@
   width: 90%;
   margin: 0 auto;
 }
+
+#side-panel-toggle {
+  cursor : pointer;
+}
+
+#side-panel-toggle:hover {
+  color : #CC5757;
+}

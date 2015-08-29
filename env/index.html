@@ -12,7 +12,7 @@
     <div class='main-container'>
       <div class='axis axis-horizontal'>
         <div class='panel-container left'>
-          <div class='panel left'>
+          <div id='side-panel' class='panel left'>
             <p>
               <ul id='repo-tree'class='tree'></ul>
             </p>
@@ -130,6 +130,9 @@
           <div class='panel-container bottom'>
             <div class='panel bottom'>
               <div class='footer'>
+                <p style='float: left' id='side-panel-toggle'>
+                  <i class='fa fa-fw fa-angle-double-left'></i>
+                </p>
                 <p style='float: left'>
                    Help
                   <i class='fa fa-fw fa-life-bouy'></i>
@@ -156,6 +159,6 @@
     </div>
     <script src="../apps/impactful-commits/lib/chart.min.js"></script>
     <script src='src/js/index.js'></script>
-    <!-- <script src='src/js/ui.js'></script> -->
+    <script src='src/js/ui.js'></script>
   </body>
 </html>

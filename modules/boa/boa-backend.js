@@ -7,6 +7,7 @@
  * promise. The promise gets resolved with the resulting JSON.
  */
 'use strict';
+
 const cp = require('child_process');
 const ipc = require('ipc');
 

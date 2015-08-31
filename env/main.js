@@ -13,7 +13,8 @@ const BrowserWindow = require('browser-window');
 // these need to be included in order to be "started"
 // TODO fix this?
 require('../modules/boa/boa-backend');
-require('../modules/app-meta/app-meta-backend');
+require('../modules/meta/meta-backend');
+require('../modules/instance/instance-backend');
 
 // TODO move this to it's own module
 let mainWindow;

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let Public = {
   'run': function run(url) {

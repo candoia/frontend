@@ -5,3 +5,5 @@ node_modules
 Thumbs.db
 .DS_Store
 *.log
+notes.json
+boa-compiler.jar

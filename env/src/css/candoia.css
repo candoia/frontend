@@ -149,3 +149,11 @@
 .close:hover {
   color : #E89595;
 }
+
+#side-panel {
+  transition: width .25s;
+}
+
+.pane.active {
+  border: 1px solid pink;
+}

@@ -2,88 +2,44 @@
 
 let fs = require('fs');
 let bootstrap = require('./src/js/bootstrap');
-
-let dom = {
-  byId: document.getElementById.bind(document),
-  query: document.querySelectorAll.bind(document),
-  create: document.createElement.bind(document)
-}
-NodeList.prototype.forEach = Array.prototype.forEach;
+let remote = require('remote');
+let Menu = remote.require('menu');
+let MenuItem = remote.require('menu-item');
+let appMenu = new Menu();
 
 for(let app of bootstrap.appData.apps) {
-  dom.byId('shortcut-container').innerHTML = `<a href="#">${app.name}</a>`;
+  appMenu.append(new MenuItem({
+    'type': 'normal',
+    'label': app.name,
+    'click': function() { console.log('clicked'); }
+  }));
 }
 
+
 for(let repo of bootstrap.appData.repositories) {
-  let item = dom.create('li');
+  let item = $('<li class="repo-shortcut">');
   let tmpl = `
     <i class='fa fa-fw fa-book tree-icon'></i>
     <span class="tree-text">${repo.name}</span>`;
-  item.innerHTML = tmpl;
-  dom.byId('repo-tree').appendChild(item);
+  item.html(tmpl);
+  $('#repo-tree').append(item);
 }
 
 
+$(document).on('contextmenu', '.repo-shortcut', function(e) {
+    e.preventDefault();
+    appMenu.popup(remote.getCurrentWindow());
+});
 
-let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
-var webviews = dom.query('.app-container');
-console.log(webviews);
-// webview.addEventListener('console-message', function(e) {
-//   console.log(e.message);
+
+
+
+//let scaff = fs.readFileSync('env/src/css/scaffolding.css', {encoding: 'utf8'});
+
+
+// webviews.forEach(function(view) {
+//   view.addEventListener('dom-ready', function() {
+//     view.insertCSS(scaff);
+//     // webview.openDevTools();
+//   });
 // });
-
-var pieA = new Chart(dom.byId('pane-a').getContext('2d')).Pie([
-    {
-        value: 300,
-        color:"#F7464A",
-        highlight: "#FF5A5E",
-        label: "Dalton Mills"
-    },
-    {
-        value: 50,
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
-        label: "Trey Erenberger"
-    },
-    {
-        value: 100,
-        color: "#FDB45C",
-        highlight: "#FFC870",
-        label: "David Johnston"
-    }
-], {
-  responsive: false
-});
-var pieB = new Chart(dom.byId('pane-npm').getContext('2d')).Radar({
-    labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
-    datasets: [
-        {
-            label: "My First dataset",
-            fillColor: "rgba(220,220,220,0.2)",
-            strokeColor: "rgba(220,220,220,1)",
-            pointColor: "rgba(220,220,220,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(220,220,220,1)",
-            data: [65, 59, 90, 81, 56, 55, 40]
-        },
-        {
-            label: "My Second dataset",
-            fillColor: "rgba(151,187,205,0.2)",
-            strokeColor: "rgba(151,187,205,1)",
-            pointColor: "rgba(151,187,205,1)",
-            pointStrokeColor: "#fff",
-            pointHighlightFill: "#fff",
-            pointHighlightStroke: "rgba(151,187,205,1)",
-            data: [28, 48, 40, 19, 96, 27, 100]
-        }
-    ]
-}, {
-  responsive: false
-});
-webviews.forEach(function(view) {
-  view.addEventListener('dom-ready', function() {
-    view.insertCSS(scaff);
-    // webview.openDevTools();
-  });
-});

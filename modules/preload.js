@@ -2,7 +2,7 @@
 global.ipc = require('ipc');
 global.api = {
   boa: require('./boa/boa'),
-  meta: require('./app-meta/app-meta')
+  meta: require('./meta/meta')
 };
 
 global.temp = "jack";

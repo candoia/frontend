@@ -63,6 +63,7 @@ let Public = {
 }
 
 ipc.on('boa-run', function(event, arg) {
+  console.log(event.sender.getId());
   Public.run(arg).then(function(json) {
     event.returnValue = json;
   });

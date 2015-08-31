@@ -9,48 +9,58 @@
       "name": "impactful-commits",
       "path": "apps/impactful-commits",
       "entry": "main"
+    },
+    {
+      "name": "impactful-commits",
+      "path": "apps/impactful-commits",
+      "entry": "main"
+    },
+    {
+      "name": "impactful-commits",
+      "path": "apps/impactful-commits",
+      "entry": "main"
     }
   ],
   "repositories": [
     {
       "name": "tomcat",
-      "url": ""
+      "local": ""
     },
     {
       "name": "hadoop",
-      "url": ""
+      "local": ""
     },
     {
       "name": "jUnit",
-      "url": ""
+      "local": ""
     },
     {
       "name": "SLF4j",
-      "url": ""
+      "local": ""
     },
     {
       "name": "bootstrap",
-      "url": ""
+      "local": ""
     },
     {
       "name": "node",
-      "url": ""
+      "local": ""
     },
     {
       "name": "grunt",
-      "url": ""
+      "local": ""
     },
     {
       "name": "jquery",
-      "url": ""
+      "local": ""
     },
     {
       "name": "PMD",
-      "url": ""
+      "local": ""
     },
     {
       "name": "jEdit",
-      "url": ""
+      "local": ""
     }
   ]
 }

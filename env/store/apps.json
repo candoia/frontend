@@ -13,15 +13,15 @@
   ],
   "repositories": [
     {
-      "name": "Tomcat",
+      "name": "tomcat",
       "url": ""
     },
     {
-      "name": "Hadoop",
+      "name": "hadoop",
       "url": ""
     },
     {
-      "name": "JUnit",
+      "name": "jUnit",
       "url": ""
     },
     {
@@ -33,15 +33,15 @@
       "url": ""
     },
     {
-      "name": "Node.js",
+      "name": "node",
       "url": ""
     },
     {
-      "name": "Grunt",
+      "name": "grunt",
       "url": ""
     },
     {
-      "name": "JQuery",
+      "name": "jquery",
       "url": ""
     },
     {
@@ -49,7 +49,7 @@
       "url": ""
     },
     {
-      "name": "JEdit",
+      "name": "jEdit",
       "url": ""
     }
   ]

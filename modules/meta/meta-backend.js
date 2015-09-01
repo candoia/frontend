@@ -7,6 +7,7 @@
 'use strict';
 const fs = require('fs');
 const ipc = require('ipc');
+const im = require('../instance/instance-backend');
 const appRoot = './apps/';
 
 
@@ -18,6 +19,7 @@ let Public = {
 }
 
 ipc.on('meta-get-package-contents', function(event, appName) {
+  console.log('GET PACKAGE CNTS OF ' + event.sender.getId());
   event.returnValue = Public.getPackageContents(appName);
 });
 

@@ -7,26 +7,31 @@
 
 const ipc = require('ipc');
 
-let data = {};
-
 let Public = {
+  'data' : {},
+  'other': 'test',
   'register': function register(id, app, repos) {
-    data[id] = { id, app, repos };
-    console.log(JSON.stringify(data));
+    this.other = 'if you see this, it workz!!!!!';
+    this.data[id] = { id, app, repos };
+    console.log("STORED " + id);
   },
   'unregister': function unregister(id) {
-    let r = data[id];
-    delete data[id];
+    let r = this.data[id];
+    delete this.data[id];
     return r;
   },
   'get': function get(id) {
+    console.log("RETRIEVE " + id);
     return data[id];
   }
 }
 
 ipc.on('instance-get', function(event, arg) {
+  console.log('DO SOMETHING');
   let id = event.sender.getId();
-  return Public.get(id);
+  console.log("RECIEVED GET FROM: " + id);
+  console.log(JSON.stringify(Public.other));
+  event.returnValue = 6;//Public.get(id);
 });
 
 module.exports = Public;

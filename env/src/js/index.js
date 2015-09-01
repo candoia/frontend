@@ -4,6 +4,7 @@ let fs = require('fs');
 let bootstrap = require('./src/js/bootstrap');
 let instanceManager = require('../modules/instance/instance-backend');
 let remote = require('remote');
+let ipc = require('ipc');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
 let appMenu = new Menu();
@@ -50,15 +51,20 @@ function createAppInstance(app) {
   content.html('');
   content.append(wv);
   let e = wv[0];
-  wv.on('dom-ready', function(r) {
-    e.insertCSS(scaff);
+  wv.on('load-commit', function(r) {
     let id = e.getId();
-    console.log(id);
+    console.log("CREATED " + id);
+    e.insertCSS(scaff);
     instanceManager.register(id, app, repo);
-    // webview.openDevTools();
+    e.addEventListener('ipc-message', function(c) {
+      console.log("MESSAGE FROM WV: " + c);
+    });
+    // console.log(JSON.stringify(instanceManager.get(id)));
+    // wv.openDevTools();
   });
 
 }
+
 
 
 

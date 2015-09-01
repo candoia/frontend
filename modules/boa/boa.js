@@ -2,7 +2,7 @@
 
 let Public = {
   'run': function run(url) {
-    return ipc.sendSync('boa-run', url);
+    return api.ipc.sendSync('boa-run', url);
   }
 };
 

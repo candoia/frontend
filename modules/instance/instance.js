@@ -4,7 +4,7 @@ const ipc = require('ipc');
 
 let Public = {
   'get': function get() {
-    return ipc.sendSync('instance-get');
+    return api.ipc.sendSync('instance-get');
   }
 };
 

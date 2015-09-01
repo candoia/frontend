@@ -3,22 +3,12 @@
     {
       "name": "impactful-commits",
       "path": "apps/impactful-commits",
-      "entry": "main"
+      "entry": "main.html"
     },
     {
       "name": "impactful-commits",
       "path": "apps/impactful-commits",
-      "entry": "main"
-    },
-    {
-      "name": "impactful-commits",
-      "path": "apps/impactful-commits",
-      "entry": "main"
-    },
-    {
-      "name": "impactful-commits",
-      "path": "apps/impactful-commits",
-      "entry": "main"
+      "entry": "main.html"
     }
   ],
   "repositories": [

@@ -12,6 +12,7 @@ let data = {};
 let Public = {
   'register': function register(id, app, repos) {
     data[id] = { id, app, repos };
+    console.log(JSON.stringify(data));
   },
   'unregister': function unregister(id) {
     let r = data[id];

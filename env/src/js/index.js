@@ -9,8 +9,6 @@ let instanceManager = remote.require('../modules/instance/instance-backend');
 let MenuItem = remote.require('menu-item');
 let appMenu = new Menu();
 
-
-
 let repos = bootstrap.appData.repositories;
 
 for(let i = 0; i < repos.length; i++) {
@@ -55,7 +53,8 @@ function createAppInstance(app) {
     let id = e.getId();
     e.insertCSS(scaff);
     instanceManager.register(id, app, repo);
-    // wv.openDevTools();
+    console.log("DEV MODE: " + app.dev);
+    if (app.dev) e.openDevTools();
   });
 
 }

@@ -1,9 +1,10 @@
 'use strict';
 
 let ver = api.meta.get('version');
-alert(ver);
+console.log(`version: ${ver}`);
 
-let instance_data = api.instance.get();
+let instance = api.instance.get();
+console.log(instance);
 
 // retreive some data from BOA
 let json = api.boa.run('my-boa-script.boa');

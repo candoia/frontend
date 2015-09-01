@@ -3,12 +3,14 @@
     {
       "name": "impactful-commits",
       "path": "apps/impactful-commits",
-      "entry": "main.html"
+      "entry": "main.html",
+      "dev": true
     },
     {
       "name": "impactful-commits",
       "path": "apps/impactful-commits",
-      "entry": "main.html"
+      "entry": "main.html",
+      "dev": false
     }
   ],
   "repositories": [

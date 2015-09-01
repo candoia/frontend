@@ -18,9 +18,13 @@ let Public = {
   }
 }
 
-ipc.on('meta-get-package-contents', function(event, appName) {
+ipc.on('meta-get-package', function(event) {
   console.log('GET PACKAGE CNTS OF ' + event.sender.getId());
-  event.returnValue = Public.getPackageContents(appName);
+  let id = event.sender.getId()
+  let instance = im.get(id);
+  let cnts = Public.getPackageContents(instance.app.name);
+  console.log(JSON.stringify(cnts, null, '\t'));
+  event.returnValue = cnts;
 });
 
 module.exports = Public;

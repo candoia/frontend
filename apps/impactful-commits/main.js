@@ -1,10 +1,9 @@
 'use strict';
 
-function() {
+let ver = api.meta.get('version');
+alert(ver);
 
-let packageContents = api.meta.getPackage('impactful-commits');
-// console.log(JSON.stringify(packageContents, null, '\t'));
-console.log("MY ID IS " + api.instance.get());
+let instance_data = api.instance.get();
 
 // retreive some data from BOA
 let json = api.boa.run('my-boa-script.boa');
@@ -52,5 +51,3 @@ for (let i in projectIds) {
   let ctx = canvas.getContext('2d');
   new Chart(ctx).Bar(chartData);
 }
-
-}();

@@ -2,10 +2,10 @@
 
 let fs = require('fs');
 let bootstrap = require('./src/js/bootstrap');
-let instanceManager = require('../modules/instance/instance-backend');
 let remote = require('remote');
-let ipc = require('ipc');
+let ipc = remote.require('ipc');
 let Menu = remote.require('menu');
+let instanceManager = remote.require('../modules/instance/instance-backend');
 let MenuItem = remote.require('menu-item');
 let appMenu = new Menu();
 
@@ -53,19 +53,12 @@ function createAppInstance(app) {
   let e = wv[0];
   wv.on('load-commit', function(r) {
     let id = e.getId();
-    console.log("CREATED " + id);
     e.insertCSS(scaff);
     instanceManager.register(id, app, repo);
-    e.addEventListener('ipc-message', function(c) {
-      console.log("MESSAGE FROM WV: " + c);
-    });
-    // console.log(JSON.stringify(instanceManager.get(id)));
     // wv.openDevTools();
   });
 
 }
-
-
 
 
 

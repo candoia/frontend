@@ -10,6 +10,7 @@
 
 const cp = require('child_process');
 const ipc = require('ipc');
+const im = require('../instance/instance-backend');
 
 function parseToJSON(raw) {
   let json = new Object;
@@ -64,7 +65,7 @@ let Public = {
 }
 
 ipc.on('boa-run', function(event, arg) {
-  console.log(event.sender.getId());
+  let instance = im.get(event.sender.getId());
   Public.run(arg).then(function(json) {
     event.returnValue = json;
   });

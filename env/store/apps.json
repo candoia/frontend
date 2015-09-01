@@ -7,52 +7,16 @@
       "dev": true
     },
     {
-      "name": "impactful-commits",
-      "path": "apps/impactful-commits",
+      "name": "Number of Attributes",
+      "path": "apps/number-of-attributes",
       "entry": "main.html",
-      "dev": false
+      "dev": true
     }
   ],
   "repositories": [
     {
-      "name": "tomcat",
-      "local": ""
-    },
-    {
-      "name": "hadoop",
-      "local": ""
-    },
-    {
-      "name": "jUnit",
-      "local": ""
-    },
-    {
-      "name": "SLF4j",
-      "local": ""
-    },
-    {
-      "name": "bootstrap",
-      "local": ""
-    },
-    {
-      "name": "node",
-      "local": ""
-    },
-    {
-      "name": "grunt",
-      "local": ""
-    },
-    {
-      "name": "jquery",
-      "local": ""
-    },
-    {
-      "name": "PMD",
-      "local": ""
-    },
-    {
-      "name": "jEdit",
-      "local": ""
+      "name": "@paninij",
+      "local": "C:/Users/ddmills/Projects/at-paninij"
     }
   ]
 }

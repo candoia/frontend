@@ -10,16 +10,18 @@
 
 const cp = require('child_process');
 const ipc = require('ipc');
+const fs = require('fs');
 const im = require('../instance/instance-backend');
 
 function parseToJSON(raw) {
   let json = new Object;
   let parsed = [];
   let lines = raw.split('\n');
-  let delims = /\[|\]|\t|\s+|\r/;
+  // let delims = /\[|\]|\t|\s+|\r/;
+  let delims = /\,/;
 
   for (let line of lines) {
-    line = line.replace(/\ = /g, ' ');
+    line = line.replace(/\ = /g, ',');
     let matches = line.split(delims);
     // var exists = (n) => !!n; not implemented in io.js currently
 
@@ -50,12 +52,13 @@ function parseToJSON(raw) {
 }
 
 let Public = {
-  'run' : function run(uri) {
+  'run' : function run(repo, prog) {
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
-      cp.exec(`java -jar resources/boa/boa-runner.jar -old`,
-        function(error, stdout, stderr) {
-          let json = parseToJSON(stdout);
+      let cmd = `java -jar resources/boa/boa-compiler.jar -p ${repo} -i ${prog}`;
+      console.log(cmd);
+      cp.exec(cmd, function(error, stdout, stderr) {
+          let json = parseToJSON(fs.readFileSync(`output.txt`, {encoding: 'utf8'}));
           resolve(json);
         }
       );
@@ -64,9 +67,12 @@ let Public = {
   }
 }
 
-ipc.on('boa-run', function(event, arg) {
+ipc.on('boa-run', function(event, url) {
   let instance = im.get(event.sender.getId());
-  Public.run(arg).then(function(json) {
+  let repo = instance.repos.local;
+  let prog = instance.app.path + '/' + url;
+
+  Public.run(repo, prog).then(function(json) {
     event.returnValue = json;
   });
 });

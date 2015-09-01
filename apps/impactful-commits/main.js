@@ -7,7 +7,9 @@ let instance = api.instance.get();
 console.log(instance);
 
 // retreive some data from BOA
-let json = api.boa.run('my-boa-script.boa');
+let json = api.boa.run('impactful-commits.boa');
+
+console.log(json);
 
 // manipulate the output
 json = json['NOA'];

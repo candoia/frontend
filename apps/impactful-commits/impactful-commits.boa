@@ -3,14 +3,14 @@ p: Project = input;
 out : output collection[string][string]of int;
 visit(p, visitor {
     before cr: CodeRepository -> {
-        if (cr.kind != RepositoryKind.GIT) 
+        if (cr.kind != RepositoryKind.GIT)
             stop;
-    } 
+    }
     
     before rev: Revision -> {
      foreach (i: int; def(rev.files[i])) {
         out[rev.files[i].name][rev.author.username] << len(rev.files);
         }
     }
-    
+
 });

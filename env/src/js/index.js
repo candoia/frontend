@@ -11,6 +11,8 @@ let appMenu = new Menu();
 
 let repos = bootstrap.appData.repositories;
 
+console.log(repos);
+
 for (let i = 0; i < repos.length; i++) {
   let item = $(`<li class="repo-shortcut" data-repo="${i}">`);
   let tmpl = `
@@ -46,24 +48,15 @@ function createAppInstance(app) {
   let src = '../' + app.path + '/' + app.entry;
   let wv = $(`<webview class="app-container pane-body" src="${src}" preload="../modules/preload.js"></webview>`);
   let content = ACTIVE_PANE.find('.pane-body-container');
-  content.html('');
-  content.append(wv);
+  let header = ACTIVE_PANE.find('.pane-title');
+  header.html(app.name);
+  content.html(wv);
   let e = wv[0];
   wv.on('load-commit', function(r) {
     let id = e.getId();
     e.insertCSS(scaff);
     instanceManager.register(id, app, repo);
-    console.log("DEV MODE: " + app.dev);
     if (app.dev) e.openDevTools();
   });
 
 }
-
-
-
-// webviews.forEach(function(view) {
-//   view.addEventListener('dom-ready', function() {
-//     view.insertCSS(scaff);
-//     // webview.openDevTools();
-//   });
-// });

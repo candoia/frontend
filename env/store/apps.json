@@ -1,7 +1,7 @@
 {
   "apps": [
     {
-      "name": "impactful-commits",
+      "name": "Impactful Commits",
       "path": "apps/impactful-commits",
       "entry": "main.html",
       "dev": true
@@ -9,6 +9,24 @@
     {
       "name": "Number of Attributes",
       "path": "apps/number-of-attributes",
+      "entry": "main.html",
+      "dev": true
+    },
+    {
+      "name": "Top Performers",
+      "path": "apps/top-performers",
+      "entry": "main.html",
+      "dev": true
+    },
+    {
+      "name": "Flawed Logic Detector",
+      "path": "apps/flawed-logic-detector",
+      "entry": "main.html",
+      "dev": true
+    },
+    {
+      "name": "NOA Over Revisions",
+      "path": "apps/noa-over-revisions",
       "entry": "main.html",
       "dev": true
     }

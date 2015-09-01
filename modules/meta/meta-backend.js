@@ -8,12 +8,10 @@
 const fs = require('fs');
 const ipc = require('ipc');
 const im = require('../instance/instance-backend');
-const appRoot = './apps/';
-
 
 let Public = {
-  'getPackageContents': function getPackageContents(appName) {
-    let contents = JSON.parse(fs.readFileSync(`${appRoot}/${appName}/package.json`, {encoding: 'utf8'}));
+  'getPackageContents': function getPackageContents(path) {
+    let contents = JSON.parse(fs.readFileSync(`${path}/package.json`, {encoding: 'utf8'}));
     return contents;
   }
 }
@@ -22,7 +20,7 @@ ipc.on('meta-get-package', function(event) {
   console.log('GET PACKAGE CNTS OF ' + event.sender.getId());
   let id = event.sender.getId()
   let instance = im.get(id);
-  let cnts = Public.getPackageContents(instance.app.name);
+  let cnts = Public.getPackageContents(instance.app.path);
   console.log(JSON.stringify(cnts, null, '\t'));
   event.returnValue = cnts;
 });

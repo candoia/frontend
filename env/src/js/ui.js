@@ -1,5 +1,6 @@
 'use strict';
 
+
 let toggle = $('#side-panel-toggle');
 let panel = $('#side-panel');
 let open = true;

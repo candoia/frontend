@@ -11,7 +11,7 @@ let appMenu = new Menu();
 
 let repos = bootstrap.appData.repositories;
 
-for(let i = 0; i < repos.length; i++) {
+for (let i = 0; i < repos.length; i++) {
   let item = $(`<li class="repo-shortcut" data-repo="${i}">`);
   let tmpl = `
     <i class='fa fa-fw fa-book tree-icon'></i>
@@ -20,7 +20,7 @@ for(let i = 0; i < repos.length; i++) {
   $('#repo-tree').append(item);
 }
 
-for(let app of bootstrap.appData.apps) {
+for (let app of bootstrap.appData.apps) {
   appMenu.append(new MenuItem({
     'type': 'normal',
     'label': app.name,
@@ -58,8 +58,6 @@ function createAppInstance(app) {
   });
 
 }
-
-
 
 
 

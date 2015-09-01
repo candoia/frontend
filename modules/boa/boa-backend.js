@@ -57,11 +57,15 @@ let Public = {
     let promise = new Promise(function(resolve, reject) {
       let cmd = `java -jar resources/boa/boa-compiler.jar -p ${repo} -i ${prog}`;
       console.log(cmd);
-      cp.exec(cmd, function(error, stdout, stderr) {
+      let child = cp.exec(cmd, function(error, stdout, stderr) {
+        console.log("[BOA COMPILER ERROR] " + stderr);
+      });
+      child.on('exit', function(code, signal) {
+        setTimeout(function() {
           let json = parseToJSON(fs.readFileSync(`output.txt`, {encoding: 'utf8'}));
           resolve(json);
-        }
-      );
+        }, 1000);
+      });
     });
     return promise;
   }

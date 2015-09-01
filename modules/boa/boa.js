@@ -1,8 +1,8 @@
 'use strict';
 
 let Public = {
-  'run': function run(url) {
-    return api.ipc.sendSync('boa-run', url);
+  'run': function run(url, fmt) {
+    return api.ipc.sendSync('boa-run', url, fmt);
   }
 };
 

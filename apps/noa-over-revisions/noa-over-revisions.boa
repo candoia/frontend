@@ -14,9 +14,9 @@ visit(p, visitor {
 	#	stop;
 	#}
 	before rev : Revision -> {
-	    rev_date = formattime("%c", rev.commit_date);    
+	    rev_date = formattime("%m/%d/%y", rev.commit_date);
 	}
-	
+
 	before node: Declaration ->
 		if (node.kind == TypeKind.CLASS)
 			NOA[rev_date][node.name] << len(node.fields);

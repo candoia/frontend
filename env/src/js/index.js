@@ -11,8 +11,6 @@ let appMenu = new Menu();
 
 let repos = bootstrap.appData.repositories;
 
-console.log(repos);
-
 for (let i = 0; i < repos.length; i++) {
   let item = $(`<li class="repo-shortcut" data-repo="${i}">`);
   let tmpl = `

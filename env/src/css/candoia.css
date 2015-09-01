@@ -1,0 +1,159 @@
+.main-container {
+  display : block;
+  /*background-color : #ebebeb;*/
+  /*background-color : #EFEFEF;*/
+  background-color : #F9F9F9;
+  color : #474747;
+  overflow : hidden;
+  height : 100%;
+}
+
+.axis {
+  display : -webkit-flex;
+  position : relative;
+}
+
+.axis-horizontal {
+  height : 100%;
+}
+
+.axis-vertical {
+  -webkit-flex : 1;
+  -webkit-flex-flow : column;
+}
+
+.panel-container.left,
+.panel-container.right {
+  display : -webkit-flex;
+  -webkit-flex-direction : row;
+  -webkit-align-items : stretch;
+  height : 100%;
+}
+
+.panel {
+  display : block;
+}
+
+.panel-container.left .panel,
+.panel-container.right .panel {
+  height : 100%;
+}
+
+
+.pane-container {
+  position : relative;
+  display : -webkit-flex;
+  -webkit-flex : 1;
+}
+
+.pane-container.master {
+  overflow : hidden;
+  border-bottom : 1px solid #EDEDED;
+  border-right : 1px solid #EDEDED;
+}
+
+.pane-container .pane-axis {
+  display : -webkit-flex;
+  -webkit-flex : 1;
+}
+.pane-container .pane-axis.horizontal {
+  -webkit-flex-direction : row;
+}
+.pane-container .pane-axis.vertical {
+  -webkit-flex-direction : column;
+}
+.pane-container .pane {
+  position : relative;
+
+  display : -webkit-flex;
+  -webkit-flex: 1;
+  -webkit-flex-direction: column;
+
+  background-color : #fff;
+  border-top : 1px solid #EDEDED;
+  border-left : 1px solid #EDEDED;
+}
+
+.app-container {
+  position : relative;
+  width    : 100%;
+  height   : 100%;
+  overflow : auto;
+}
+
+.tree {
+  list-style : none;
+  margin     : 0;
+  padding    : 0;
+}
+
+.tree li {
+  display : block;
+  padding : 4px 14px;
+}
+
+.tree .tree-icon {
+  color: #505050;
+  margin-right : 5px;
+}
+
+.tree .tree-text {
+
+}
+
+.pane-header {
+  margin  : 0;
+  padding : 8px;
+  overflow-y : hidden;
+  font-weight : 500;
+  font-size : 15px;
+  border-bottom : 1px solid #EDEDED;
+}
+
+.pane-content {
+  position : relative;
+  display : -webkit-flex;
+  min-height : 0;
+  min-width : 0;
+  flex-grow : 1;
+  flex-shrink : 1;
+}
+
+.pane-body-container {
+  display : -webkit-flex;
+  position : absolute;
+  top : 0;
+  right : 0;
+  bottom : 0;
+  left : 0;
+  -webkit-flex : 1;
+  overflow : auto;
+}
+
+.pane-body {
+  width : 100%;
+  min-height : 100%;
+}
+
+.footer > p {
+  font-size : 14px;
+  margin : 8px;
+  color : #666;
+}
+
+.close {
+  float  : right;
+  color  : #ccc;
+  cursor : pointer;
+}
+.close:hover {
+  color : #E89595;
+}
+
+#side-panel {
+  transition: width .25s;
+}
+
+.pane.active {
+  border: 1px solid pink;
+}

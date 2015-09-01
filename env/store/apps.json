@@ -1,0 +1,22 @@
+{
+  "apps": [
+    {
+      "name": "impactful-commits",
+      "path": "apps/impactful-commits",
+      "entry": "main.html",
+      "dev": true
+    },
+    {
+      "name": "Number of Attributes",
+      "path": "apps/number-of-attributes",
+      "entry": "main.html",
+      "dev": true
+    }
+  ],
+  "repositories": [
+    {
+      "name": "@paninij",
+      "local": "C:/Users/ddmills/Projects/at-paninij"
+    }
+  ]
+}

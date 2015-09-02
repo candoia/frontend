@@ -25,6 +25,8 @@
     "electron-prebuilt": "^0.31.0"
   },
   "dependencies": {
-    "nedb": "^1.1.3"
+    "adm-zip": "^0.4.7",
+    "nedb": "^1.1.3",
+    "request": "^2.61.0"
   }
 }

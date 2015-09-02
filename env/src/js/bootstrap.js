@@ -41,31 +41,31 @@ let appDb = new Datastore({
 appDb.insert([
   {
     "name": "Impactful Commits",
-    "path": "apps/impactful-commits",
+    "path": ".apps/impactful-commits",
     "entry": "main.html",
     "dev": false
   },
   {
     "name": "Number of Attributes",
-    "path": "apps/number-of-attributes",
+    "path": ".apps/number-of-attributes",
     "entry": "main.html",
     "dev": false
   },
   {
     "name": "Top Performers",
-    "path": "apps/top-performers",
+    "path": ".apps/top-performers",
     "entry": "main.html",
     "dev": false
   },
   {
     "name": "Flawed Logic Detector",
-    "path": "apps/flawed-logic-detector",
+    "path": ".apps/flawed-logic-detector",
     "entry": "main.html",
     "dev": false
   },
   {
     "name": "NOA Over Revisions",
-    "path": "apps/noa-over-revisions",
+    "path": ".apps/noa-over-revisions",
     "entry": "main.html",
     "dev": false
   }

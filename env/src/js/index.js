@@ -6,6 +6,7 @@ let remote = require('remote');
 let ipc = remote.require('ipc');
 let Menu = remote.require('menu');
 let instanceManager = remote.require('../modules/instance/instance-backend');
+let appManager = require('./src/js/app-manager.js');
 let db = remote.require('./src/js/bootstrap.js');
 let MenuItem = remote.require('menu-item');
 let appMenu = new Menu();
@@ -35,25 +36,32 @@ function loadRepos() {
 
 loadRepos();
 
-db.app.find({}, function(err, docs) {
-  for (let app of docs) {
+function loadApps() {
+  console.log('loading apps');
+  appMenu = new Menu();
+  db.app.find({}, function(err, docs) {
+    console.log(docs.length);
+    for (let app of docs) {
+      appMenu.append(new MenuItem({
+        'type': 'normal',
+        'label': app.name,
+        'click': function(r) {
+          createAppInstance(app);
+        }
+      }));
+    }
+    appMenu.append(new MenuItem({ type: 'separator' }));
     appMenu.append(new MenuItem({
       'type': 'normal',
-      'label': app.name,
+      'label': 'remove repository',
       'click': function(r) {
-        createAppInstance(app);
+        removeRepo();
       }
     }));
-  }
-  appMenu.append(new MenuItem({ type: 'separator' }));
-  appMenu.append(new MenuItem({
-    'type': 'normal',
-    'label': 'remove repository',
-    'click': function(r) {
-      removeRepo();
-    }
-  }));
-});
+  });
+}
+
+loadApps();
 
 let curRepo = null;
 

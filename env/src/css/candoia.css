@@ -225,3 +225,15 @@
 .pane.active {
   border: 1px solid pink;
 }
+
+.panel.bottom p {
+  cursor: pointer;
+}
+
+.panel.bottom p:hover {
+  text-decoration: underline;
+}
+
+#insert-repo {
+  cursor: pointer;
+}

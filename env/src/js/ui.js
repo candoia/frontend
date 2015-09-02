@@ -21,7 +21,7 @@ $(document).on('click', '.pane-header', function() {
 });
 
 
-function makeModal(options) {
+function makeRepoModal(options) {
   return  `
   <div class='modal'>
     <div class='modal-header'><i class='fa fa-fw fa-book'></i> Add Repository</div>
@@ -33,10 +33,16 @@ function makeModal(options) {
         <input id='input-repo-name' type='text'>
       </div>
       <label class='modal-label' for='input-repo-location'>
-        Absolute Path
+        Local Path
       </label>
       <div class='modal-input'>
         <input id='input-repo-location' type='text'>
+      </div>
+      <label class='modal-label' for='input-repo-remote'>
+        Remote github URL
+      </label>
+      <div class='modal-input'>
+        <input id='input-repo-remote' type='text'>
       </div>
       <div class='modal-actions'>
         <button id='confirm-repo-add' class='modal-confirm' type='button'>confirm</button>
@@ -46,10 +52,29 @@ function makeModal(options) {
   </div>`
 }
 
+function makeAppModal(options) {
+  return  `
+  <div class='modal'>
+    <div class='modal-header'><i class='fa fa-fw fa-book'></i> Install Application</div>
+    <div class='modal-content'>
+      <label class='modal-label' for='input-app-name'>
+        Registered Application Name
+      </label>
+      <div class='modal-input'>
+        <input id='input-app-name' type='text'>
+      </div>
+      <div class='modal-actions'>
+        <button id='confirm-app-add' class='modal-confirm' type='button'>install</button>
+        <button id='cancel-app-add' class='modal-cancel' type='button'>cancel</button>
+      </div>
+    </div>
+  </div>`
+}
+
 let curtain = $('.curtain');
 
 $(document).on('click', '#insert-repo', function() {
-  let modal = $(makeModal());
+  let modal = $(makeRepoModal());
   modal.hide();
   curtain.html(modal);
   curtain.fadeIn(250, function() {
@@ -57,15 +82,44 @@ $(document).on('click', '#insert-repo', function() {
   });
 });
 
+$(document).on('click', '#install-app', function() {
+  let modal = $(makeAppModal());
+  modal.hide();
+  curtain.html(modal);
+  curtain.fadeIn(250, function() {
+    modal.slideDown();
+  });
+});
+
+$(document).on('click', '#confirm-app-add', function() {
+  let name = $('#input-app-name').val();
+  $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
+  $('.modal-content').css('text-align', 'center');
+  appManager.install(name).then(function(app) {
+
+    appMenu.append(new MenuItem({
+      'type': 'normal',
+      'label': app.name,
+      'click': function(r) {
+        createAppInstance(app);
+      }
+    }));
+
+    curtain.fadeOut(500);
+    curtain.html('');
+  });
+});
+
 $(document).on('click', '#confirm-repo-add', function() {
   let name = $('#input-repo-name').val();
-  let location = $('#input-repo-location').val();
+  let local = $('#input-repo-location').val();
+  let remote = $('#input-repo-remote').val();
+
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
   $('.modal-content').css('text-align', 'center');
 
   db.repository.insert({
-    'name': name,
-    'local': location
+    name, local, remote
   }, function(err, newDoc) {
     if (err) {
       $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel'>cancel</button>`);
@@ -77,7 +131,7 @@ $(document).on('click', '#confirm-repo-add', function() {
   });
 });
 
-$(document).on('click', '#cancel-repo-add', function() {
+$(document).on('click', '.modal-cancel', function() {
   curtain.fadeOut(500);
   curtain.html('');
 });

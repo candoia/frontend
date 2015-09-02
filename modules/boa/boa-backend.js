@@ -66,13 +66,11 @@ let Public = {
     let promise = new Promise(function(resolve, reject) {
       let cmd = `java -jar resources/boa/boa-compiler.jar -p ${repo} -i ${prog}`;
       let child = cp.exec(cmd, function(error, stdout, stderr) {
-        console.log("[BOA COMPILER ERROR] " + stderr);
+        if (stderr) console.log("[BOA COMPILER ERROR] " + stderr);
       });
       child.on('exit', function(code, signal) {
-        setTimeout(function() {
-          let res = parseToJSON(fs.readFileSync(`output.txt`, {encoding: 'utf8'}), fmt);
-          resolve(res);
-        }, 1000);
+        let res = parseToJSON(fs.readFileSync(`output.txt`, {encoding: 'utf8'}), fmt);
+        resolve(res);
       });
     });
     return promise;

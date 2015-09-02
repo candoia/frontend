@@ -6,13 +6,6 @@ NOA: output sum[string][string] of int;
 rev_date := "";
 
 visit(p, visitor {
-	# only look at the latest snapshot
-	#before n: CodeRepository -> {
-	#	snapshot := getsnapshot(n);
-	#	foreach (i: int; def(snapshot[i]))
-	#		visit(snapshot[i]);
-	#	stop;
-	#}
 	before rev : Revision -> {
 	    rev_date = formattime("%y,%b", rev.commit_date);
 	}

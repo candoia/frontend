@@ -6,7 +6,8 @@ Thumbs.db
 .DS_Store
 *.log
 notes.json
-boa-compiler.jar
 output.txt
 /.db/
 .db
+tmp.zip
+myTempFile.txt

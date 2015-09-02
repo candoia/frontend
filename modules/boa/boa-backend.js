@@ -13,7 +13,7 @@ const ipc = require('ipc');
 const fs = require('fs');
 const im = require('../instance/instance-backend');
 
-function parseToJSON(raw) {
+function parseToJSON(raw, fmt) {
   let json = new Object;
   let parsed = [];
   let lines = raw.split('\n');
@@ -36,6 +36,10 @@ function parseToJSON(raw) {
     }
   }
 
+  if (fmt == 'lta') {
+    return parsed;
+  }
+
   for (let chunk of parsed) {
     let pntr = json;
     let val = chunk.pop();
@@ -52,18 +56,17 @@ function parseToJSON(raw) {
 }
 
 let Public = {
-  'run' : function run(repo, prog) {
+  'run' : function run(repo, prog, fmt) {
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
       let cmd = `java -jar resources/boa/boa-compiler.jar -p ${repo} -i ${prog}`;
-      console.log(cmd);
       let child = cp.exec(cmd, function(error, stdout, stderr) {
         console.log("[BOA COMPILER ERROR] " + stderr);
       });
       child.on('exit', function(code, signal) {
         setTimeout(function() {
-          let json = parseToJSON(fs.readFileSync(`output.txt`, {encoding: 'utf8'}));
-          resolve(json);
+          let res = parseToJSON(fs.readFileSync(`output.txt`, {encoding: 'utf8'}), fmt);
+          resolve(res);
         }, 1000);
       });
     });
@@ -71,12 +74,13 @@ let Public = {
   }
 }
 
-ipc.on('boa-run', function(event, url) {
+ipc.on('boa-run', function(event, url, fmt) {
+  fmt = fmt || 'json';
   let instance = im.get(event.sender.getId());
   let repo = instance.repos.local;
   let prog = instance.app.path + '/' + url;
 
-  Public.run(repo, prog).then(function(json) {
+  Public.run(repo, prog, fmt).then(function(json) {
     event.returnValue = json;
   });
 });

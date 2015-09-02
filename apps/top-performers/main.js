@@ -1,9 +1,9 @@
 'use strict';
-$(window).ready(function() {
+$(window).load(function() {
   let scm = new ColorScheme;
   scm.from_hue(21).scheme('triade').distance(0.1).add_complement(false).variation('pastel').web_safe(true);
   let colors = scm.colors();
-
+  let instance = api.instance.get();
 
   let json = api.boa.run('top-performers.boa');
   $('#loading').hide();
@@ -35,6 +35,7 @@ $(window).ready(function() {
 
   display(1);
 
+  $('#app-title').html(`Number of Commits per Developer on ${instance.repos.name}`);
 
   function display(num) {
     let limitedData = _.first(chartData, num);
@@ -42,7 +43,7 @@ $(window).ready(function() {
     $('#table-output-body').html('');
     _.each(limitedData, function(element, index, list) {
       let num = index + 1;
-      $('#table-output-body').append(`<tr><td> ${num} </td> <td> ${element.label} </td> <td style='text-align:center;'> ${element.value} </td> </tr>`)
+      $('#table-output-body').append(`<tr><td> ${num} </td> <td> ${element.label} </td> <td> ${element.value} </td> </tr>`)
     });
 
     let outputChart = new Chart(canvas).Pie(limitedData, {responsive: true});

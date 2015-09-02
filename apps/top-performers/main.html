@@ -1,19 +1,28 @@
 <html>
   <head>
+    <link rel='stylesheet' type='text/css' href='../../env/src/css/font-awesome.min.css'>
     <link rel='stylesheet' type='text/css' href='./app.css'>
   </head>
   <body>
-    <div id='loading' class='loading'>
-      <h1>Loading Data<h1>
-    </div>
+    <div class='things'>
+      <div id='loading'>
+        <i class='fa fa-cog fa-spin'></i>
+        <span id='status'>Running Boa Query</span>
+      </div>
 
-    <div id='content' hidden="hidden">
-      <h2> Top contributors by number of commits </h2>
-      <div class='output-container'>
-        <div id='output' class='side'>
+      <div id='content' hidden="hidden">
+        <h3 id='app-title'> Number of Commits per Developer </h3>
+        <div id='output'>
           <canvas id="chart-output"> </canvas>
         </div>
-        <div id='table-output' class='side'>
+        <div id='controls'>
+          <form>
+            <label for="numToShow">Number of contributors shown</label>
+            <select id='numToShow'>
+            </select>
+          </form>
+        </div>
+        <div id='table-output'>
           <table style="">
             <thead>
               <tr>
@@ -27,13 +36,6 @@
             </tbody>
           </table>
         </div>
-      </div>
-      <div id='controls'>
-        <form>
-          <label for="numToShow">Number of contributors shown</label>
-          <select id='numToShow'>
-          </select>
-        </form>
       </div>
     </div>
     <script src="../shared/jquery.min.js"></script>

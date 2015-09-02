@@ -46,7 +46,12 @@ function parseToJSON(raw, fmt) {
     for (let i = 0; i < chunk.length; i++) {
       let key = chunk[i];
       if (!(key in pntr)) {
-        pntr[key] = i == chunk.length - 1 ? val : new Object;
+        pntr[key] = i == chunk.length - 1 ? [val] : new Object;
+      } else {
+        if (i == chunk.length - 1) {
+          pntr[key].push(val);
+          console.log('[BOA RESULT] Found duplicate path to different value: ' + JSON.stringify(pntr[key]));
+        }
       }
       pntr = pntr[key];
     }

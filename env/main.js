@@ -9,6 +9,7 @@
 
 const app = require('app');
 const BrowserWindow = require('browser-window');
+const db = require('./src/js/bootstrap.js');
 
 // these need to be included in order to be "started"
 // TODO fix this?

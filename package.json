@@ -23,5 +23,8 @@
   "homepage": "https://github.com/ddmills/candaia-env#readme",
   "devDependencies": {
     "electron-prebuilt": "^0.31.0"
+  },
+  "dependencies": {
+    "nedb": "^1.1.3"
   }
 }

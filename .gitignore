@@ -7,5 +7,6 @@ Thumbs.db
 *.log
 notes.json
 boa-compiler.jar
-/env/store/apps.json
 output.txt
+/.db/
+.db

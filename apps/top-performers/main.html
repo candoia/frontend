@@ -1,5 +1,45 @@
-<div id='content'></div>
-<script src="../shared/jquery.min.js"></script>
-<script src="../shared/chart.min.js"></script>
-<script src="../shared/underscore.min.js"></script>
-<script src="./main.js"></script>
+<html>
+  <head>
+    <link rel='stylesheet' type='text/css' href='./app.css'>
+  </head>
+  <body>
+    <div id='loading' class='loading'>
+      <h1>Loading Data<h1>
+    </div>
+
+    <div id='content' hidden="hidden">
+      <h2> Top contributors by number of commits </h2>
+      <div class='output-container'>
+        <div id='output' class='side'>
+          <canvas id="chart-output"> </canvas>
+        </div>
+        <div id='table-output' class='side'>
+          <table style="">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Username</th>
+                <th># of commits</th>
+              </tr>
+            </thead>
+            <tbody id='table-output-body'>
+
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id='controls'>
+        <form>
+          <label for="numToShow">Number of contributors shown</label>
+          <select id='numToShow'>
+          </select>
+        </form>
+      </div>
+    </div>
+    <script src="../shared/jquery.min.js"></script>
+    <script src="../shared/chart.min.js"></script>
+    <script src="../shared/underscore.min.js"></script>
+    <script src="./lib/color-scheme.min.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>

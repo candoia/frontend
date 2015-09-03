@@ -55,7 +55,7 @@ function makeRepoModal(options) {
 function makeAppModal(options) {
   return  `
   <div class='modal'>
-    <div class='modal-header'><i class='fa fa-fw fa-book'></i> Install Application</div>
+    <div class='modal-header'><i class='fa fa-fw fa-rocket'></i> Install Application</div>
     <div class='modal-content'>
       <label class='modal-label' for='input-app-name'>
         Registered Application Name

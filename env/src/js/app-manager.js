@@ -40,7 +40,8 @@ let Public = {
             let z = new zip('tmp.zip');
             var e = z.getEntries();
             let folder = e[0].entryName;
-            let target = '.apps/' + appName
+            console.log(folder);
+            let target = '.apps/' + appName;
             z.extractEntryTo(folder, target, false, true);
             let cnt = meta.getPackageContents(target + '/');
             console.log(cnt);

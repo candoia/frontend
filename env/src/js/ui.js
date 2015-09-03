@@ -97,7 +97,7 @@ $(document).on('click', '#confirm-app-add', function() {
   $('.modal-content').css('text-align', 'center');
   appManager.install(name).then(function(app) {
 
-    appMenu.append(new MenuItem({
+    appMenu.insert(0, new MenuItem({
       'type': 'normal',
       'label': app.name,
       'click': function(r) {

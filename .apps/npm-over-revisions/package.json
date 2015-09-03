@@ -1,0 +1,7 @@
+{
+  "name": "npm-over-revisions",
+  "version": "0.0.1",
+  "author": "ddmills",
+  "description": "Number of Attributes vs Time",
+  "main": "main.html",
+}

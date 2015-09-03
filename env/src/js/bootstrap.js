@@ -64,6 +64,12 @@ appDb.insert([
     "dev": false
   },
   {
+    "name": "NPM Over Revisions",
+    "path": ".apps/npm-over-revisions",
+    "entry": "main.html",
+    "dev": false
+  },
+  {
     "name": "NOA Over Revisions",
     "path": ".apps/noa-over-revisions",
     "entry": "main.html",

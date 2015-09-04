@@ -74,7 +74,13 @@ appDb.insert([
     "path": ".apps/noa-over-revisions",
     "entry": "main.html",
     "dev": false
-  }
+  },
+  {
+    "name": "Hot Files",
+    "path": ".apps/hotfiles",
+    "entry": "main.html",
+    "dev": false
+  },  
 ], function(err, newDoc) {
   if (err) console.log(`[ERROR] An error was raised while trying to insert app
     data into the app database.\n${err}`);

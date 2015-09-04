@@ -1,0 +1,8 @@
+# Which file went through most revisions?
+p: Project = input;
+out : output top(10) of string weight int;
+visit(p, visitor {    
+    before chfl: ChangedFile -> {
+        out << chfl.name weight 1;    
+    }
+});

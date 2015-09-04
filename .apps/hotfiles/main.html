@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <link rel='stylesheet' type='text/css' href='../../env/src/css/font-awesome.min.css'>
+    <link rel='stylesheet' type='text/css' href='./app.css'>
+    <style>
+      table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+      }
+      th, td {
+          padding: 5px;
+          text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <div class='things'>
+      <div id='loading'>
+        <i class='fa fa-cog fa-spin'></i>
+        <span id='status'>Running Boa Query</span>
+      </div>
+
+      <div style='text-align: left;' id='content'>
+      <div id='table-output'>
+          <table style="width:85%">
+            <tbody id='table-output-body'>
+              <tr>
+                <th>#</th>
+                <th>File</th>
+                <th>Revisions</th>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+    </div>
+    <script src="../../shared/jquery.min.js"></script>
+    <script src="../../shared/chart.min.js"></script>
+    <script src="../../shared/underscore.min.js"></script>
+    <script src="./lib/color-scheme.min.js"></script>
+    <script src="./main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,7 @@
+{
+  "name": "Hot files",
+  "version": "0.0.1",
+  "author": "Ganesha Upadhyaya",
+  "description": "Shows top 10 hot files based on number of revisions",
+  "main": "main.html"
+}

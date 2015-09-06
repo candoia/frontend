@@ -1,0 +1,11 @@
+# get project stats
+p: Project = input;
+
+DEVs : output sum[string] of int;
+
+visit(p, visitor {
+    before rev : Revision -> {
+        if (committer != "")
+            DEVs[rev.committer.username] << 1;
+    }   
+});

@@ -1,0 +1,32 @@
+
+.loading > h1 {
+  padding-top:10px;
+  width:100%;
+  text-align: center;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  text-align : left;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+}
+
+th, td {
+  padding: 4px;
+}
+
+
+.things {
+  width: 90%;
+  margin: 0 auto;
+  padding: 16px 0;
+}
+
+#output {
+  margin: 8px 0;
+}

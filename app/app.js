@@ -195,20 +195,28 @@ $(document).on('click', '#install-app', function() {
 
 $(document).on('click', '#confirm-app-add', function() {
   let name = $('#input-app-name').val();
-  $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
+  $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i> Retrieving app meta data');
   $('.modal-content').css('text-align', 'center');
-  appManager.install(name).then(function(app) {
+  appManager.info(name).then(function(info) {
+    let v = info[0].tag_name;
+    $('.modal-content').html(`<i class="fa fa-fw fa-cog fa-spin fa-lg"></i> Meta data retrieved. Downloading latest version: ${v}`);
+    appManager.install(name, v).then(function(app) {
 
-    appMenu.insert(0, new MenuItem({
-      'type': 'normal',
-      'label': app.name,
-      'click': function(r) {
-        createAppInstance(app);
-      }
-    }));
+      appMenu.insert(0, new MenuItem({
+        'type': 'normal',
+        'label': app.package.productName,
+        'click': function(r) {
+          createAppInstance(app);
+        }
+      }));
 
-    curtain.fadeOut(500);
-    curtain.html('');
+      curtain.fadeOut(500);
+      curtain.html('');
+    }).catch(function(error) {
+      $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Encountered error while trying to download latest app version: ${error} <br /><div class='modal-actions'><button id='cancel-app-add' class='modal-cancel' type='button'>cancel</button></div>`);
+    });
+  }).catch(function(error, o) {
+    $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Invalid application name. <br /> <div class='modal-actions'><button id='cancel-app-add' class='modal-cancel' type='button'>cancel</button></div>`);
   });
 });
 

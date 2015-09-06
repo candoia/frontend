@@ -1,7 +1,0 @@
-{
-  "name": "top-performers",
-  "version": "0.0.1",
-  "author": "Trey Erenberger",
-  "description": "Displays the number of commits per username as a pie chart.",
-  "main": "main.html"
-}

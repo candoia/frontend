@@ -1,7 +1,0 @@
-{
-  "name": "number-of-attributes",
-  "version": "0.0.1",
-  "author": "",
-  "description": "Computes Number of Attributes (NOA) for each project, per-type",
-  "main": "main.html"
-}

@@ -1,0 +1,104 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Candoia</title>
+
+  <link href="./css/candoia.css" rel="stylesheet" type="text/css">
+  <link href="./css/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="./css/scaffolding.css" rel="stylesheet" type="text/css">
+  <link href="./css/work-sans.css" rel="stylesheet" type="text/css">
+
+  <script src="vendor/candoia/env-config.js"></script>
+  <script src="vendor/candoia/context-menu.js"></script>
+  <script src="vendor/candoia/external-links.js"></script>
+
+  <script src="vendor/require.js"></script>
+  <script>
+    requirejs(['app'], function (app) {});
+  </script>
+</head>
+<body>
+  <div class='main-container'>
+    <div class='curtain'></div>
+    <div class='axis axis-horizontal'>
+        <div class='panel-container left'>
+          <div id='side-panel' class='panel left'>
+            <ul id='repo-tree'class='tree'></ul>
+          </div>
+        </div>
+        <div class='axis axis-vertical'>
+          <div class='panel-container top'>
+            <div class='panel top'></div>
+          </div>
+          <div class='pane-container master'>
+            <div class='pane-axis horizontal' style='flex-grow: 1'>
+              <div class='pane' style='flex-grow: 1'>
+                <div class='pane-header'>
+                  <span class='pane-title'></span>
+                  <i class='close fa fa-fw fa-close'></i>
+                </div>
+                <div class='pane-content'>
+                  <div class='pane-body-container'>
+                    <div class='pane-body'>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='pane-axis vertical' style='flex-grow: 1'>
+                <div class='pane' style='flex-grow: 1'>
+                  <div class='pane-header'>
+                    <span class='pane-title'></span>
+                    <i class='close fa fa-fw fa-close'></i>
+                  </div>
+                  <div class='pane-content'>
+                    <div class='pane-body-container'>
+                      <div class='pane-body'>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class='pane active' style='flex-grow: 1'>
+                  <div class='pane-header'>
+                    <span class='pane-title'></span>
+                    <i class='close fa fa-fw fa-close'></i>
+                  </div>
+                  <div class='pane-content'>
+                    <div class='pane-body-container'>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='panel-container bottom'>
+            <div class='panel bottom'>
+              <div class='footer'>
+                <p style='float: left' id='side-panel-toggle'>
+                  <i class='fa fa-fw fa-angle-double-left'></i>
+                </p>
+                <p style='float: left'>
+                   Help
+                  <i class='fa fa-fw fa-life-bouy'></i>
+                </p>
+                <p id='install-app' style='float: left;'>
+                   Install App
+                  <i class='fa fa-fw fa-rocket'></i>
+                </p>
+                <p style='float: right;'>
+                  <input type='text'></input>
+                  <i class='fa fa-fw fa-lg fa-search'></i>
+                </p>
+                <p style='float: right;'>
+                  There is an update avaliable!
+                  <i class='fa fa-fw fa-warning'></i>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='panel-container right'></div>
+      </div>
+  </div>
+</body>
+</html>

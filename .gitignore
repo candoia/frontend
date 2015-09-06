@@ -1,13 +1,8 @@
 node_modules
+bower_components
+*.log
+.DS_Store
+Thumbs.db
 /build/
 /releases/
 /tmp/
-Thumbs.db
-.DS_Store
-*.log
-notes.json
-output.txt
-/.db/
-.db
-tmp.zip
-myTempFile.txt

@@ -1,1 +1,1 @@
-{"name":"noa-over-revisions","entry":"main.html","dev":true,"_id":"XPgEtY4AhrnSl6TQ"}
+{"name":"noa-over-revisions","dev":false,"package":{"name":"noa-over-revisions","productName":"Number of Attributes over Revisions","version":"0.1.1","author":"Dalton Mills <dmills@iastate.edu>","description":"Show the number of attributes (state variables) for a type vs Time","main":"main.html","repository":{"type":"git","url":"https://github.com/candoia/noa-over-revisions"},"icon":{"type":"fa","name":"bar-chart"}},"_id":"OgxsheZRNKwItTpz"}

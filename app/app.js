@@ -43,7 +43,7 @@ function loadApps() {
     for (let app of docs) {
       appMenu.append(new MenuItem({
         'type': 'normal',
-        'label': app.name,
+        'label': app.package.productName,
         'click': function() { createAppInstance(app) }
       }));
     }
@@ -60,6 +60,7 @@ loadRepos();
 loadApps();
 
 let curRepo = null;
+let ACTIVE_PANE = $('.pane.active');
 
 $(document).on('contextmenu', '.repo-shortcut', function(e) {
   curRepo = $(this).data('repo');
@@ -80,11 +81,19 @@ let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf
 
 function createAppInstance(app) {
   let repo = repos[curRepo];
-  let src = `.apps/${app.name}/${app.entry}`;
+  let src = `.apps/${app.name}/${app.package.main}`;
   let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
+
   let content = ACTIVE_PANE.find('.pane-body-container');
   let header = ACTIVE_PANE.find('.pane-title');
-  header.html(app.name);
+
+  let fa = app.package.icon.name;
+  let pName = app.package.productName;
+
+  fa = fa ? 'fa-' + fa : 'fa-leaf';
+  var title = `<i class='fa fa-fw ${fa}'></i> ${pName}`;
+
+  header.html(title);
   content.html(wv);
   let e = wv[0];
   wv.on('load-commit', function(r) {
@@ -107,11 +116,9 @@ $('#side-panel-toggle').on('click', function() {
   toggle.html(`<i class="fa fa-fw fa-angle-double-${dir}"></i>`);
 });
 
-let ACTIVE_PANE = $('.pane.active');
-
-$(document).on('click', '.pane-header', function() {
+$(document).on('click', '.pane', function() {
   ACTIVE_PANE.removeClass('active');
-  ACTIVE_PANE = $(this).parent();
+  ACTIVE_PANE = $(this);
   ACTIVE_PANE.addClass('active');
 });
 

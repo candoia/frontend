@@ -48,8 +48,8 @@ module.exports = (function() {
 
             let item = {
               'name': cnt.name,
-              'entry': cnt.main,
-              'dev': false
+              'dev': false,
+              'package': cnt
             }
 
             db.appDb.insert(item, function(err, newdoc) {

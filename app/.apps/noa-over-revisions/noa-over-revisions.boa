@@ -1,5 +1,5 @@
 # Computes Number of Attributes (NOA) for each project, per-type
-# Output is: NOA[ProjectID][TypeName] = NOA value
+# Output is: NOA[RevisionDate][TypeName] = NOA value
 p: Project = input;
 NOA: output sum[string][string] of int;
 

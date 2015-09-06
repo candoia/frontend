@@ -3,6 +3,8 @@ bower_components
 *.log
 .DS_Store
 Thumbs.db
-/build/
 /releases/
-/tmp/
+/build/
+/.tmp/
+results.txt
+myTempFile.txt

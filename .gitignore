@@ -6,5 +6,5 @@ Thumbs.db
 /releases/
 /build/
 /.tmp/
-results.txt
+output.txt
 myTempFile.txt

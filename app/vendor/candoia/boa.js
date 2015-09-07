@@ -8,6 +8,7 @@
  */
 'use strict';
 
+const process = require('process');
 const cp = require('child_process');
 const ipc = require('ipc');
 const jetpack = require('fs-jetpack');
@@ -71,7 +72,7 @@ module.exports = (function() {
         if (stderr) console.log("[BOA COMPILER ERROR] " + stderr);
       });
       child.on('exit', function(code, signal) {
-        let res = parseToJSON(jetpack.read(`${__dirname}/../../../output.txt`), fmt);
+        let res = parseToJSON(jetpack.read(`${process.cwd()}/output.txt`), fmt);
         resolve(res);
       });
     });

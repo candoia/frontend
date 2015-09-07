@@ -42,8 +42,8 @@ app.on('ready', function () {
 
   if (env.name === 'development') {
     devHelper.setDevMenu();
-    mainWindow.openDevTools();
   }
+  mainWindow.openDevTools();
 
   mainWindow.on('close', function () {
     mainWindowState.saveState(mainWindow);

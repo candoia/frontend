@@ -1,7 +1,5 @@
 'use strict';
 
-import { greet } from './hello_world/hello_world';
-
 let remote = require('remote');
 let os = require('os');
 let $ = require('jquery');
@@ -201,15 +199,15 @@ $(document).on('click', '#confirm-app-add', function() {
     let v = info[0].tag_name;
     $('.modal-content').html(`<i class="fa fa-fw fa-cog fa-spin fa-lg"></i> Meta data retrieved. Downloading latest version: ${v}`);
     appManager.install(name, v).then(function(app) {
-
-      appMenu.insert(0, new MenuItem({
-        'type': 'normal',
-        'label': app.package.productName,
-        'click': function(r) {
-          createAppInstance(app);
-        }
-      }));
-
+      if (app) {
+        appMenu.insert(0, new MenuItem({
+          'type': 'normal',
+          'label': app.package.productName,
+          'click': function(r) {
+            createAppInstance(app);
+          }
+        }));
+      }
       curtain.fadeOut(500);
       curtain.html('');
     }).catch(function(error) {
@@ -246,6 +244,10 @@ $(document).on('click', '.modal-cancel', function() {
   curtain.html('');
 });
 
+$(document).on('click', '#goto-help', function() {
+  let wv = $(`<webview class="app-container pane-body" src="http://candoia.org"></webview>`);
+  ACTIVE_PANE.find('.pane-body-container').html(wv);
+});
 
 // window.env contains data from config/env_XXX.json file.
 var envName = window.env.name;

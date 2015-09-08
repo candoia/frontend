@@ -79,14 +79,13 @@ module.exports = (function() {
           let cnt = meta.contents(name);
 
           if (valid(cnt)) {
-
             let item = {
               'name': cnt.name,
               'dev': false,
               'package': cnt
             }
 
-            db.appDb.update({ 'name' : item.name }, item, { upsert : true }, function(err, numRep, doc) {
+            db.appDb.update({ 'name' : item.name }, item, { upsert : false }, function(err, numRep, doc) {
               resolve(doc);
             });
           } else {

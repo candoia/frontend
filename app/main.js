@@ -16,6 +16,7 @@ let windowStateKeeper = require('./vendor/candoia/window-state');
 let boa = require('./vendor/candoia/boa');
 let meta = require('./vendor/candoia/app-meta');
 let im = require('./vendor/candoia/instance-manager');
+let Menu = require('menu');
 
 let mainWindow;
 
@@ -42,8 +43,10 @@ app.on('ready', function () {
 
   if (env.name === 'development') {
     devHelper.setDevMenu();
+    mainWindow.openDevTools();
+  } else {
+    Menu.setApplicationMenu(null);
   }
-  mainWindow.openDevTools();
 
   mainWindow.on('close', function () {
     mainWindowState.saveState(mainWindow);

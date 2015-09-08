@@ -63,10 +63,13 @@ module.exports = (function() {
     return json;
   }
 
-  let run = function run(repo, prog, fmt) {
+  let run = function run(opts, fmt) {
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
-      let cmd = `java -jar ${__dirname}/../../boa/boa-compiler.jar -p ${repo} -i ${prog}`;
+      let cmd = `java -jar ${__dirname}/../../boa/boa-compiler.jar`;
+      for (let opt in opts) {
+        cmd += ` ${opt} ${opts[opt]}`;
+      }
       console.log(cmd);
       let child = cp.exec(cmd, function(error, stdout, stderr) {
         if (stderr) console.log("[BOA COMPILER ERROR] " + stderr);
@@ -82,9 +85,24 @@ module.exports = (function() {
   ipc.on('boa-run', function(event, url, fmt) {
     fmt = fmt || 'json';
     let instance = im.get(event.sender.getId());
-    let repo = instance.repos.local;
-    let prog = `${__dirname}/../../.apps/${instance.app.name}/${url}`;//instance.app.path + '/' + url;
-    run(repo, prog, fmt).then(function(json) {
+    let local = instance.repos.local;
+
+    let prog = `${__dirname}/../../.apps/${instance.app.name}/${url}`;
+    let opts = {
+      '-i': prog
+    }
+
+    if (local == '') {
+      let remote = instance.repos.remote;
+      let s = remote.split('/');
+      let c = `${s[3]},${s[4]},null,null,null`;
+      console.log(c);
+      opts['-g'] = c;
+    } else {
+      opts['-p'] = local;
+    }
+
+    run(opts, fmt).then(function(json) {
       event.returnValue = json;
     });
   });

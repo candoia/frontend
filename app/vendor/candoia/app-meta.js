@@ -14,13 +14,7 @@ const im = require('./instance-manager');
 module.exports = (function() {
 
   let contents = function contents(name) {
-
-    console.log(`GETTING CONTENTS OF ${__dirname}/../../.apps/${name}/package.json`);
-    // let json = jetpack.read(`$(path)/package.json`, 'json');
-    let json = jetpack.read(`${__dirname}/../../.apps/${name}/package.json`, 'json');
-    // let contents = JSON.parse(fs.readFileSync(`${path}/package.json`, {encoding: 'utf8'}));
-    console.log(json);
-    return json;
+    return jetpack.read(`${__dirname}/../../.apps/${name}/package.json`, 'json');
   }
 
   ipc.on('meta-get-package', function(event) {

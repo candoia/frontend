@@ -25,7 +25,7 @@ module.exports.replace = function (str, patterns) {
 };
 
 module.exports.getEnvName = function () {
-    return argv.env || 'production';
+    return argv.env || 'development';
 };
 
 module.exports.getElectronVersion = function () {

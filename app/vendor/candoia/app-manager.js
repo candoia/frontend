@@ -85,7 +85,7 @@ module.exports = (function() {
               'package': cnt
             }
 
-            db.appDb.update({ 'name' : item.name }, item, { upsert : false }, function(err, numRep, doc) {
+            db.appDb.update({ 'name' : item.name }, item, { upsert : true }, function(err, numRep, doc) {
               resolve(doc);
             });
           } else {

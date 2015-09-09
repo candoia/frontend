@@ -1,0 +1,9 @@
+# histogram of number of files modified per commit (impactful commits)
+p: Project = input;
+out : output top(10) of string weight int;
+visit(p, visitor {
+    
+    before rev: Revision -> {
+        out << formattime("%c", rev.commit_date) weight len(rev.files);
+    }
+});

@@ -129,18 +129,21 @@ function makeRepoModal(options) {
       <label class='modal-label' for='input-repo-name'>
         Name
       </label>
+      <p>The name will be displayed on the sidebar to the left</p>
       <div class='modal-input'>
         <input id='input-repo-name' type='text'>
       </div>
       <label class='modal-label' for='input-repo-location'>
         Local Path
       </label>
+      <p>If you have a .git repository already downloaded, add the absolute path to the repository</p>
       <div class='modal-input'>
         <input id='input-repo-location' type='text'>
       </div>
       <label class='modal-label' for='input-repo-remote'>
         Remote github URL
       </label>
+      <p>If you do not have a .git repository downloaded, then add a remote github URL. For example : "https://github.com/junit-team/junit"</p>
       <div class='modal-input'>
         <input id='input-repo-remote' type='text'>
       </div>

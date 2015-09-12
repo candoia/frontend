@@ -11,6 +11,7 @@
 To start Candoia, execute `npm start`. By default, it will be started in `development` mode.
 
 alternatively:
+
 * `npm start -- --env=development` to explicitly start in `development` mode
 * `npm start -- --env=production` to explicitly start in `production` mode
 * `npm start -- --env=test` to explicitly start in `test` mode

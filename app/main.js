@@ -43,7 +43,6 @@ app.on('ready', function () {
 
   if (env.name === 'development') {
     devHelper.setDevMenu();
-    // mainWindow.openDevTools();
   } else {
     Menu.setApplicationMenu(null);
   }

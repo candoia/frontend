@@ -5,6 +5,7 @@ var electron = require('electron-prebuilt');
 var childProcess = require('child_process');
 var pathUtil = require('path');
 var utils = require('./utils');
+var argv = require('yargs').argv;
 
 var gulpPath = pathUtil.resolve('./node_modules/.bin/gulp');
 if (process.platform === 'win32') {
@@ -13,6 +14,8 @@ if (process.platform === 'win32') {
 
 var runBuild = function() {
   var deferred = Q.defer();
+
+  console.log(argv._);
 
   var build = childProcess.spawn(gulpPath, [
     'build',

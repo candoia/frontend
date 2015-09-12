@@ -1,0 +1,59 @@
+.curtain {
+  position : absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(236, 236, 236, 0.65);
+  z-index: 99;
+  display: none;
+}
+
+.modal {
+  width: 450px;
+  border: 1px solid #ccc;
+  padding: 16px;
+  background-color: #fff;
+  margin: 45px auto;
+  box-shadow: 5px 5px 15px #E8DBD6;
+}
+
+.modal-header {
+  font-weight: 600;
+  margin: 0px 0px 16px 0px;
+  font-size: 14px;
+  padding: 0 0 7px 0px;
+  border-bottom: 1px dashed #D2D2D2;
+}
+
+.modal-label {
+  margin-top: 20px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  display: block;
+  width: 100%;
+}
+
+.modal-input {
+  margin-top : 4px;
+  margin-bottom : 20px;
+}
+
+.modal-input > * {
+  margin : 0;
+  display : block;
+  width : 100%;
+  padding: 3px;
+}
+
+.modal-actions {
+  text-align : right;
+  margin-right : -4px;
+  padding-top: 8px;
+  border-top: 1px dashed #ccc;
+  margin-top: 20px;
+}
+.modal-actions > button {
+  margin : 4px;
+  padding : 4px 18px;
+}

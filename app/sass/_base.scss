@@ -1,0 +1,27 @@
+html {
+  position    : relative;
+  height      : 100vh;
+  // background  : none repeat scroll 0% 0% #FEFEFE;
+}
+
+body {
+  position : relative;
+  height   : 100vh;
+  margin   : 0;
+}
+
+.main-container {
+  display : block;
+  // background-color : #ebebeb;
+  // background-color : #EFEFEF;
+  // background-color : #F9F9F9;
+  color : #474747;
+  overflow : hidden;
+  height : 100%;
+}
+
+.footer > p {
+  font-size : 14px;
+  margin : 8px;
+  color : #666;
+}

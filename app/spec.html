@@ -10,7 +10,7 @@
     <script src="vendor/jasmine/jasmine-html.js"></script>
     <script src="vendor/jasmine/boot.js"></script>
     <script>
-        // Overwrite defaul behaviour of boot.js. We can't start with onload event,
+        // Overwrite default behaviour of boot.js. We can't start with onload event,
         // need to wait until requirejs loads all specs.
         var startJasmine = window.onload;
         window.onload = null;
@@ -19,8 +19,8 @@
 
     <script>
 
-        // This is automatic spec loader. All files from app directory with 
-        // extension ".spec.js" will be loaded as specs. You don't have to declare 
+        // This is automatic spec loader. All files from app directory with
+        // extension ".spec.js" will be loaded as specs. You don't have to declare
         // here paths to those files in any way.
 
         var jetpack = require('fs-jetpack');

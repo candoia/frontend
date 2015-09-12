@@ -15,7 +15,7 @@ gulp.task('release', ['build'], function () {
     'platform': 'all',
     'arch': 'all',
     'version': utils.getElectronVersion(),
-    'dir': 'app',
+    'dir': 'build',
     'out': 'releases/v' + manifest.version,
     'asar': false,
     'app-version': manifest.version,

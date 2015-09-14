@@ -261,7 +261,7 @@ $(document).on('click', '.modal-cancel', function() {
 });
 
 $(document).on('click', '#goto-help', function() {
-  let wv = $(`<webview class="app-container pane-body" src="http://candoia.org"></webview>`);
+  let wv = $(`<webview class="pane-body" src="http://candoia.org"></webview>`);
   ACTIVE_PANE.find('.pane-body-container').html(wv);
 });
 

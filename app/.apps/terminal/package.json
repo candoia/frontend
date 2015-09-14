@@ -1,0 +1,16 @@
+{
+  "name": "terminal",
+  "productName": "Terminal",
+  "version": "0.1.0",
+  "author": "Dalton Mills <dmills@iastate.edu>",
+  "description": "A terminal for Boa code",
+  "main": "main.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/candoia/terminal"
+  },
+  "icon": {
+  	"type": "fa",
+  	"name": "terminal"
+  }
+}

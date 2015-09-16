@@ -8,7 +8,7 @@
  */
 'use strict';
 
-const process = require('process');
+var process = require('process');
 const cp = require('child_process');
 const ipc = require('ipc');
 const jetpack = require('fs-jetpack');

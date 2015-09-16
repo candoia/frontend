@@ -2,17 +2,32 @@
 <html>
   <head>
     <link rel='stylesheet' type='text/css' href='../../css/font-awesome.css'>
+    <link rel='stylesheet' type='text/css' href='../../css/primer/primer.css'>
     <link rel='stylesheet' type='text/css' href='src/main.css'>
   </head>
   <body>
-    <div class='container'>
+    <div class='app'>
       <div class='app-head'>
-        <button type='button' class='btn-run'>run</button>
-        <span class='tab'>Editor</span>
-        <span class='load'></span>
+        <div class='btn-group'>
+          <button type='button' class='btn btn-sm btn-editor'>Editor</button>
+          <button type='button' class='btn btn-sm btn-results' disabled>Results</button>
+        </div>
+        <a class='btn btn-sm right btn-run btn-primary' href='#'>Run</a>
+        <span class='right load'>executing query <i class='fa fa-cog fa-spin'></i></span>
       </div>
       <div class='app-body'>
-        <textarea class='editor' wrap='off' spellcheck='false'></textarea>
+        <textarea class='code editor' wrap='off' spellcheck='false'># get project stats
+p: Project = input;
+
+DEVs : output sum[string] of int;
+
+visit(p, visitor {
+    before rev : Revision -> {
+        if (committer != "")
+            DEVs[rev.committer.username] << 1;
+    }
+});</textarea>
+      <textarea class='code results' wrap='off' spellcheck='false'></textarea>
       </div>
     </div>
     <script src='../../shared/jquery.min.js'></script>

@@ -13,6 +13,7 @@ gulp.task('release', ['build'], function () {
 
   // gather command line args
   var platform = argv.platform || 'all';
+  var overwrite = argv.overwrite || false;
   var arch = argv.arch || 'all';
   var asar = !!(argv.asar) || false;
 
@@ -38,6 +39,7 @@ gulp.task('release', ['build'], function () {
     'dir': 'build',
     'out': 'releases/v' + manifest.version,
     'asar': asar,
+    'overwrite': overwrite,
     'app-version': manifest.version,
     'version-string': {
       'FileDescription': manifest.description,

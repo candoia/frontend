@@ -23,9 +23,11 @@ To create a release for all platforms and architectures, execute `npm run releas
 
 alternatively:
 
-- `npm run release -- --platform=<platform> --arch=<arch>`
+- `npm run release -- --platform=<platform> --arch=<arch> --overwrite=<overwrite>`
 - <platform> is either empty or one of: "all", "linux", "win32", or "darwin".
 - <arch> is either empty, or one of: "all", "ia32", or "x64".
+- <overwrite> is true of false. It will overwrite the output directory. By default it is false.
+
 
 Releases will land in `/releases/version/Candoia-<platform>-<arch>`. Behind the scenes, we are using [electron-packager](https://www.npmjs.com/package/electron-packager) to package for Windows, Linux, and Mac.
 

@@ -1,0 +1,59 @@
+/*
+ *
+ *                              ~ Store Lib ~
+ *
+ * Execute boa file from javascript and get the results in JSON format. This
+ * module exposes one interface (`run`) which will run a script and return a
+ * promise. The promise gets resolved with the resulting JSON.
+ */
+'use strict';
+
+var process = require('process');
+const ipc = require('ipc');
+const jetpack = require('fs-jetpack');
+const im = require('./instance-manager');
+const Datastore = require('nedb');
+const meta = require('./app-meta');
+
+
+module.exports = (function() {
+
+  let getStore = function (event) {
+    let id = event.sender.getId();
+    let instance = im.get(id);
+    let metaContents = meta.contents(instance.app.name);
+    let appname = metaContents.name + metaContents.version;
+    let fn = `${__dirname}/../../store/${appname}.db`;
+
+    let personalDb = new Datastore({
+      filename: fn,
+      autoload: true
+    });
+
+    return personalDb;
+  };
+
+  ipc.on('store-get', function(event, key, opt) {
+    let db = getStore(event);
+    db.findOne({'key': key}, function (err, doc) {
+      //if(err != null) event.returnValue = err;
+      event.returnValue = doc;
+    });
+
+  });
+
+  ipc.on('store-put', function(event, key, val) {
+    let db = getStore(event);
+
+    db.remove({'key': key});
+    db.insert({'key': key, 'value': val}, function (err, newDoc) {
+      //if(err == null) event.returnValue = err;
+      event.returnValue = newDoc;
+    });
+  });
+
+  return {
+    'getStore': getStore
+  };
+
+})();

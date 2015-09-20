@@ -1,10 +1,7 @@
 /*
  *
  *                              ~ Store Lib ~
- *
- * Execute boa file from javascript and get the results in JSON format. This
- * module exposes one interface (`run`) which will run a script and return a
- * promise. The promise gets resolved with the resulting JSON.
+ *  Enables apps to store persistant data using simple unique key/value pairs.
  */
 'use strict';
 

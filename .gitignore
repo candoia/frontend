@@ -5,6 +5,7 @@ bower_components
 Thumbs.db
 /releases/
 /build/
+/app/boa/
 /.tmp/
 output.txt
 myTempFile.txt

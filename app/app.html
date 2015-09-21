@@ -1,13 +1,15 @@
 <!doctype html>
-<html>
+<html lang='en'>
 <head>
   <meta charset="utf-8">
   <title>Candoia</title>
 
-  <link href="./css/candoia.css" rel="stylesheet" type="text/css">
-  <link href="./css/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="./css/main.css" rel="stylesheet" type="text/css">
+  <!-- <link href="./css/font-awesome.css" rel="stylesheet" type="text/css"> -->
+  <!--
   <link href="./css/scaffolding.css" rel="stylesheet" type="text/css">
   <link href="./css/work-sans.css" rel="stylesheet" type="text/css">
+  -->
 
   <script src="vendor/candoia/env-config.js"></script>
   <script src="vendor/candoia/context-menu.js"></script>
@@ -24,8 +26,8 @@
     <div class='axis axis-horizontal'>
         <div class='panel-container left'>
           <div id='side-panel' class='panel left'>
-            <ul id='repo-tree'class='tree'></ul>
-			<div style='width:200px;'></div>
+            <nav class='menu' id='repo-tree'></nav>
+            <div style='width:200px;'></div>
           </div>
         </div>
         <div class='axis axis-vertical'>
@@ -36,8 +38,8 @@
             <div class='pane-axis horizontal' style='flex-grow: 1'>
               <div class='pane active' style='flex-grow: 1'>
                 <div class='pane-header'>
+                  <i class='close fa fa-fw fa-close'></i>
                   <span class='pane-title'></span>
-                  <!-- <i class='close fa fa-fw fa-close'></i> -->
                 </div>
                 <div class='pane-content'>
                   <div class='pane-body-container'>
@@ -45,12 +47,14 @@
                     </div>
                   </div>
                 </div>
+                <span class='pane-splitter'><span>
               </div>
-              <!-- <div class='pane-axis vertical' style='flex-grow: 1'> -->
-                <!-- <div class='pane' style='flex-grow: 1'>
+              <div class='pane-resize-handle vertical'></div>
+              <div class='pane-axis vertical' style='flex-grow: 1'>
+                <div class='pane' style='flex-grow: 1'>
                   <div class='pane-header'>
-                    <span class='pane-title'></span>
                     <i class='close fa fa-fw fa-close'></i>
+                    <span class='pane-title'></span>
                   </div>
                   <div class='pane-content'>
                     <div class='pane-body-container'>
@@ -58,11 +62,12 @@
                       </div>
                     </div>
                   </div>
-                </div> -->
+                </div>
+                <div class='pane-resize-handle horizontal'></div>
                 <div class='pane' style='flex-grow: 1'>
                   <div class='pane-header'>
+                    <i class='close fa fa-fw fa-close'></i>
                     <span class='pane-title'>Getting Started with Candoia</span>
-                    <!-- <i class='close fa fa-fw fa-close'></i> -->
                   </div>
                   <div class='pane-content'>
                     <div class='pane-body-container'>
@@ -77,7 +82,7 @@
                     </div>
                   </div>
                 </div>
-              <!-- </div> -->
+              </div>
             </div>
           </div>
           <div class='panel-container bottom'>

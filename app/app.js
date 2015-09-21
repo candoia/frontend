@@ -6,6 +6,7 @@ let $ = require('jquery');
 let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
+let paneManager = require('./vendor/candoia/pane-manager');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
@@ -20,14 +21,14 @@ function loadRepos() {
   db.repoDb.find({}, function(err, docs) {
     repos = docs;
     for (let i = 0; i < docs.length; i++) {
-      let item = $(`<li class="repo-shortcut" data-repo="${i}">`);
+      let item = $(`<a class="menu-item repo-shortcut" data-repo="${i}"></a>`);
       let tmpl = `
         <i class='fa fa-fw fa-book tree-icon'></i>
         <span class='tree-text'>${docs[i].name}</span>`;
       item.html(tmpl);
       tree.append(item);
     }
-    let item = $('<li id="insert-repo">');
+    let item = $(`<a class='menu-item' id="insert-repo"></a>`);
     item.html(`
       <i class='fa fa-fw fa-plus tree-icon'></i>
       <span class='tree-text'>Add Repository</span>`);
@@ -45,6 +46,12 @@ function loadApps() {
         'click': function() { createAppInstance(app) }
       }));
     }
+    appMenu.append(new MenuItem({ type: 'separator' }));
+    appMenu.append(new MenuItem({
+      'type': 'normal',
+      'label': 'configuration',
+      'click': configRepo
+    }));
     appMenu.append(new MenuItem({ type: 'separator' }));
     appMenu.append(new MenuItem({
       'type': 'normal',
@@ -73,6 +80,12 @@ function removeRepo() {
   db.repository.remove({ _id: id }, function(err) {
     loadRepos();
   });
+}
+
+function configRepo() {
+  let repo = repos[curRepo];
+  let id = repo._id;
+  console.log('edit ' + id);
 }
 
 let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf8' });
@@ -147,9 +160,9 @@ function makeRepoModal(options) {
       <div class='modal-input'>
         <input id='input-repo-remote' type='text'>
       </div>
-      <div class='modal-actions'>
-        <button id='confirm-repo-add' class='modal-confirm' type='button'>confirm</button>
-        <button id='cancel-repo-add' class='modal-cancel' type='button'>cancel</button>
+      <div class='modal-actions form-actions'>
+        <button id='confirm-repo-add' class='modal-confirm btn btn-sm btn-primary' type='button'>confirm</button>
+        <button id='cancel-repo-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
       </div>
     </div>
   </div>`
@@ -166,9 +179,9 @@ function makeAppModal(options) {
       <div class='modal-input'>
         <input id='input-app-name' type='text'>
       </div>
-      <div class='modal-actions'>
-        <button id='confirm-app-add' class='modal-confirm' type='button'>install</button>
-        <button id='cancel-app-add' class='modal-cancel' type='button'>cancel</button>
+      <div class='modal-actions form-actions'>
+        <button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>
+        <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
       </div>
     </div>
   </div>`
@@ -214,10 +227,10 @@ $(document).on('click', '#confirm-app-add', function() {
       curtain.fadeOut(500);
       curtain.html('');
     }).catch(function(error) {
-      $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Encountered error while trying to download latest app version: ${error} <br /><div class='modal-actions'><button id='cancel-app-add' class='modal-cancel' type='button'>cancel</button></div>`);
+      $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Encountered error while trying to download latest app version: ${error} <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
     });
   }).catch(function(error, o) {
-    $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Invalid application name. <br /> <div class='modal-actions'><button id='cancel-app-add' class='modal-cancel' type='button'>cancel</button></div>`);
+    $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Invalid application name. <br /> <div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
   });
 });
 
@@ -233,7 +246,7 @@ $(document).on('click', '#confirm-repo-add', function() {
     name, local, remote
   }, function(err, newDoc) {
     if (err) {
-      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel'>cancel</button>`);
+      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
     } else {
       loadRepos();
       curtain.fadeOut(500);
@@ -248,7 +261,7 @@ $(document).on('click', '.modal-cancel', function() {
 });
 
 $(document).on('click', '#goto-help', function() {
-  let wv = $(`<webview class="app-container pane-body" src="http://candoia.org"></webview>`);
+  let wv = $(`<webview class="pane-body" src="http://candoia.org"></webview>`);
   ACTIVE_PANE.find('.pane-body-container').html(wv);
 });
 

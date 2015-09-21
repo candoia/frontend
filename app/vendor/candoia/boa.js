@@ -8,11 +8,12 @@
  */
 'use strict';
 
-const process = require('process');
+var process = require('process');
 const cp = require('child_process');
 const ipc = require('ipc');
 const jetpack = require('fs-jetpack');
 const im = require('./instance-manager');
+var manifest = jetpack.read(`${__dirname}/../../package.json`, 'json');
 
 module.exports = (function() {
 
@@ -53,7 +54,7 @@ module.exports = (function() {
         } else {
           if (i == chunk.length - 1) {
             pntr[key].push(val);
-            console.log(`[BOA RESULT] Found duplicate path to different value: ${JSON.stringify(pntr[key])}`);
+            console.log(`[BOA][PARSE] Found duplicate path to different value: ${JSON.stringify(pntr[key])}`);
           }
         }
         pntr = pntr[key];
@@ -64,19 +65,29 @@ module.exports = (function() {
   }
 
   let run = function run(opts, fmt) {
+    let desired = manifest.boa;
+    let jarname = `candoia-core-v${desired}.jar`
+
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
-      let cmd = `java -jar ${__dirname}/../../boa/boa-compiler.jar`;
+      let cmd = `java -jar ${__dirname}/../../boa/${jarname}`;
       for (let opt in opts) {
         cmd += ` ${opt} ${opts[opt]}`;
       }
-      console.log(cmd);
+      console.log(`[BOA] ${cmd}`);
       let child = cp.exec(cmd, function(error, stdout, stderr) {
-        if (stderr) console.log("[BOA COMPILER ERROR] " + stderr);
+        if (stderr) {
+          reject(stderr);
+        }
       });
       child.on('exit', function(code, signal) {
-        let res = parseToJSON(jetpack.read(`${process.cwd()}/output.txt`), fmt);
-        resolve(res);
+        let raw = jetpack.read(`${process.cwd()}/output.txt`);
+        if (raw) {
+          let res = parseToJSON(raw, fmt);
+          resolve(res);
+        } else {
+          reject('The boa compiler did not produce any output.');
+        }
       });
     });
     return promise;
@@ -104,6 +115,38 @@ module.exports = (function() {
 
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
+    }).catch(function(e) {
+      event.returnValue = '';
+      console.log(`[BOA][ERROR] ${e}`);
+    });
+  });
+
+  ipc.on('boa-exec', function(event, code, fmt) {
+    fmt = fmt || 'json';
+    let instance = im.get(event.sender.getId());
+    let local = instance.repos.local;
+    let file = `${__dirname}/../../.tmp/query.boa`;
+    jetpack.write(file, code);
+
+    let opts = {
+      '-i': file
+    }
+
+    if (local == '') {
+      let remote = instance.repos.remote;
+      let s = remote.split('/');
+      let c = `${s[3]},${s[4]},null,null,null`;
+      console.log(c);
+      opts['-g'] = c;
+    } else {
+      opts['-p'] = local;
+    }
+
+    run(opts, fmt).then(function(json) {
+      event.returnValue = json;
+    }).catch(function(e) {
+      event.returnValue = '';
+      console.log(`[BOA][ERROR] ${e}`);
     });
   });
 

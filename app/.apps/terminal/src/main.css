@@ -1,0 +1,67 @@
+.app {
+  display: -webkit-flex;
+  -webkit-flex: 1;
+  -webkit-flex-direction: column;
+  height: 100%;
+}
+
+.app-head {
+  margin: 0;
+  padding: 8px;
+  min-height: 43px;
+  overflow-y: hidden;
+  font-weight: 500;
+  font-size: 15px;
+  border-bottom: 1px solid #EDEDED;
+}
+
+.app-body {
+  position: relative;
+  display: -webkit-flex;
+  min-height: 0;
+  min-width: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.code {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+  box-shadow: none;
+  resize: none;
+  font-family: monospace;
+  background-color: #fff;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+.code:active,
+.code:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.code:disabled {
+  color : #BBBBBB;
+}
+
+.btn-run {
+  float : right;
+}
+
+.load { display : none; }
+
+.tab {
+  font-weight: 500;
+}
+
+.load {
+  padding-left: 20px;
+  color: #ccc;
+}

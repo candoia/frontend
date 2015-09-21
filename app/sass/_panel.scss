@@ -1,0 +1,45 @@
+.axis {
+  display : -webkit-flex;
+  position : relative;
+}
+
+.axis-horizontal {
+  height : 100%;
+}
+
+.axis-vertical {
+  -webkit-flex : 1;
+  -webkit-flex-flow : column;
+}
+.panel-container.left,
+.panel-container.right {
+  display : -webkit-flex;
+  -webkit-flex-direction : row;
+  -webkit-align-items : stretch;
+  height : 100%;
+}
+
+.panel {
+  display : block;
+}
+
+.panel-container.left .panel,
+.panel-container.right .panel {
+  height : 100%;
+}
+.panel.bottom p {
+  cursor: pointer;
+}
+
+.panel.bottom p:hover {
+  text-decoration: underline;
+}
+
+.close {
+  float  : right;
+  color  : #ccc;
+  cursor : pointer;
+}
+.close:hover {
+  color : #E89595;
+}

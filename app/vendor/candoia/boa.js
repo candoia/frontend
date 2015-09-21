@@ -13,6 +13,7 @@ const cp = require('child_process');
 const ipc = require('ipc');
 const jetpack = require('fs-jetpack');
 const im = require('./instance-manager');
+var manifest = jetpack.read(`${__dirname}/../../package.json`, 'json');
 
 module.exports = (function() {
 
@@ -64,9 +65,12 @@ module.exports = (function() {
   }
 
   let run = function run(opts, fmt) {
+    let desired = manifest.boa;
+    let jarname = `candoia-core-v${desired}.jar`
+
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
-      let cmd = `java -jar ${__dirname}/../../boa/boa-compiler.jar`;
+      let cmd = `java -jar ${__dirname}/../../boa/${jarname}`;
       for (let opt in opts) {
         cmd += ` ${opt} ${opts[opt]}`;
       }

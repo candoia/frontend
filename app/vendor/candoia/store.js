@@ -19,8 +19,8 @@ module.exports = (function() {
     let id = event.sender.getId();
     let instance = im.get(id);
     let metaContents = meta.contents(instance.app.name);
-    let appname = metaContents.name + metaContents.version;
-    let fn = `${__dirname}/../../store/${appname}.db`;
+    let appname = metaContents.name;
+    let fn = `${__dirname}/../../store/apps/${appname}.db`;
 
     let personalDb = new Datastore({
       filename: fn,

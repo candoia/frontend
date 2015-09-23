@@ -10,7 +10,8 @@
     "gulp-util": "^3.0.6",
     "q": "^1.4.1",
     "yargs": "^3.15.0",
-    "progress": "^1.1.8"
+    "progress": "^1.1.8",
+	"request": "^2.63.0"
   },
   "scripts": {
     "postinstall": "node ./tasks/app_npm_install",

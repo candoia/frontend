@@ -94,24 +94,24 @@ gulp.task('sass', ['clean'], sassTask);
  */
 var getjarTask = function(cb) {
   var desired = manifest.boa;
-  var loc = `app/boa/candoia-core-v${desired}.jar`;
+  var loc = 'app/boa/candoia-core-v' + desired + '.jar';
 
   fs.stat(loc, function(err, stat) {
     if(err == null) {
-      gutil.log(`Found candoia-core-v${desired}.jar!`);
+      gutil.log('Found candoia-core-v' + desired + '.jar');
       gulp.src(loc).pipe(gulp.dest('build/boa/'));
       cb();
     } else {
-      gutil.log(`Can't find candoia-core-v${desired}.jar. Downloading...`);
-      let options = {
-        url: `http://ddmills.com/candy/jar/candoia-core-v${desired}.jar`,
+      gutil.log('Can\'t find candoia-core-v' + desired + '.jar. Downloading...');
+      var options = {
+        url: 'http://ddmills.com/candy/jar/candoia-core-v' + desired + '.jar',
         headers: {
           'User-Agent': 'node-http/3.1.0',
           'encoding':'null'
         }
       }
-      let out = fs.createWriteStream(loc);
-      let req = request(options);
+      var out = fs.createWriteStream(loc);
+      var req = request(options);
       req.pipe(out);
       req.on('response', function(res) {
         var len = parseInt(res.headers['content-length'], 10);

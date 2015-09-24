@@ -86,7 +86,7 @@ module.exports = (function() {
           let res = parseToJSON(raw, fmt);
           resolve(res);
         } else {
-          reject('The boa compiler did not produce any output.');
+          reject(`The boa compiler did not produce any output. Code: ${code}. Signal: ${signal}`);
         }
       });
     });
@@ -116,7 +116,7 @@ module.exports = (function() {
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {
-      event.returnValue = '';
+      event.returnValue = {error: e};
       console.log(`[BOA][ERROR] ${e}`);
     });
   });
@@ -145,7 +145,7 @@ module.exports = (function() {
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {
-      event.returnValue = '';
+      event.returnValue = {error: e};
       console.log(`[BOA][ERROR] ${e}`);
     });
   });

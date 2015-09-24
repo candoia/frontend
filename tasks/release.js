@@ -25,7 +25,7 @@ gulp.task('release', ['build'], function () {
   }
 
   if (['all', 'ia32', 'x64'].indexOf(arch) < 0) {
-    var err = 'Invalid value for platform argument. Must be one of: "all", "ia32", or "x64".';
+    var err = 'Invalid value for arch argument. Must be one of: "all", "ia32", or "x64".';
     gutil.log(err);
     deferred.reject(err);
     return deferred.promise;

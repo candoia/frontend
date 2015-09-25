@@ -6,5 +6,6 @@
     boa: require('./env/boa'),
     meta: require('./env/meta'),
     instance: require('./env/instance'),
+    store: require('./env/store'),
   };
 })();

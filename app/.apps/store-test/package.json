@@ -1,0 +1,16 @@
+{
+  "name": "store-test",
+  "productName": "Test app for store api",
+  "version": "0.1.0",
+  "author": "Trey Erenberger",
+  "description": "Testing store functions",
+  "main": "main.html",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "icon": {
+  	"type": "fa",
+  	"name": "bar-chart"
+  }
+}

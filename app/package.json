@@ -36,5 +36,6 @@
     "software",
     "ecosystem",
     "platform"
-  ]
+  ],
+  "boa": "0.1.0"
 }

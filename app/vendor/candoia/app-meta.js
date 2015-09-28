@@ -18,7 +18,7 @@ module.exports = (function() {
   }
 
   ipc.on('meta-get-package', function(event) {
-    let id = event.sender.getId()
+    let id = event.sender.getId();
     let instance = im.get(id);
     let cnts = contents(instance.app.name);
     event.returnValue = cnts;

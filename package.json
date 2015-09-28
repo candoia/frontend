@@ -8,15 +8,16 @@
     "gulp-sass": "^2.0.4",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-util": "^3.0.6",
+    "progress": "^1.1.8",
     "q": "^1.4.1",
-    "yargs": "^3.15.0",
-    "progress": "^1.1.8"
+    "request": "^2.63.0",
+    "yargs": "^3.15.0"
   },
   "scripts": {
     "postinstall": "node ./tasks/app_npm_install",
     "app-install": "node ./tasks/app_npm_install",
     "build": "./node_modules/.bin/gulp build",
-    "release": "./node_modules/.bin/gulp release --env=production",
+    "release": "./node_modules/.bin/gulp release",
     "start": "node ./tasks/start",
     "test": "node ./tasks/start --env=test"
   }

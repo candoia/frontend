@@ -70,7 +70,7 @@ module.exports = (function() {
 
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
-      let cmd = `java -jar ${__dirname}/../../boa/${jarname}`;
+      let cmd = `java -jar "${__dirname}/../../boa/${jarname}"`;
       for (let opt in opts) {
         cmd += ` ${opt} ${opts[opt]}`;
       }
@@ -86,7 +86,7 @@ module.exports = (function() {
           let res = parseToJSON(raw, fmt);
           resolve(res);
         } else {
-          reject('The boa compiler did not produce any output.');
+          reject(`The boa compiler did not produce any output. Code: ${code}. Signal: ${signal}`);
         }
       });
     });
@@ -98,7 +98,7 @@ module.exports = (function() {
     let instance = im.get(event.sender.getId());
     let local = instance.repos.local;
 
-    let prog = `${__dirname}/../../.apps/${instance.app.name}/${url}`;
+    let prog = `"${__dirname}/../../.apps/${instance.app.name}/${url}"`;
     let opts = {
       '-i': prog
     }
@@ -110,13 +110,13 @@ module.exports = (function() {
       console.log(c);
       opts['-g'] = c;
     } else {
-      opts['-p'] = local;
+      opts['-p'] = `"${local}"`;
     }
 
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {
-      event.returnValue = '';
+      event.returnValue = {error: e};
       console.log(`[BOA][ERROR] ${e}`);
     });
   });
@@ -129,7 +129,7 @@ module.exports = (function() {
     jetpack.write(file, code);
 
     let opts = {
-      '-i': file
+      '-i': `"${file}"`
     }
 
     if (local == '') {
@@ -145,7 +145,7 @@ module.exports = (function() {
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {
-      event.returnValue = '';
+      event.returnValue = {error: e};
       console.log(`[BOA][ERROR] ${e}`);
     });
   });

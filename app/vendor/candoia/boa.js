@@ -9,11 +9,11 @@
 'use strict';
 
 var process = require('process');
-const cp = require('child_process');
-const ipc = require('ipc');
-const jetpack = require('fs-jetpack');
-const im = require('./instance-manager');
-var manifest = jetpack.read(`${__dirname}/../../package.json`, 'json');
+let cp = require('child_process');
+let ipc = require('ipc');
+let jetpack = require('fs-jetpack');
+let im = require('./instance-manager');
+let manifest = jetpack.read(`${__dirname}/../../package.json`, 'json');
 
 module.exports = (function() {
 

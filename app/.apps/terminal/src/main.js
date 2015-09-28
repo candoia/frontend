@@ -8,6 +8,8 @@ let btnrun = $('.btn-run');
 let btnresults = $('.btn-results');
 let btneditor = $('.btn-editor');
 
+api.dev.console.hide();
+
 function showEditor() {
   btnrun.show();
   results.hide();

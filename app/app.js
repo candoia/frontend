@@ -10,7 +10,7 @@ let paneManager = require('./vendor/candoia/pane-manager');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
-const fs = require('fs');
+let fs = require('fs');
 
 let repos = [];
 let appMenu;
@@ -109,6 +109,7 @@ function createAppInstance(app) {
   let e = wv[0];
   wv.on('load-commit', function(r) {
     let id = e.getId();
+    wv.attr('id', `app-instance-${id}`);
     e.insertCSS(scaff);
     instManager.register(id, app, repo);
     if (app.dev) e.openDevTools();

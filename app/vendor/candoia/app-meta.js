@@ -6,10 +6,10 @@
  */
 'use strict';
 
-const jetpack = require('fs-jetpack');
-const fs = require('fs');
-const ipc = require('ipc');
-const im = require('./instance-manager');
+let jetpack = require('fs-jetpack');
+let fs = require('fs');
+let ipc = require('ipc');
+let im = require('./instance-manager');
 
 module.exports = (function() {
 

@@ -5,7 +5,11 @@
  */
 'use strict';
 
-const ipc = require('ipc');
+let ipc = require('ipc');
+let BrowserWindow;
+if (typeof window !== 'object') {
+  BrowserWindow = require('browser-window');
+}
 
 module.exports = (function() {
   let data = {};
@@ -24,6 +28,11 @@ module.exports = (function() {
     return data[id];
   }
 
+  let getView = function getView(id) {
+    console.log(BrowserWindow.getAllWindows()[0].id);
+    return BrowserWindow.fromId(id).webContents;
+  }
+
   ipc.on('instance-get', function(event, arg) {
     let id = event.sender.getId();
     event.returnValue = get(id);
@@ -31,6 +40,7 @@ module.exports = (function() {
 
   return {
     get : get,
+    getView: getView,
     unregister : unregister,
     register: register
   }

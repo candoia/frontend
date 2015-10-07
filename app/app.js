@@ -129,7 +129,7 @@ $(document).on('click', '.pane', function() {
 
 function makeConfigModal(options) {
   var name = options.name || '';
-  var loc = options.loc || '';
+  var local = options.local || '';
   var remote = options.remote || '';
 
   return  `
@@ -148,7 +148,7 @@ function makeConfigModal(options) {
       </label>
       <p>If you have a .git repository already downloaded, add the absolute path to the repository</p>
       <div class='modal-input'>
-        <input id='input-repo-location' type='text' value='${loc}'>
+        <input id='input-repo-location' type='text' value='${local}'>
       </div>
       <label class='modal-label' for='input-repo-remote'>
         Remote github URL
@@ -158,7 +158,8 @@ function makeConfigModal(options) {
         <input id='input-repo-remote' type='text' value='${remote}'>
       </div>
       <div class='modal-actions form-actions'>
-        <button id='confirm-repo-add' class='modal-confirm btn btn-sm btn-primary' type='button'>confirm</button>
+        <input class='modal-footer-mute' id='input-repo-id' type='text' value='${options._id}' disabled>
+        <button id='confirm-repo-edit' class='modal-confirm btn btn-sm btn-primary' type='button'>confirm</button>
         <button id='cancel-repo-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
       </div>
     </div>
@@ -242,15 +243,12 @@ $(document).on('click', '#install-app', function() {
 
 function configRepo() {
   let repo = repos[curRepo];
-  let id = repo._id;
   let modal = $(makeConfigModal(repo));
   modal.hide();
   curtain.html(modal);
   curtain.fadeIn(250, function() {
     modal.slideDown();
   });
-  // console.log(JSON.stringify(repo, null, '\t'));
-  // console.log('edit ' + id);
 }
 
 $(document).on('click', '#confirm-app-add', function() {
@@ -291,6 +289,26 @@ $(document).on('click', '#confirm-repo-add', function() {
   db.repoDb.insert({
     name, local, remote
   }, function(err, newDoc) {
+    if (err) {
+      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
+    } else {
+      loadRepos();
+      curtain.fadeOut(500);
+      curtain.html('');
+    }
+  });
+});
+
+$(document).on('click', '#confirm-repo-edit', function() {
+  let name = $('#input-repo-name').val();
+  let local = $('#input-repo-location').val();
+  let remote = $('#input-repo-remote').val();
+  let id = $('#input-repo-id').val();
+
+  $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
+  $('.modal-content').css('text-align', 'center');
+
+  db.repoDb.update({ _id: id }, { name, local, remote }, function(err, newDoc) {
     if (err) {
       $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
     } else {

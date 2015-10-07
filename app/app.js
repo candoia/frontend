@@ -82,12 +82,6 @@ function removeRepo() {
   });
 }
 
-function configRepo() {
-  let repo = repos[curRepo];
-  let id = repo._id;
-  console.log('edit ' + id);
-}
-
 let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf8' });
 
 function createAppInstance(app) {
@@ -133,6 +127,43 @@ $(document).on('click', '.pane', function() {
   ACTIVE_PANE.addClass('active');
 });
 
+function makeConfigModal(options) {
+  var name = options.name || '';
+  var loc = options.loc || '';
+  var remote = options.remote || '';
+
+  return  `
+  <div class='modal'>
+    <div class='modal-header'><i class='fa fa-fw fa-book'></i> Configure Repository</div>
+    <div class='modal-content'>
+      <label class='modal-label' for='input-repo-name'>
+        Name
+      </label>
+      <p>The name will be displayed on the sidebar to the left</p>
+      <div class='modal-input'>
+        <input id='input-repo-name' type='text' value='${name}'>
+      </div>
+      <label class='modal-label' for='input-repo-location'>
+        Local Path
+      </label>
+      <p>If you have a .git repository already downloaded, add the absolute path to the repository</p>
+      <div class='modal-input'>
+        <input id='input-repo-location' type='text' value='${loc}'>
+      </div>
+      <label class='modal-label' for='input-repo-remote'>
+        Remote github URL
+      </label>
+      <p>If you do not have a .git repository downloaded, then add a remote github URL. For example : "https://github.com/junit-team/junit"</p>
+      <div class='modal-input'>
+        <input id='input-repo-remote' type='text' value='${remote}'>
+      </div>
+      <div class='modal-actions form-actions'>
+        <button id='confirm-repo-add' class='modal-confirm btn btn-sm btn-primary' type='button'>confirm</button>
+        <button id='cancel-repo-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
+      </div>
+    </div>
+  </div>`
+}
 
 function makeRepoModal(options) {
   return  `
@@ -187,6 +218,8 @@ function makeAppModal(options) {
   </div>`
 }
 
+
+
 let curtain = $('.curtain');
 
 $(document).on('click', '#insert-repo', function() {
@@ -206,6 +239,19 @@ $(document).on('click', '#install-app', function() {
     modal.slideDown();
   });
 });
+
+function configRepo() {
+  let repo = repos[curRepo];
+  let id = repo._id;
+  let modal = $(makeConfigModal(repo));
+  modal.hide();
+  curtain.html(modal);
+  curtain.fadeIn(250, function() {
+    modal.slideDown();
+  });
+  // console.log(JSON.stringify(repo, null, '\t'));
+  // console.log('edit ' + id);
+}
 
 $(document).on('click', '#confirm-app-add', function() {
   let name = $('#input-app-name').val();

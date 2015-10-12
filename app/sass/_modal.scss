@@ -1,5 +1,6 @@
 .curtain {
-  position : absolute;
+  position : fixed;
+  overflow : auto;
   top: 0;
   bottom: 0;
   left: 0;
@@ -53,7 +54,16 @@
   border-top: 1px dashed #ccc;
   margin-top: 20px;
 }
+
 .modal-actions > button {
   margin : 4px;
   padding : 4px 18px;
+}
+
+input.modal-footer-mute {
+  border: none;
+  font-size: 12px;
+  box-shadow: none;
+  float: left;
+  color: #ccc;
 }

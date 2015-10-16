@@ -269,9 +269,14 @@ $(document).on('click', '#new-pane', function() {
   $(document).on('click', `#pane-close-${panes.count}`, function(event) {
     $(event.target.offsetParent).remove();
     panes.count = $('#pane-root')[0].childElementCount;
-    console.log(panes);
   });
 });
+
+// $(document).on('click', `#pane-close-1`, function(event) {
+//   $(event.target.offsetParent).remove();
+//   panes.count = $('#pane-root')[0].childElementCount;
+//   console.log(panes);
+// });
 
 function configRepo() {
   let repo = repos[curRepo];

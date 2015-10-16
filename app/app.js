@@ -14,6 +14,9 @@ const fs = require('fs');
 
 let repos = [];
 let appMenu;
+let panes = {
+  'count': 1,
+};
 
 function loadRepos() {
   let tree = $('#repo-tree');
@@ -219,6 +222,24 @@ function makeAppModal(options) {
   </div>`
 }
 
+function makeAppPane(options) {
+  return `
+  <div class='pane active' style='flex-grow: 1'>
+    <div class='pane-header'>
+      <i id='pane-close-${options.count}' class='close fa fa-fw fa-close'></i>
+      <span class='pane-title'></span>
+    </div>
+    <div class='pane-content'>
+      <div class='pane-body-container'>
+        <div class='pane-body'>
+        </div>
+      </div>
+    </div>
+    <span class='pane-splitter'><span>
+  </div>
+  `;
+}
+
 
 
 let curtain = $('.curtain');
@@ -238,6 +259,17 @@ $(document).on('click', '#install-app', function() {
   curtain.html(modal);
   curtain.fadeIn(250, function() {
     modal.slideDown();
+  });
+});
+
+$(document).on('click', '#new-pane', function() {
+  let container = $('#pane-root');
+  panes.count++;
+  container.append(makeAppPane({'count': panes.count}));
+  $(document).on('click', `#pane-close-${panes.count}`, function(event) {
+    $(event.target.offsetParent).remove();
+    panes.count = $('#pane-root')[0].childElementCount;
+    console.log(panes);
   });
 });
 

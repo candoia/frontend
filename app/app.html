@@ -35,7 +35,7 @@
             <div class='panel top'></div>
           </div>
           <div class='pane-container master'>
-            <div class='pane-axis horizontal' style='flex-grow: 1'>
+            <div id='pane-root' class='pane-axis horizontal' style='flex-grow: 1'>
               <div class='pane active' style='flex-grow: 1'>
                 <div class='pane-header'>
                   <i class='close fa fa-fw fa-close'></i>
@@ -49,8 +49,7 @@
                 </div>
                 <span class='pane-splitter'><span>
               </div>
-              <div class='pane-resize-handle vertical'></div>
-              <div class='pane-axis vertical' style='flex-grow: 1'>
+              <!-- <div class='pane-axis vertical' style='flex-grow: 1'>
                 <div class='pane' style='flex-grow: 1'>
                   <div class='pane-header'>
                     <i class='close fa fa-fw fa-close'></i>
@@ -63,8 +62,8 @@
                     </div>
                   </div>
                 </div>
-                <div class='pane-resize-handle horizontal'></div>
-                <div class='pane' style='flex-grow: 1'>
+                <div class='pane-resize-handle horizontal'></div> -->
+                <!-- <div class='pane' style='flex-grow: 1'>
                   <div class='pane-header'>
                     <i class='close fa fa-fw fa-close'></i>
                     <span class='pane-title'>Getting Started with Candoia</span>
@@ -81,7 +80,7 @@
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -98,6 +97,10 @@
                 <p id='install-app' style='float: left;'>
                    Install App
                   <i class='fa fa-fw fa-rocket'></i>
+                </p>
+                <p id='new-pane' style='float: left;'>
+                   New Pane
+                  <i class='fa fa-fw fa-plus'></i>
                 </p>
                 <!-- <p style='float: right;'>
                   <input type='text'></input>

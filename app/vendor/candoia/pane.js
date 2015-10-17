@@ -19,7 +19,6 @@ function makeAppPane(options) {
         </div>
       </div>
     </div>
-    <span class='pane-splitter'><span>
   </div>
   `;
 };

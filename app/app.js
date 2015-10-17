@@ -245,9 +245,6 @@ $(document).on('click', '#install-app', function() {
   });
 });
 
-$(document).on('click', '#new-pane', function() {
-});
-
 function configRepo() {
   let repo = repos[curRepo];
   let modal = $(makeConfigModal(repo));

@@ -70,7 +70,7 @@ function deleteFromArrangement(id, arrangement) {
   for(var i = 0; i < arrangement.length; i++) {
     for(var j = 0; j < arrangement[i].length; j++) {
       if(arrangement[i][j].index == id) {
-        if(j == 0) {
+        if(j == (arrangement[i].length - 1) && i != 0) {
           arrangement.splice(i, 1);
         } else {
           arrangement[i].splice(j, 1);
@@ -78,7 +78,7 @@ function deleteFromArrangement(id, arrangement) {
       }
     }
   }
-}
+};
 
 function isLower(id, arrangement) {
   for(var i = 0; i < arrangement.length; i++) {
@@ -88,7 +88,7 @@ function isLower(id, arrangement) {
       }
     }
   }
-}
+};
 
 
 
@@ -106,23 +106,17 @@ module.exports = new function() {
     $(document).on('click', `#pane-close-${this.state.count}`, function(event) {
       let id =  $(event.target).data('id');
       this.removePane(id);
-      //this.state.count = $('#pane-root')[0].childElementCount;
     }.bind(this));
     return paneQuery;
   };
 
   this.removePane = function removePane(id, options) {
-    //$(event.target.offsetParent).remove();
     if(isLower(id, this.state.arrangement).length == 2) {
-      console.log('lower bob');
       $(event.target.offsetParent.parentNode).remove();
     } else {
-      console.log('higher bob');
       $(event.target.offsetParent.parentNode.parentNode).remove();
     }
     deleteFromArrangement(id, this.state.arrangement);
-    console.log(this.state);
-    //this.state.count = $('#pane-root')[0].childElementCount;
   };
 
   return this;

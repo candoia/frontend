@@ -27,6 +27,7 @@ var mainWindowState = windowStateKeeper('main', {
   height: 600
 });
 
+
 app.on('ready', function () {
 
   mainWindow = new BrowserWindow({

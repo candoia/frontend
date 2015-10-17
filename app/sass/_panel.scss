@@ -27,13 +27,19 @@
 .panel-container.right .panel {
   height : 100%;
 }
-.panel.bottom p {
+.panel.bottom .btn-link {
+  text-decoration: none;
   cursor: pointer;
+  display: block;
+  font-size : 14px;
+  margin : 8px;
+  color : #666;
 }
 
-.panel.bottom p:hover {
+.panel.bottom .btn-link:hover {
   text-decoration: underline;
 }
+
 
 .close {
   float  : right;

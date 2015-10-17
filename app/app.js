@@ -7,6 +7,7 @@ let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
 let paneManager = require('./vendor/candoia/pane-manager');
+let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
@@ -124,7 +125,6 @@ loadApps();
 checkVersion();
 
 let curRepo = null;
-let ACTIVE_PANE = $('.pane.active');
 
 $(document).on('contextmenu', '.repo-shortcut', function(e) {
   curRepo = $(this).data('repo');
@@ -148,8 +148,10 @@ function createAppInstance(app) {
   let src = `.apps/${app.name}/${app.package.main}`;
   let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
 
-  let content = ACTIVE_PANE.find('.pane-body-container');
-  let header = ACTIVE_PANE.find('.pane-title');
+  let target = pane.addPane();
+  let content = target.find('.pane-body-container');
+  let header = target.find('.pane-title');
+
 
   let fa = app.package.icon.name;
   let pName = app.package.productName;
@@ -180,11 +182,6 @@ $('#side-panel-toggle').on('click', function() {
   toggle.html(`<i class="fa fa-fw fa-angle-double-${dir}"></i>`);
 });
 
-$(document).on('click', '.pane', function() {
-  ACTIVE_PANE.removeClass('active');
-  ACTIVE_PANE = $(this);
-  ACTIVE_PANE.addClass('active');
-});
 
 function makeConfigModal(options) {
   var name = options.name || '';
@@ -301,7 +298,6 @@ function makeAboutModal(options) {
   </div>`
 }
 
-
 let curtain = $('.curtain');
 
 $(document).on('click', '#insert-repo', function() {
@@ -414,10 +410,6 @@ $(document).on('click', '.modal-cancel', function() {
   curtain.html('');
 });
 
-$(document).on('click', '#goto-help', function() {
-  let wv = $(`<webview class="pane-body" src="http://candoia.org"></webview>`);
-  ACTIVE_PANE.find('.pane-body-container').html(wv);
-});
 
 // window.env contains data from config/env_XXX.json file.
 var envName = window.env.name;

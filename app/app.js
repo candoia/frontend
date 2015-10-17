@@ -7,6 +7,7 @@ let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
 let paneManager = require('./vendor/candoia/pane-manager');
+let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
@@ -14,9 +15,6 @@ const fs = require('fs');
 
 let repos = [];
 let appMenu;
-let panes = {
-  'count': 1,
-};
 
 function loadRepos() {
   let tree = $('#repo-tree');
@@ -222,25 +220,8 @@ function makeAppModal(options) {
   </div>`
 }
 
-function makeAppPane(options) {
-  return `
-  <div class='pane active' style='flex-grow: 1'>
-    <div class='pane-header'>
-      <i id='pane-close-${options.count}' class='close fa fa-fw fa-close'></i>
-      <span class='pane-title'></span>
-    </div>
-    <div class='pane-content'>
-      <div class='pane-body-container'>
-        <div class='pane-body'>
-        </div>
-      </div>
-    </div>
-    <span class='pane-splitter'><span>
-  </div>
-  `;
-}
 
-
+console.log(pane);
 
 let curtain = $('.curtain');
 
@@ -263,20 +244,15 @@ $(document).on('click', '#install-app', function() {
 });
 
 $(document).on('click', '#new-pane', function() {
-  let container = $('#pane-root');
-  panes.count++;
-  container.append(makeAppPane({'count': panes.count}));
-  $(document).on('click', `#pane-close-${panes.count}`, function(event) {
-    $(event.target.offsetParent).remove();
-    panes.count = $('#pane-root')[0].childElementCount;
-  });
+  pane.addPane();
 });
 
-// $(document).on('click', `#pane-close-1`, function(event) {
-//   $(event.target.offsetParent).remove();
-//   panes.count = $('#pane-root')[0].childElementCount;
-//   console.log(panes);
-// });
+$(document).on('click', `#pane-close-1`, function(event) {
+  pane.removePane();
+});
+$(document).on('click', '.pane-splitter', function(event) {
+
+});
 
 function configRepo() {
   let repo = repos[curRepo];

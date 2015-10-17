@@ -72,8 +72,8 @@ function versionCompare(v1, v2) {
   v1 = v1.slice(1, v1.length);
   v2 = v2.slice(1, v2.length);
 
-  v1Parts = v1.split('.');
-  v2Parts = v2.split('.');
+  var v1Parts = v1.split('.');
+  var v2Parts = v2.split('.');
 
   var len = Math.min(v1Parts.length, v2Parts.length);
 
@@ -98,11 +98,20 @@ function checkVersion() {
 
   request.get(options, function(error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log('here!');
       try {
         let info = JSON.parse(body);
-        console.log(manifest.version, info.latest);
         let diff = versionCompare(manifest.version, info.latest);
+        if (diff >= 0) {
+          $('.footer').append(`<p style='margin: 8px; float: right;'>
+            Candoia is up to date
+            <i class='fa fa-fw fa-smile-o'></i>
+          </p>`);
+        } else {
+          $('.footer').append(`<a href='http://candoia.org' class='js-external-link btn-link' style='float: right;'>
+            There is an update (${info.latest}) avaliable!
+            <i class='fa fa-fw fa-warning'></i>
+          </a>`);
+        }
       } catch (e) {
         console.log(e);
       }

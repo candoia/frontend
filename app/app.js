@@ -125,7 +125,6 @@ loadApps();
 checkVersion();
 
 let curRepo = null;
-let ACTIVE_PANE = $('.pane.active');
 
 $(document).on('contextmenu', '.repo-shortcut', function(e) {
   curRepo = $(this).data('repo');
@@ -183,11 +182,6 @@ $('#side-panel-toggle').on('click', function() {
   toggle.html(`<i class="fa fa-fw fa-angle-double-${dir}"></i>`);
 });
 
-$(document).on('click', '.pane', function() {
-  ACTIVE_PANE.removeClass('active');
-  ACTIVE_PANE = $(this);
-  ACTIVE_PANE.addClass('active');
-});
 
 function makeConfigModal(options) {
   var name = options.name || '';
@@ -304,8 +298,6 @@ function makeAboutModal(options) {
   </div>`
 }
 
-console.log(pane);
-
 let curtain = $('.curtain');
 
 $(document).on('click', '#insert-repo', function() {
@@ -418,10 +410,6 @@ $(document).on('click', '.modal-cancel', function() {
   curtain.html('');
 });
 
-$(document).on('click', '#goto-help', function() {
-  let wv = $(`<webview class="pane-body" src="http://candoia.org"></webview>`);
-  ACTIVE_PANE.find('.pane-body-container').html(wv);
-});
 
 // window.env contains data from config/env_XXX.json file.
 var envName = window.env.name;

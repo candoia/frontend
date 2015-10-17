@@ -101,7 +101,6 @@ function checkVersion() {
         let diff = versionCompare(manifest.version, info.latest);
       } catch (e) {
         console.log(e);
-
       }
     }
   });

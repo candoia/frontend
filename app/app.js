@@ -90,8 +90,10 @@ function createAppInstance(app) {
   let src = `.apps/${app.name}/${app.package.main}`;
   let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
 
-  let content = ACTIVE_PANE.find('.pane-body-container');
-  let header = ACTIVE_PANE.find('.pane-title');
+  let target = pane.addPane();
+  let content = target.find('.pane-body-container');
+  let header = target.find('.pane-title');
+
 
   let fa = app.package.icon.name;
   let pName = app.package.productName;
@@ -244,14 +246,6 @@ $(document).on('click', '#install-app', function() {
 });
 
 $(document).on('click', '#new-pane', function() {
-  pane.addPane();
-});
-
-$(document).on('click', `#pane-close-1`, function(event) {
-  pane.removePane();
-});
-$(document).on('click', '.pane-splitter', function(event) {
-
 });
 
 function configRepo() {

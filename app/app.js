@@ -10,6 +10,10 @@ let paneManager = require('./vendor/candoia/pane-manager');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
+let jetpack = remote.require('fs-jetpack');
+
+var manifest = jetpack.read(`${__dirname}/package.json`, 'json');
+
 const fs = require('fs');
 
 let repos = [];
@@ -219,6 +223,28 @@ function makeAppModal(options) {
   </div>`
 }
 
+function makeAboutModal(options) {
+  return  `
+  <div class='modal'>
+    <div class='modal-header'><i class='fa fa-fw fa-info-circle'></i> About Candoia</div>
+    <div class='modal-content'>
+      <h4>Contributors</h4>
+      <p>Candoia platform is developed at Iowa State University. The development
+      is led by Hridesh Rajan (@hridesh) and project contributors include Nitin
+      Tiwari (@nmtiwari), Ganesha Upadhyaya (@gupadhyaya), Dalton Mills
+      (@ddmills), Eric Lin (@eyhlin), and Trey Erenberger (@TErenberger).</p>
+
+      <h4>Version Info</h4>
+      <p>
+        Candoia: v${options.version}<br>
+        Boa Core: v${options.boa}
+      </p>
+      <div class='modal-actions form-actions'>
+        <button id='close-about' class='modal-cancel btn btn-sm' type='button'>close</button>
+      </div>
+    </div>
+  </div>`
+}
 
 
 let curtain = $('.curtain');
@@ -234,6 +260,15 @@ $(document).on('click', '#insert-repo', function() {
 
 $(document).on('click', '#install-app', function() {
   let modal = $(makeAppModal());
+  modal.hide();
+  curtain.html(modal);
+  curtain.fadeIn(250, function() {
+    modal.slideDown();
+  });
+});
+
+$(document).on('click', '#goto-about', function() {
+  let modal = $(makeAboutModal(manifest));
   modal.hide();
   curtain.html(modal);
   curtain.fadeIn(250, function() {

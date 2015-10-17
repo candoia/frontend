@@ -10,6 +10,7 @@ let paneManager = require('./vendor/candoia/pane-manager');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
+let request = remote.require('request');
 const fs = require('fs');
 
 let repos = [];
@@ -61,8 +62,54 @@ function loadApps() {
   });
 }
 
+function versionCompare(v1, v2) {
+  if (v1 === v2) return 0;
+
+  v1 = v1.slice(1, v1.length);
+  v2 = v2.slice(1, v2.length);
+
+  v1Parts = v1.split('.');
+  v2Parts = v2.split('.');
+
+  var len = Math.min(v1Parts.length, v2Parts.length);
+
+  for (var i = 0; i < len; i++) {
+    if (parseInt(v1Parts[i]) > parseInt(v2Parts[i])) return 1;
+    if (parseInt(v1Parts[i]) < parseInt(v2Parts[i])) return -1;
+  }
+
+  if (v1Parts.length > v2Parts.length) return 1;
+  if (v1Parts.length < v2Parts.length) return -1;
+
+  return 0;
+}
+
+function checkVersion() {
+  let options = {
+    url: 'http://design.cs.iastate.edu/candoia/dist/version.json',
+    headers: {
+      'User-Agent': 'node-http/3.1.0'
+    }
+  }
+
+  request.get(options, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log('here!');
+      try {
+        let info = JSON.parse(body);
+        console.log(manifest.version, info.latest);
+        let diff = versionCompare(manifest.version, info.latest);
+      } catch (e) {
+        console.log(e);
+
+      }
+    }
+  });
+}
+
 loadRepos();
 loadApps();
+checkVersion();
 
 let curRepo = null;
 let ACTIVE_PANE = $('.pane.active');

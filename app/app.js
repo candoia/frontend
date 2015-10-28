@@ -13,6 +13,7 @@ let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
 let request = remote.require('request');
 let jetpack = remote.require('fs-jetpack');
+let Q = require('q');
 
 var manifest = jetpack.read(`${__dirname}/package.json`, 'json');
 
@@ -300,6 +301,29 @@ function makeAboutModal(options) {
 
 let curtain = $('.curtain');
 
+function getLatestApps() {
+  let deferred = Q.defer();
+  let options = {
+    url: 'http://design.cs.iastate.edu/candoia/dist/apps.json',
+    headers: {
+      'User-Agent': 'node-http/3.1.0'
+    }
+  }
+
+  request.get(options, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      try {
+        let info = JSON.parse(body);
+        deferred.resolve(info);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  });
+
+  return deferred.promise;
+}
+
 $(document).on('click', '#insert-repo', function() {
   let modal = $(makeRepoModal());
   modal.hide();
@@ -312,6 +336,7 @@ $(document).on('click', '#insert-repo', function() {
 $(document).on('click', '#install-app', function() {
   let modal = $(makeAppModal());
   modal.hide();
+  getLatestApps().then(function(info) { console.log(JSON.stringify(info)); });
   curtain.html(modal);
   curtain.fadeIn(250, function() {
     modal.slideDown();

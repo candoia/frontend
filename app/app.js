@@ -262,14 +262,16 @@ function makeAppModal(options) {
   <div class='modal'>
     <div class='modal-header'><i class='fa fa-fw fa-rocket'></i> Install Application</div>
     <div class='modal-content'>
-      <label class='modal-label' for='input-app-name'>
-        Registered Application Name
-      </label>
+      <div class='app-list'>
+        Loading Apps&hellip; <i class='fa fa-fw fa-cog fa-spin'></i>
+      </div>
+      <!--
       <div class='modal-input'>
         <input id='input-app-name' type='text'>
       </div>
+      -->
       <div class='modal-actions form-actions'>
-        <button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>
+        <!--<button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>-->
         <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
       </div>
     </div>
@@ -336,11 +338,70 @@ $(document).on('click', '#insert-repo', function() {
 $(document).on('click', '#install-app', function() {
   let modal = $(makeAppModal());
   modal.hide();
-  getLatestApps().then(function(info) { console.log(JSON.stringify(info)); });
   curtain.html(modal);
   curtain.fadeIn(250, function() {
     modal.slideDown();
   });
+
+
+
+
+  getLatestApps().then(function(info) {
+    var appList = modal.find('.app-list');
+
+    var drawApp = function(appMeta) {
+      appList.html('');
+      appManager.local(appMeta.name).then(function(local) {
+        if (local.length > 0) {
+          console.log(local[0].name + ' is installed already');
+          appList.append(`
+            <div class='app-list-item'>
+              <h4 class='app-list-item-name'>
+                <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
+                ${appMeta.productName}
+              </h4>
+
+              <p class='app-list-item-desciption'>
+                ${appMeta.description}
+              </p>
+
+              <span class='app-list-item-version'>
+                v${appMeta.version}
+              </span>
+
+              <button type='button' class='btn btn-sm disabled'>installed</button>
+              <span class='clearfix'></span>
+            </div>`);
+        } else {
+          appList.append(`
+            <div class='app-list-item'>
+              <h4 class='app-list-item-name'>
+                <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
+                ${appMeta.productName}
+              </h4>
+              <p class='app-list-item-desciption'>
+                ${appMeta.description}
+              </p>
+
+              <span class='app-list-item-version'>
+                v${appMeta.version}
+              </span>
+
+              <button type='button' class='btn btn-sm'>install</button>
+              <span class='clearfix'></span>
+            </div>`);
+        }
+      });
+    }
+
+
+    for (var i = 0; i < info['apps'].length; i++) {
+      var app = info['apps'][i];
+      console.log(app.name);
+      drawApp(app);
+    }
+  });
+
 });
 
 $(document).on('click', '#goto-about', function() {

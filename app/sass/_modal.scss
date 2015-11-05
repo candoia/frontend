@@ -67,3 +67,20 @@ input.modal-footer-mute {
   float: left;
   color: #ccc;
 }
+
+.app-list-item {
+  padding : 8px 0px;
+}
+
+.app-list-item-version {
+  float : left;
+  color : #ccc;
+}
+
+.app-list-item:not(:last-child) {
+  border-bottom : 1px dashed #ccc;
+}
+
+.app-list-item > .btn {
+  float : right;
+}

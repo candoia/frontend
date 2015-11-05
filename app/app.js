@@ -13,6 +13,7 @@ let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
 let request = remote.require('request');
 let jetpack = remote.require('fs-jetpack');
+let Q = require('q');
 
 var manifest = jetpack.read(`${__dirname}/package.json`, 'json');
 
@@ -261,14 +262,16 @@ function makeAppModal(options) {
   <div class='modal'>
     <div class='modal-header'><i class='fa fa-fw fa-rocket'></i> Install Application</div>
     <div class='modal-content'>
-      <label class='modal-label' for='input-app-name'>
-        Registered Application Name
-      </label>
+      <div class='app-list'>
+        Loading Apps&hellip; <i class='fa fa-fw fa-cog fa-spin'></i>
+      </div>
+      <!--
       <div class='modal-input'>
         <input id='input-app-name' type='text'>
       </div>
+      -->
       <div class='modal-actions form-actions'>
-        <button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>
+        <!--<button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>-->
         <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
       </div>
     </div>
@@ -300,6 +303,29 @@ function makeAboutModal(options) {
 
 let curtain = $('.curtain');
 
+function getLatestApps() {
+  let deferred = Q.defer();
+  let options = {
+    url: 'http://design.cs.iastate.edu/candoia/dist/apps.json',
+    headers: {
+      'User-Agent': 'node-http/3.1.0'
+    }
+  }
+
+  request.get(options, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      try {
+        let info = JSON.parse(body);
+        deferred.resolve(info);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  });
+
+  return deferred.promise;
+}
+
 $(document).on('click', '#insert-repo', function() {
   let modal = $(makeRepoModal());
   modal.hide();
@@ -316,6 +342,58 @@ $(document).on('click', '#install-app', function() {
   curtain.fadeIn(250, function() {
     modal.slideDown();
   });
+
+
+
+
+  getLatestApps().then(function(info) {
+    var appList = modal.find('.app-list');
+
+    var drawApp = function(appMeta) {
+      appList.html('');
+      appManager.local(appMeta.name).then(function(local) {
+      var btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>install</button>`;
+
+      if (local.length > 0) {
+        let cnt = meta.contents(local[0].name);
+        var compare = versionCompare(cnt.version, appMeta.version);
+
+        if (compare < 0) {
+          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>update</button>`;
+        } else {
+          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm disabled'>installed</button>`;
+        }
+      }
+
+      appList.append(`
+        <div class='app-list-item'>
+          <h4 class='app-list-item-name'>
+            <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
+            ${appMeta.productName}
+          </h4>
+
+          <p class='app-list-item-desciption'>
+            ${appMeta.description}
+          </p>
+
+          <span class='app-list-item-version'>
+            v${appMeta.version}
+          </span>
+
+          ${btn}
+          <span class='clearfix'></span>
+        </div>`);
+
+      });
+    }
+
+
+    for (var i = 0; i < info['apps'].length; i++) {
+      var app = info['apps'][i];
+      drawApp(app);
+    }
+  });
+
 });
 
 $(document).on('click', '#goto-about', function() {
@@ -337,8 +415,8 @@ function configRepo() {
   });
 }
 
-$(document).on('click', '#confirm-app-add', function() {
-  let name = $('#input-app-name').val();
+$(document).on('click', '.btn-install-app', function() {
+  let name = $(this).data('name');
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i> Retrieving app meta data');
   $('.modal-content').css('text-align', 'center');
   appManager.info(name).then(function(info) {
@@ -354,8 +432,7 @@ $(document).on('click', '#confirm-app-add', function() {
           }
         }));
       }
-      curtain.fadeOut(500);
-      curtain.html('');
+      $('.modal-content').html(`<i class='fa fa-fw fa-rocket'></i> ${name} has been installed! <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>close</button></div>`);
     }).catch(function(error) {
       $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Encountered error while trying to download latest app version: ${error} <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
     });

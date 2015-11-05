@@ -42,11 +42,19 @@ module.exports = (function() {
     });
   }
 
-  let valid = function(contents) {
+  let valid = function valid(contents) {
     return ('name' in contents) &&
       ('version' in contents) &&
       ('icon' in contents) &&
       ('productName' in contents);
+  }
+
+  let local = function local(name) {
+    return new Promise(function(resolve, reject) {
+      db.appDb.find({ 'name' : name }, function(err, docs) {
+        resolve(docs);
+      });
+    });
   }
 
   let install = function install(name, version, dev) {
@@ -99,6 +107,7 @@ module.exports = (function() {
   return {
     info,
     valid,
+    local,
     install
   }
 

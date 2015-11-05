@@ -352,18 +352,16 @@ $(document).on('click', '#install-app', function() {
     var drawApp = function(appMeta) {
       appList.html('');
       appManager.local(appMeta.name).then(function(local) {
-
-
-      var btn = `<button type='button' class='btn btn-sm'>install</button>`;
+      var btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>install</button>`;
 
       if (local.length > 0) {
         let cnt = meta.contents(local[0].name);
         var compare = versionCompare(cnt.version, appMeta.version);
 
         if (compare < 0) {
-          btn = `<button type='button' class='btn btn-sm'>update</button>`;
+          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>update</button>`;
         } else {
-          btn = `<button type='button' class='btn btn-sm disabled'>installed</button>`;
+          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm disabled'>installed</button>`;
         }
       }
 
@@ -392,7 +390,6 @@ $(document).on('click', '#install-app', function() {
 
     for (var i = 0; i < info['apps'].length; i++) {
       var app = info['apps'][i];
-      console.log(app.name);
       drawApp(app);
     }
   });
@@ -418,8 +415,8 @@ function configRepo() {
   });
 }
 
-$(document).on('click', '#confirm-app-add', function() {
-  let name = $('#input-app-name').val();
+$(document).on('click', '.btn-install-app', function() {
+  let name = $(this).data('name');
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i> Retrieving app meta data');
   $('.modal-content').css('text-align', 'center');
   appManager.info(name).then(function(info) {
@@ -435,8 +432,7 @@ $(document).on('click', '#confirm-app-add', function() {
           }
         }));
       }
-      curtain.fadeOut(500);
-      curtain.html('');
+      $('.modal-content').html(`<i class='fa fa-fw fa-rocket'></i> ${name} has been installed! <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>close</button></div>`);
     }).catch(function(error) {
       $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Encountered error while trying to download latest app version: ${error} <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
     });

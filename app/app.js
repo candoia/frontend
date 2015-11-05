@@ -259,17 +259,12 @@ function makeRepoModal(options) {
 
 function makeAppModal(options) {
   return  `
-  <div class='modal'>
+  <div class='modal' style='width:800px'>
     <div class='modal-header'><i class='fa fa-fw fa-rocket'></i> Install Application</div>
     <div class='modal-content'>
       <div class='app-list'>
         Loading Apps&hellip; <i class='fa fa-fw fa-cog fa-spin'></i>
       </div>
-      <!--
-      <div class='modal-input'>
-        <input id='input-app-name' type='text'>
-      </div>
-      -->
       <div class='modal-actions form-actions'>
         <!--<button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>-->
         <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
@@ -366,9 +361,6 @@ $(document).on('click', '#install-app', function() {
     modal.slideDown();
   });
 
-
-
-
   getLatestApps().then(function(info) {
     var appList = modal.find('.app-list');
 
@@ -377,6 +369,7 @@ $(document).on('click', '#install-app', function() {
       appManager.local(appMeta.name).then(function(local) {
       var btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>install</button>`;
 
+      // check if the app is already installed
       if (local.length > 0) {
         let cnt = meta.contents(local[0].name);
         var compare = versionCompare(cnt.version, appMeta.version);
@@ -384,7 +377,7 @@ $(document).on('click', '#install-app', function() {
         if (compare < 0) {
           btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>update</button>`;
         } else {
-          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm disabled'>installed</button>`;
+          btn = `<button type='button' class='btn btn-sm disabled'>installed</button>`;
         }
       }
 
@@ -409,7 +402,6 @@ $(document).on('click', '#install-app', function() {
 
       });
     }
-
 
     for (var i = 0; i < info['apps'].length; i++) {
       var app = info['apps'][i];

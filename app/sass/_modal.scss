@@ -68,8 +68,16 @@ input.modal-footer-mute {
   color: #ccc;
 }
 
+.app-list {
+  display: flex;
+  justify-content: flex-start;
+  flex-flow: row wrap;
+}
+
 .app-list-item {
   padding : 8px 0px;
+  width: 46%;
+  margin: 2%;
 }
 
 .app-list-item-version {

@@ -75,18 +75,18 @@ module.exports = (function() {
         cmd += ` ${opt} ${opts[opt]}`;
       }
       console.log(`[BOA] ${cmd}`);
-      let child = cp.exec(cmd, function(error, stdout, stderr) {
+      let child = cp.exec(cmd, {cwd: `${__dirname}/../../`}, function(error, stdout, stderr) {
         if (stderr) {
           reject(stderr);
         }
       });
       child.on('exit', function(code, signal) {
-        let raw = jetpack.read(`${process.cwd()}/output.txt`);
+        let raw = jetpack.read(`${__dirname}}/../../output.txt`);
         if (raw) {
           let res = parseToJSON(raw, fmt);
           resolve(res);
         } else {
-          reject(`The boa compiler did not produce any output. Code: ${code}. Signal: ${signal}`);
+          reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);
         }
       });
     });

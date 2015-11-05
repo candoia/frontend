@@ -35,77 +35,26 @@
             <div class='panel top'></div>
           </div>
           <div class='pane-container master'>
-            <div class='pane-axis horizontal' style='flex-grow: 1'>
-              <div class='pane active' style='flex-grow: 1'>
-                <div class='pane-header'>
-                  <i class='close fa fa-fw fa-close'></i>
-                  <span class='pane-title'></span>
-                </div>
-                <div class='pane-content'>
-                  <div class='pane-body-container'>
-                    <div class='pane-body'>
-                    </div>
-                  </div>
-                </div>
-                <span class='pane-splitter'><span>
-              </div>
-              <div class='pane-resize-handle vertical'></div>
-              <div class='pane-axis vertical' style='flex-grow: 1'>
-                <div class='pane' style='flex-grow: 1'>
-                  <div class='pane-header'>
-                    <i class='close fa fa-fw fa-close'></i>
-                    <span class='pane-title'></span>
-                  </div>
-                  <div class='pane-content'>
-                    <div class='pane-body-container'>
-                      <div class='pane-body'>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class='pane-resize-handle horizontal'></div>
-                <div class='pane' style='flex-grow: 1'>
-                  <div class='pane-header'>
-                    <i class='close fa fa-fw fa-close'></i>
-                    <span class='pane-title'>Getting Started with Candoia</span>
-                  </div>
-                  <div class='pane-content'>
-                    <div class='pane-body-container'>
-                      <div style='padding:8px 16px;'>
-                        <h4><i class='fa fa-fw fa-plus'></i> Add a repository</h4>
-                        <p>Start by adding your own git repository on the left-hand side, or use one of the existing ones.</p>
-                        <h4><i class='fa fa-fw fa-flag-checkered'></i> Run an app</h4>
-                        <p>Right click on one of the repositories and choose an app to run. Depending on the size of the repository and the application chosen, it might take a few seconds.</p>
-                        <h4><i class='fa fa-fw fa-download'></i> Install a new app</h4>
-                        <p>Install new apps by clicking <em>Install App</em> on the bottom panel.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <div id='pane-root' class='pane-axis horizontal' style='flex-grow: 1'>
             </div>
           </div>
           <div class='panel-container bottom'>
             <div class='panel bottom'>
               <div class='footer'>
-                <p style='float: left' id='side-panel-toggle'>
+                <p style='float: left' class='btn-link' id='side-panel-toggle'>
                   <i class='fa fa-fw fa-angle-double-left'></i>
                 </p>
-                <p id='goto-help' style='float: left'>
-                  Help
-                  <i class='fa fa-fw fa-life-bouy'></i>
+                <p id='goto-about' class='btn-link' style='float: left'>
+                  About
+                  <i class='fa fa-fw fa-info-circle'></i>
                 </p>
-                <p id='install-app' style='float: left;'>
+                <p id='install-app' class='btn-link' style='float: left;'>
                    Install App
                   <i class='fa fa-fw fa-rocket'></i>
                 </p>
                 <!-- <p style='float: right;'>
                   <input type='text'></input>
                   <i class='fa fa-fw fa-lg fa-search'></i>
-                </p> -->
-                <!-- <p style='float: right;'>
-                  There is an update avaliable!
-                  <i class='fa fa-fw fa-warning'></i>
                 </p> -->
               </div>
             </div>

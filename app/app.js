@@ -7,9 +7,16 @@ let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
 let paneManager = require('./vendor/candoia/pane-manager');
+let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
 let MenuItem = remote.require('menu-item');
+let request = remote.require('request');
+let jetpack = remote.require('fs-jetpack');
+let Q = require('q');
+
+var manifest = jetpack.read(`${__dirname}/package.json`, 'json');
+
 const fs = require('fs');
 
 let repos = [];
@@ -61,11 +68,64 @@ function loadApps() {
   });
 }
 
+function versionCompare(v1, v2) {
+  if (v1 === v2) return 0;
+
+  v1 = v1.slice(1, v1.length);
+  v2 = v2.slice(1, v2.length);
+
+  var v1Parts = v1.split('.');
+  var v2Parts = v2.split('.');
+
+  var len = Math.min(v1Parts.length, v2Parts.length);
+
+  for (var i = 0; i < len; i++) {
+    if (parseInt(v1Parts[i]) > parseInt(v2Parts[i])) return 1;
+    if (parseInt(v1Parts[i]) < parseInt(v2Parts[i])) return -1;
+  }
+
+  if (v1Parts.length > v2Parts.length) return 1;
+  if (v1Parts.length < v2Parts.length) return -1;
+
+  return 0;
+}
+
+function checkVersion() {
+  let options = {
+    url: 'http://design.cs.iastate.edu/candoia/dist/version.json',
+    headers: {
+      'User-Agent': 'node-http/3.1.0'
+    }
+  }
+
+  request.get(options, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      try {
+        let info = JSON.parse(body);
+        let diff = versionCompare(manifest.version, info.latest);
+        if (diff >= 0) {
+          $('.footer').append(`<p style='margin: 8px; float: right;'>
+            Candoia is up to date
+            <i class='fa fa-fw fa-smile-o'></i>
+          </p>`);
+        } else {
+          $('.footer').append(`<a href='http://candoia.org' class='js-external-link btn-link' style='float: right;'>
+            There is an update (${info.latest}) avaliable!
+            <i class='fa fa-fw fa-warning'></i>
+          </a>`);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  });
+}
+
 loadRepos();
 loadApps();
+checkVersion();
 
 let curRepo = null;
-let ACTIVE_PANE = $('.pane.active');
 
 $(document).on('contextmenu', '.repo-shortcut', function(e) {
   curRepo = $(this).data('repo');
@@ -89,8 +149,10 @@ function createAppInstance(app) {
   let src = `.apps/${app.name}/${app.package.main}`;
   let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
 
-  let content = ACTIVE_PANE.find('.pane-body-container');
-  let header = ACTIVE_PANE.find('.pane-title');
+  let target = pane.addPane();
+  let content = target.find('.pane-body-container');
+  let header = target.find('.pane-title');
+
 
   let fa = app.package.icon.name;
   let pName = app.package.productName;
@@ -121,11 +183,6 @@ $('#side-panel-toggle').on('click', function() {
   toggle.html(`<i class="fa fa-fw fa-angle-double-${dir}"></i>`);
 });
 
-$(document).on('click', '.pane', function() {
-  ACTIVE_PANE.removeClass('active');
-  ACTIVE_PANE = $(this);
-  ACTIVE_PANE.addClass('active');
-});
 
 function makeConfigModal(options) {
   var name = options.name || '';
@@ -205,23 +262,69 @@ function makeAppModal(options) {
   <div class='modal'>
     <div class='modal-header'><i class='fa fa-fw fa-rocket'></i> Install Application</div>
     <div class='modal-content'>
-      <label class='modal-label' for='input-app-name'>
-        Registered Application Name
-      </label>
+      <div class='app-list'>
+        Loading Apps&hellip; <i class='fa fa-fw fa-cog fa-spin'></i>
+      </div>
+      <!--
       <div class='modal-input'>
         <input id='input-app-name' type='text'>
       </div>
+      -->
       <div class='modal-actions form-actions'>
-        <button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>
+        <!--<button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>-->
         <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
       </div>
     </div>
   </div>`
 }
 
+function makeAboutModal(options) {
+  return  `
+  <div class='modal'>
+    <div class='modal-header'><i class='fa fa-fw fa-info-circle'></i> About Candoia</div>
+    <div class='modal-content'>
+      <h4>Contributors</h4>
+      <p>Candoia platform is developed at Iowa State University. The development
+      is led by Hridesh Rajan (@hridesh) and project contributors include Nitin
+      Tiwari (@nmtiwari), Ganesha Upadhyaya (@gupadhyaya), Dalton Mills
+      (@ddmills), Eric Lin (@eyhlin), and Trey Erenberger (@TErenberger).</p>
 
+      <h4>Version Info</h4>
+      <p>
+        Candoia: v${options.version}<br>
+        Boa Core: v${options.boa}
+      </p>
+      <div class='modal-actions form-actions'>
+        <button id='close-about' class='modal-cancel btn btn-sm' type='button'>close</button>
+      </div>
+    </div>
+  </div>`
+}
 
 let curtain = $('.curtain');
+
+function getLatestApps() {
+  let deferred = Q.defer();
+  let options = {
+    url: 'http://design.cs.iastate.edu/candoia/dist/apps.json',
+    headers: {
+      'User-Agent': 'node-http/3.1.0'
+    }
+  }
+
+  request.get(options, function(error, response, body) {
+    if (!error && response.statusCode == 200) {
+      try {
+        let info = JSON.parse(body);
+        deferred.resolve(info);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  });
+
+  return deferred.promise;
+}
 
 $(document).on('click', '#insert-repo', function() {
   let modal = $(makeRepoModal());
@@ -239,6 +342,67 @@ $(document).on('click', '#install-app', function() {
   curtain.fadeIn(250, function() {
     modal.slideDown();
   });
+
+
+
+
+  getLatestApps().then(function(info) {
+    var appList = modal.find('.app-list');
+
+    var drawApp = function(appMeta) {
+      appList.html('');
+      appManager.local(appMeta.name).then(function(local) {
+      var btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>install</button>`;
+
+      if (local.length > 0) {
+        let cnt = meta.contents(local[0].name);
+        var compare = versionCompare(cnt.version, appMeta.version);
+
+        if (compare < 0) {
+          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>update</button>`;
+        } else {
+          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm disabled'>installed</button>`;
+        }
+      }
+
+      appList.append(`
+        <div class='app-list-item'>
+          <h4 class='app-list-item-name'>
+            <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
+            ${appMeta.productName}
+          </h4>
+
+          <p class='app-list-item-desciption'>
+            ${appMeta.description}
+          </p>
+
+          <span class='app-list-item-version'>
+            v${appMeta.version}
+          </span>
+
+          ${btn}
+          <span class='clearfix'></span>
+        </div>`);
+
+      });
+    }
+
+
+    for (var i = 0; i < info['apps'].length; i++) {
+      var app = info['apps'][i];
+      drawApp(app);
+    }
+  });
+
+});
+
+$(document).on('click', '#goto-about', function() {
+  let modal = $(makeAboutModal(manifest));
+  modal.hide();
+  curtain.html(modal);
+  curtain.fadeIn(250, function() {
+    modal.slideDown();
+  });
 });
 
 function configRepo() {
@@ -251,8 +415,8 @@ function configRepo() {
   });
 }
 
-$(document).on('click', '#confirm-app-add', function() {
-  let name = $('#input-app-name').val();
+$(document).on('click', '.btn-install-app', function() {
+  let name = $(this).data('name');
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i> Retrieving app meta data');
   $('.modal-content').css('text-align', 'center');
   appManager.info(name).then(function(info) {
@@ -268,8 +432,7 @@ $(document).on('click', '#confirm-app-add', function() {
           }
         }));
       }
-      curtain.fadeOut(500);
-      curtain.html('');
+      $('.modal-content').html(`<i class='fa fa-fw fa-rocket'></i> ${name} has been installed! <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>close</button></div>`);
     }).catch(function(error) {
       $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Encountered error while trying to download latest app version: ${error} <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
     });
@@ -324,10 +487,6 @@ $(document).on('click', '.modal-cancel', function() {
   curtain.html('');
 });
 
-$(document).on('click', '#goto-help', function() {
-  let wv = $(`<webview class="pane-body" src="http://candoia.org"></webview>`);
-  ACTIVE_PANE.find('.pane-body-container').html(wv);
-});
 
 // window.env contains data from config/env_XXX.json file.
 var envName = window.env.name;

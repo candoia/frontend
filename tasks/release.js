@@ -16,6 +16,7 @@ gulp.task('release', ['build'], function () {
   var overwrite = argv.overwrite || false;
   var arch = argv.arch || 'all';
   var asar = !!(argv.asar) || false;
+  var icon = '';
 
   if (['all', 'linux', 'win32', 'darwin'].indexOf(platform) < 0) {
     var err = 'Invalid value for platform argument. Must be one of: "all", "linux", "win32", or "darwin".';
@@ -29,6 +30,14 @@ gulp.task('release', ['build'], function () {
     gutil.log(err);
     deferred.reject(err);
     return deferred.promise;
+  }
+
+  if(platform == 'win32') {
+    icon = 'resources/windows/icon.ico';
+  } else if(platform == 'darwin'){
+    icon = 'resources/osx/icon.icns';
+  } else if(platform == 'resources/linux'){
+    //idk
   }
 
   var opts = {
@@ -45,7 +54,8 @@ gulp.task('release', ['build'], function () {
       'FileDescription': manifest.description,
       'ProductVersion': manifest.version,
       'ProductName': manifest.productName
-    }
+    },
+    'icon': icon
   }
 
   packager(opts, function done(err, appPath) {

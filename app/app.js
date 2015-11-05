@@ -352,45 +352,40 @@ $(document).on('click', '#install-app', function() {
     var drawApp = function(appMeta) {
       appList.html('');
       appManager.local(appMeta.name).then(function(local) {
-        if (local.length > 0) {
-          console.log(local[0].name + ' is installed already');
-          appList.append(`
-            <div class='app-list-item'>
-              <h4 class='app-list-item-name'>
-                <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
-                ${appMeta.productName}
-              </h4>
 
-              <p class='app-list-item-desciption'>
-                ${appMeta.description}
-              </p>
 
-              <span class='app-list-item-version'>
-                v${appMeta.version}
-              </span>
+      var btn = `<button type='button' class='btn btn-sm'>install</button>`;
 
-              <button type='button' class='btn btn-sm disabled'>installed</button>
-              <span class='clearfix'></span>
-            </div>`);
+      if (local.length > 0) {
+        let cnt = meta.contents(local[0].name);
+        var compare = versionCompare(cnt.version, appMeta.version);
+
+        if (compare < 0) {
+          btn = `<button type='button' class='btn btn-sm'>update</button>`;
         } else {
-          appList.append(`
-            <div class='app-list-item'>
-              <h4 class='app-list-item-name'>
-                <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
-                ${appMeta.productName}
-              </h4>
-              <p class='app-list-item-desciption'>
-                ${appMeta.description}
-              </p>
-
-              <span class='app-list-item-version'>
-                v${appMeta.version}
-              </span>
-
-              <button type='button' class='btn btn-sm'>install</button>
-              <span class='clearfix'></span>
-            </div>`);
+          btn = `<button type='button' class='btn btn-sm disabled'>installed</button>`;
         }
+      }
+
+      appList.append(`
+        <div class='app-list-item'>
+          <h4 class='app-list-item-name'>
+            <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
+            ${appMeta.productName}
+          </h4>
+
+          <p class='app-list-item-desciption'>
+            ${appMeta.description}
+          </p>
+
+          <span class='app-list-item-version'>
+            v${appMeta.version}
+          </span>
+
+          ${btn}
+          <span class='clearfix'></span>
+        </div>`);
+
       });
     }
 

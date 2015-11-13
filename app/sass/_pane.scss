@@ -116,3 +116,47 @@
   margin-top: -4px;
   cursor: ns-resize;
 }
+
+.tab-container {
+  background: #ebebeb;
+  border-bottom: 1px solid #eee;
+  border-top: 1px solid #eee;
+  height: 36px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-radius: 0;
+}
+
+.tab-container .tab {
+  position: relative;
+  top: 0;
+  padding: 0px 15px;
+  margin: 0;
+  display: inline-block;
+  max-width: 22em;
+  min-width: 7em;
+  height: 100%;
+  background-color: #fff;
+  float: left;
+  border-right: 1px solid #eee;
+}
+
+.tab .tab-title {
+  width: 100%;
+  padding: 8px;
+  font-size : 12px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.tab .close {
+  float: left;
+  font-size: 11px;
+  color  : #ccc;
+  cursor : pointer;
+}
+
+.tab .close:hover {
+  color : #E89595;
+}

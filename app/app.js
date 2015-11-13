@@ -6,7 +6,6 @@ let $ = require('jquery');
 let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
-let paneManager = require('./vendor/candoia/pane-manager');
 let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');

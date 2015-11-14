@@ -6,6 +6,8 @@ let $ = require('jquery');
 let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
+// let paneManager = remote.require('./vendor/candoia/pane-manager');
+let repoManager = remote.require('./vendor/candoia/repo-manager');
 let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
@@ -24,7 +26,7 @@ let appMenu;
 function loadRepos() {
   let tree = $('#repo-tree');
   tree.html('');
-  db.repoDb.find({}, function(err, docs) {
+  repoManager.load().then(function(docs) {
     repos = docs;
     for (let i = 0; i < docs.length; i++) {
       let item = $(`<a class="menu-item repo-shortcut" data-repo="${i}"></a>`);
@@ -132,13 +134,9 @@ $(document).on('contextmenu', '.repo-shortcut', function(e) {
   appMenu.popup(remote.getCurrentWindow());
 });
 
-
 function removeRepo() {
   let repo = repos[curRepo];
-  let id = repo._id;
-  db.repository.remove({ _id: id }, function(err) {
-    loadRepos();
-  });
+  repoManager.remove(repo._id).then(loadRepos);
 }
 
 let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf8' });
@@ -168,8 +166,8 @@ function createAppInstance(app) {
     instManager.register(id, app, repo);
     if (app.dev) e.openDevTools();
   });
-
 }
+
 let toggle = $('#side-panel-toggle');
 let panel = $('#side-panel');
 let open = true;
@@ -463,37 +461,35 @@ $(document).on('click', '#confirm-repo-add', function() {
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
   $('.modal-content').css('text-align', 'center');
 
-  db.repoDb.insert({
-    name, local, remote
-  }, function(err, newDoc) {
-    if (err) {
-      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
-    } else {
+  repoManager.add(name, local, remote)
+    .then(function(repo) {
       loadRepos();
       curtain.fadeOut(500);
       curtain.html('');
-    }
-  });
+    })
+    .fail(function(err) {
+      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
+    });
 });
 
 $(document).on('click', '#confirm-repo-edit', function() {
+  let id = $('#input-repo-id').val();
   let name = $('#input-repo-name').val();
   let local = $('#input-repo-location').val();
   let remote = $('#input-repo-remote').val();
-  let id = $('#input-repo-id').val();
 
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
   $('.modal-content').css('text-align', 'center');
 
-  db.repoDb.update({ _id: id }, { name, local, remote }, function(err, newDoc) {
-    if (err) {
-      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
-    } else {
+  repoManager.update(id, name, local, remote)
+    .then(function(repo) {
       loadRepos();
       curtain.fadeOut(500);
       curtain.html('');
-    }
-  });
+    })
+    .catch(function(err) {
+      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
+    });
 });
 
 $(document).on('click', '.modal-cancel', function() {

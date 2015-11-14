@@ -6,9 +6,48 @@
 
 let $ = require('jquery');
 
+function makeTab(options) {
+  return `
+    <div class='tab' id='tab-${options.appId}'>
+      <i id='tab-close-${options.appId}' class='close fa fa-fw fa-close'></i>
+      <span class='tab-title'>
+        <i class='fa fa-fw fa-${options.icon}'></i>
+        ${options.title}
+      </span>
+    </div>
+  `;
+}
+
+function removeTab(id) {
+  var e = $(`#tab-${id}`);
+  var container = e.parent();
+}
+
+function showApp() {
+}
+
+function insertTab(pane) {
+  var tabs = pane.find('.tab-container');
+}
+
+
 function makeAppPane(options) {
   return `
   <div class='pane active' style='flex-grow: 1'>
+    <div class='tab-container'>
+      <div class='tab'>
+        <i class='close fa fa-fw fa-close'></i>
+        <span class='tab-title'>
+          <i class='fa fa-fw fa-fire'></i> Number of Attributes over Revisions
+        </span>
+      </div>
+      <div class='tab'>
+        <i class='close fa fa-fw fa-close'></i>
+        <span class='tab-title'>
+          <i class='fa fa-fw fa-terminal'></i> Terminal
+        </span>
+      </div>
+    </div>
     <div class='pane-header'>
       <i id='pane-close-${options.count}'  data-id='${options.count}' class='close fa fa-fw fa-close'></i>
       <span class='pane-title'></span>

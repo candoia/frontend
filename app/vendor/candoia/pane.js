@@ -129,7 +129,6 @@ function isLower(id, arrangement) {
 };
 
 
-
 module.exports = new function() {
   this.state = {
     'count': 0,

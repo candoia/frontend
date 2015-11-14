@@ -6,7 +6,7 @@ let $ = require('jquery');
 let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
-// let paneManager = remote.require('./vendor/candoia/pane-manager');
+let paneManager = remote.require('./vendor/candoia/pane-manager');
 let repoManager = remote.require('./vendor/candoia/repo-manager');
 let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
@@ -440,7 +440,7 @@ $(document).on('click', '.btn-install-app', function() {
           'type': 'normal',
           'label': app.package.productName,
           'click': function(r) {
-            createAppInstance(app);
+            paneManager.createAppInstance(app, repos[curRepo]);
           }
         }));
       }

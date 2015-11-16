@@ -6,8 +6,8 @@ let $ = require('jquery');
 let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
-let paneManager = remote.require('./vendor/candoia/pane-manager');
 let repoManager = remote.require('./vendor/candoia/repo-manager');
+let paneManager = require('./vendor/candoia/pane-manager');
 let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
 let Menu = remote.require('menu');
@@ -143,29 +143,32 @@ let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf
 
 function createAppInstance(app) {
   let repo = repos[curRepo];
-  let src = `.apps/${app.name}/${app.package.main}`;
-  let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
 
-  let target = pane.addPane();
-  let content = target.find('.pane-body-container');
-  let header = target.find('.pane-title');
+  paneManager.createAppInstance(app, repo);
 
-
-  let fa = app.package.icon.name;
-  let pName = app.package.productName;
-
-  fa = fa ? 'fa-' + fa : 'fa-leaf';
-  var title = `<i class='fa fa-fw ${fa}'></i> ${pName}`;
-
-  header.html(title);
-  content.html(wv);
-  let e = wv[0];
-  wv.on('load-commit', function(r) {
-    let id = e.getId();
-    e.insertCSS(scaff);
-    instManager.register(id, app, repo);
-    if (app.dev) e.openDevTools();
-  });
+  // let src = `.apps/${app.name}/${app.package.main}`;
+  // let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
+  //
+  // let target = pane.addPane();
+  // let content = target.find('.pane-body-container');
+  // let header = target.find('.pane-title');
+  //
+  //
+  // let fa = app.package.icon.name;
+  // let pName = app.package.productName;
+  //
+  // fa = fa ? 'fa-' + fa : 'fa-leaf';
+  // var title = `<i class='fa fa-fw ${fa}'></i> ${pName}`;
+  //
+  // header.html(title);
+  // content.html(wv);
+  // let e = wv[0];
+  // wv.on('load-commit', function(r) {
+  //   let id = e.getId();
+  //   e.insertCSS(scaff);
+  //   instManager.register(id, app, repo);
+  //   if (app.dev) e.openDevTools();
+  // });
 }
 
 let toggle = $('#side-panel-toggle');

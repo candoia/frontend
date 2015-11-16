@@ -120,25 +120,25 @@
 .tab-container {
   background: #ebebeb;
   border-bottom: 1px solid #eee;
-  border-top: 1px solid #eee;
-  height: 36px;
-  overflow-x: auto;
-  overflow-y: hidden;
   border-radius: 0;
 }
 
 .tab-container .tab {
   position: relative;
-  top: 0;
-  padding: 0px 15px;
-  margin: 0;
-  display: inline-block;
+  padding: 8px 15px;
+  margin: 0 0 -1px 0;
+  display: block;
   max-width: 22em;
   min-width: 7em;
-  height: 100%;
-  background-color: #fff;
-  float: left;
+  background-color: #fefefe;
   border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  float: left;
+}
+
+.tab.active {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
 }
 
 .tab .tab-title {
@@ -151,10 +151,13 @@
 }
 
 .tab .close {
-  float: left;
   font-size: 11px;
-  color  : #ccc;
-  cursor : pointer;
+  color: #ccc;
+  position: absolute;
+  cursor: pointer;
+  right: 7px;
+  top: 0px;
+  padding: 12px;
 }
 
 .tab .close:hover {

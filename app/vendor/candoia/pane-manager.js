@@ -9,19 +9,20 @@ module.exports = (function() {
       <div class='tab' id='tab-${id}'>
         <i id='tab-close-${id}' class='close fa fa-fw fa-close'></i>
         <span class='tab-title'>
-          <i class='fa fa-fw fa-${icon}'></i>
+          <i class='fa fa-fw ${icon}'></i>
           ${title}
         </span>
       </div>
     `;
   }
 
+  function getActivePane() {
+    return $('.pane.active');
+  }
+
   function removeTab(id) {
     var e = $(`#tab-${id}`);
     var container = e.parent();
-  }
-
-  function showApp() {
   }
 
   function insertTab(pane) {
@@ -35,32 +36,40 @@ module.exports = (function() {
     let src = `.apps/${app.name}/${app.package.main}`;
     let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
 
-    let target = pane.addPane();
-    let content = target.find('.pane-body-container');
-    let header = target.find('.pane-title');
-
-    let fa = app.package.icon.name;
+    let pane = getActivePane();
+    let icon = app.package.icon.name;
     let pName = app.package.productName;
 
-    fa = fa ? 'fa-' + fa : 'fa-leaf';
-    var title = `<i class='fa fa-fw ${fa}'></i> ${pName}`;
+    icon = icon ? 'fa-' + icon : 'fa-leaf';
+    let tab = $(makeTab('1', icon, pName));
+    pane.find('.tab-container').append(tab);
+    let activeTab = pane.find('.tab.active');
+    activeTab.removeClass('active');
+    tab.addClass('active');
 
-    header.html(title);
-    content.html(wv);
-    let e = wv[0];
-    wv.on('load-commit', function(r) {
-      let id = e.getId();
-      e.insertCSS(scaff);
-      instManager.register(id, app, repo);
-      if (app.dev) e.openDevTools();
-      deferred.resolve();
-    });
+    // let target = pane.addPane();
+    // let content = pane.find('.pane-body-container');
+    // let header = pane.find('.pane-title');
+    //
+
+    // var title = `<i class='fa fa-fw ${fa}'></i> ${pName}`;
+    //
+    // header.html(title);
+    // content.html(wv);
+    // let e = wv[0];
+    // wv.on('load-commit', function(r) {
+    //   let id = e.getId();
+    //   e.insertCSS(scaff);
+    //   instManager.register(id, app, repo);
+    //   if (app.dev) e.openDevTools();
+    //   deferred.resolve();
+    // });
 
     return deferred.promise;
   }
 
   return {
-    showApp: showApp
+    createAppInstance: createAppInstance
   }
 
 })();

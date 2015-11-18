@@ -2,10 +2,14 @@
 
 let $ = require('jquery');
 let Q = require('q');
+let remote = require('remote');
+let jetpack = remote.require('fs-jetpack');
 
 module.exports = (function() {
 
   let _id = 0;
+  let scaffoldingCSS = jetpack.read(`${__dirname}/../../css/scaffolding.css`);
+
   function genId() {
     return _id++;
   }
@@ -45,10 +49,16 @@ module.exports = (function() {
 
   function setActiveTab(tabId) {
     let tab = $(`#tab-${tabId}`);
+    let content = $(`#pane-body-${tabId}`);
     let pane = tab.closest('.pane');
+
     let activeTab = pane.find('.tab.active');
+    let activePaneBody = pane.find('.pane-body.active');
+
     activeTab.removeClass('active');
+    activePaneBody.removeClass('active');
     tab.addClass('active');
+    content.addClass('active');
   }
 
   function createAppInstance(app, repo) {
@@ -63,35 +73,30 @@ module.exports = (function() {
     icon = icon ? 'fa-' + icon : 'fa-leaf';
 
     let id = genId();
-    let wv = $(`
-      <div class='pane-body'>
-        <webview class='app-container' data-tabid='${id}' id='app-container-${id}' src='${src}' preload='vendor/candoia/preload.js'></webview>
+    let content = $(`
+      <div class='pane-body' data-tabid='${id}' id='pane-body-${id}'>
+        <webview class='app-container' src='${src}' preload='vendor/candoia/preload.js'></webview>
       </div>`);
 
     let tab = $(makeTab(id, icon, pName));
     pane.find('.tab-container').append(tab);
+    pane.find('.pane-body-container').append(content);
 
-    setActiveTab(id);
-    let content = pane.find('.pane-body-container');
-
-    content.append(wv);
-
+    let wv = content.find('.app-container');
+    let e = wv[0];
     wv.on('load-commit', function(r) {
-      let id = e.getId();
-      e.insertCSS(scaff);
-      deferred.resolve(id, app, repo);
+      let wvId = e.getId();
+      e.insertCSS(scaffoldingCSS);
+      e.openDevTools();
+      if (app.dev) e.openDevTools();
+      deferred.resolve({
+        id: wvId,
+        repo: repo,
+        app: app
+      });
     });
 
-    // let target = pane.addPane();
-    // let content = pane.find('.pane-body-container');
-    // let header = pane.find('.pane-title');
-
-    // var title = `<i class='fa fa-fw ${fa}'></i> ${pName}`;
-    //
-    // header.html(title);
-    // content.html(wv);
-    // let e = wv[0];
-
+    setActiveTab(id);
     return deferred.promise;
   }
 

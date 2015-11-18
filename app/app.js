@@ -145,8 +145,9 @@ function createAppInstance(app) {
   let repo = repos[curRepo];
 
   paneManager.createAppInstance(app, repo)
-    .then(function(id, app, repo) {
-      instManager.register(id, app, repo);
+    .then(function(data) {
+      console.log(data);
+      instManager.register(data.id, data.app, data.repo);
     });
 
   // let src = `.apps/${app.name}/${app.package.main}`;

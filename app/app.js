@@ -144,7 +144,10 @@ let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf
 function createAppInstance(app) {
   let repo = repos[curRepo];
 
-  paneManager.createAppInstance(app, repo);
+  paneManager.createAppInstance(app, repo)
+    .then(function(id, app, repo) {
+      instManager.register(id, app, repo);
+    });
 
   // let src = `.apps/${app.name}/${app.package.main}`;
   // let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);

@@ -124,13 +124,14 @@
 }
 
 .tab-container .tab {
+  cursor: pointer;
   position: relative;
   padding: 8px 15px;
   margin: 0 0 -1px 0;
   display: block;
   max-width: 22em;
   min-width: 7em;
-  background-color: #fefefe;
+  background-color: #F9F9F9;
   border-right: 1px solid #eee;
   border-bottom: 1px solid #eee;
   float: left;
@@ -162,4 +163,12 @@
 
 .tab .close:hover {
   color : #E89595;
+}
+
+.pane-body {
+  display : none;
+}
+
+.pane-body.active {
+  display: block;
 }

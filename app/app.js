@@ -143,36 +143,7 @@ let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf
 
 function createAppInstance(app) {
   let repo = repos[curRepo];
-
-  paneManager.createAppInstance(app, repo)
-    .then(function(data) {
-      console.log(data);
-      instManager.register(data.id, data.app, data.repo);
-    });
-
-  // let src = `.apps/${app.name}/${app.package.main}`;
-  // let wv = $(`<webview class="app-container pane-body" src="${src}" preload="vendor/candoia/preload.js"></webview>`);
-  //
-  // let target = pane.addPane();
-  // let content = target.find('.pane-body-container');
-  // let header = target.find('.pane-title');
-  //
-  //
-  // let fa = app.package.icon.name;
-  // let pName = app.package.productName;
-  //
-  // fa = fa ? 'fa-' + fa : 'fa-leaf';
-  // var title = `<i class='fa fa-fw ${fa}'></i> ${pName}`;
-  //
-  // header.html(title);
-  // content.html(wv);
-  // let e = wv[0];
-  // wv.on('load-commit', function(r) {
-  //   let id = e.getId();
-  //   e.insertCSS(scaff);
-  //   instManager.register(id, app, repo);
-  //   if (app.dev) e.openDevTools();
-  // });
+  paneManager.createAppInstance(app, repo);
 }
 
 let toggle = $('#side-panel-toggle');
@@ -186,7 +157,6 @@ $('#side-panel-toggle').on('click', function() {
   let dir = open ? 'left' : 'right';
   toggle.html(`<i class="fa fa-fw fa-angle-double-${dir}"></i>`);
 });
-
 
 function makeConfigModal(options) {
   var name = options.name || '';

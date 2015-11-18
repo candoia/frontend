@@ -4,6 +4,7 @@ let $ = require('jquery');
 let Q = require('q');
 let remote = require('remote');
 let jetpack = remote.require('fs-jetpack');
+let instManager = remote.require('./vendor/candoia/instance-manager');
 
 module.exports = (function() {
 
@@ -15,7 +16,23 @@ module.exports = (function() {
   }
 
   function closeTab(tabId) {
-    console.log('close ' + tabId);
+    let tab = $(`#tab-${tabId}`);
+    let siblings = tab.siblings('.tab');
+    let next = -1;
+    if (tab.hasClass('active')) {
+      if (siblings.length > 0) {
+        next = $(siblings[siblings.length - 1]).data('tabid');
+      } else {
+        // this tab is the last one
+        // close pane unless it's root
+      }
+    }
+    let pane = $(`#pane-body-${tabId}`);
+    tab.remove();
+    pane.remove();
+    if (next != -1) {
+      setActiveTab(next);
+    }
   }
 
   function makeTab(id, icon, title) {
@@ -30,21 +47,8 @@ module.exports = (function() {
     `;
   }
 
-  function addTabContent() {
-
-  }
-
   function getActivePane() {
     return $('.pane.active');
-  }
-
-  function removeTab(tabId) {
-    var e = $(`#tab-${tabId}`);
-    var container = e.parent();
-  }
-
-  function insertTab(pane) {
-    var tabs = pane.find('.tab-container');
   }
 
   function setActiveTab(tabId) {
@@ -87,8 +91,8 @@ module.exports = (function() {
     wv.on('load-commit', function(r) {
       let wvId = e.getId();
       e.insertCSS(scaffoldingCSS);
-      e.openDevTools();
       if (app.dev) e.openDevTools();
+      instManager.register(wvId, app, repo);
       deferred.resolve({
         id: wvId,
         repo: repo,
@@ -111,7 +115,9 @@ module.exports = (function() {
   });
 
   return {
-    createAppInstance: createAppInstance
+    createAppInstance: createAppInstance,
+    setActiveTab: setActiveTab,
+    closeTab: closeTab
   }
 
 })();

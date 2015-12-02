@@ -5,14 +5,82 @@ let Q = require('q');
 let remote = require('remote');
 let jetpack = remote.require('fs-jetpack');
 let instManager = remote.require('./vendor/candoia/instance-manager');
+let Menu = remote.require('menu');
+let MenuItem = remote.require('menu-item');
 
 module.exports = (function() {
+
+  let curSelectedInst = -1;
+  let tabContextMenu = initializeContextMenu();
+
 
   let _id = 0;
   let scaffoldingCSS = jetpack.read(`${__dirname}/../../css/scaffolding.css`);
 
   function genId() {
     return _id++;
+  }
+
+  function initializeContextMenu() {
+    let menu = new Menu();
+
+    menu.append(new MenuItem({
+      'type': 'normal',
+      'label': 'Split tab right',
+      'click': splitCurTabRight
+    }));
+
+    menu.append(new MenuItem({
+      'type': 'normal',
+      'label': 'Split tab left',
+      'click': splitCurTabLeft
+    }));
+
+    menu.append(new MenuItem({
+      'type': 'normal',
+      'label': 'Split tab down',
+      'click': splitCurTabDown
+    }));
+
+    menu.append(new MenuItem({
+      'type': 'normal',
+      'label': 'Split tab up',
+      'click': splitCurTabUp
+    }));
+
+    return menu;
+  };
+
+  function splitCurTabRight() {
+    splitTabRight(curSelectedInst);
+  }
+
+  function splitCurTabLeft() {
+    splitTabLeft(curSelectedInst);
+  }
+
+  function splitCurTabDown() {
+    splitTabDown(curSelectedInst);
+  }
+
+  function splitCurTabUp() {
+    splitTabUp(curSelectedInst);
+  }
+
+  function splitTabRight(tabId) {
+    console.log('split ' + tabId + ' right');
+  }
+
+  function splitTabLeft(tabId) {
+    console.log('split ' + tabId + ' left');
+  }
+
+  function splitTabDown(tabId) {
+    console.log('split ' + tabId + ' down');
+  }
+
+  function splitTabUp(tabId) {
+    console.log('split ' + tabId + ' up');
   }
 
   function closeTab(tabId) {
@@ -65,6 +133,12 @@ module.exports = (function() {
     content.addClass('active');
   }
 
+  function showTabContextMenu(tabId) {
+    console.log('context menu');
+    curSelectedInst = tabId;
+    tabContextMenu.popup(remote.getCurrentWindow());
+  }
+
   function createAppInstance(app, repo) {
     let deferred = Q.defer();
 
@@ -109,9 +183,28 @@ module.exports = (function() {
     closeTab(tabId);
   });
 
-  $(document).on('click', '.tab', function(e) {
+  $(document).on('mousedown', '.tab', function(e) {
+    e.preventDefault();
     let tabId = $(this).data('tabid');
-    setActiveTab(tabId);
+    curSelectedInst = tabId;
+
+    // switch depending on mouse button clicked
+    switch (e.which) {
+    // LMB
+    case 1:
+      setActiveTab(tabId);
+      break;
+    // MMB
+    case 2:
+      break;
+    // RMB
+    case 3:
+      showTabContextMenu(tabId);
+      break;
+    // ??
+    default:
+      return;
+    }
   });
 
   return {

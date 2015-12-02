@@ -51,6 +51,11 @@ module.exports = (function() {
     return menu;
   };
 
+  function getTabAxis(tabId) {
+    let tab = $(`#tab-${tabId}`);
+    return tab.closest('.pane-axis');
+  }
+
   function splitCurTabRight() {
     splitTabRight(curSelectedInst);
   }
@@ -68,19 +73,51 @@ module.exports = (function() {
   }
 
   function splitTabRight(tabId) {
-    console.log('split ' + tabId + ' right');
+    let axis = getTabAxis(tabId);
+    addPaneRight(axis);
   }
 
   function splitTabLeft(tabId) {
-    console.log('split ' + tabId + ' left');
+    let axis = getTabAxis(tabId);
+    addPaneLeft(axis);
   }
 
   function splitTabDown(tabId) {
-    console.log('split ' + tabId + ' down');
+    let axis = getTabAxis(tabId);
+    addPaneDown(axis);
   }
 
   function splitTabUp(tabId) {
-    console.log('split ' + tabId + ' up');
+    let axis = getTabAxis(tabId);
+    addPaneUp(axis);
+  }
+
+  function addPaneRight(axis) {
+    let pane = makePane();
+    axis.append(pane);
+    return pane;
+  }
+
+  function addPaneLeft(axis) {
+    let pane = makePane();
+    axis.prepend(pane);
+    return pane;
+  }
+
+  function addPaneDown(axis) {
+    let pane = makePane();
+    let newAxis = $(makeHorizontalAxis());
+    newAxis.append(pane);
+    axis.after(newAxis);
+    return pane;
+  }
+
+  function addPaneUp(axis) {
+    let pane = makePane();
+    let newAxis = $(makeHorizontalAxis());
+    newAxis.append(pane);
+    axis.before(newAxis);
+    return pane;
   }
 
   function closeTab(tabId) {
@@ -101,6 +138,31 @@ module.exports = (function() {
     if (next != -1) {
       setActiveTab(next);
     }
+  }
+
+  function makeVerticalAxis() {
+    return `
+      <div class='pane-axis vertical' style='flex-grow: 1'>
+        <div class='pane-axis horizontal' style='flex-grow: 1'>
+        </div>
+      </div>
+    `;
+  }
+
+  function makeHorizontalAxis() {
+    return `
+      <div class='pane-axis horizontal' style='flex-grow: 1'>
+      </div>
+    `;
+  }
+
+  function makePane() {
+    return `
+      <div class='pane' style='flex-grow: 1'>
+        <div class='tab-container'></div>
+        <div class='pane-content'></div>
+      </div>
+    `;
   }
 
   function makeTab(id, icon, title) {

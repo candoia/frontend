@@ -74,38 +74,42 @@ module.exports = (function() {
 
   function splitTabRight(tabId) {
     let axis = getTabAxis(tabId);
-    addPaneRight(axis);
+    let pane = addPaneRight(axis);
+    moveTab(tabId, pane);
   }
 
   function splitTabLeft(tabId) {
     let axis = getTabAxis(tabId);
-    addPaneLeft(axis);
+    let pane = addPaneLeft(axis);
+    moveTab(tabId, pane);
   }
 
   function splitTabDown(tabId) {
     let axis = getTabAxis(tabId);
-    addPaneDown(axis);
+    let pane = addPaneDown(axis);
+    moveTab(tabId, pane);
   }
 
   function splitTabUp(tabId) {
     let axis = getTabAxis(tabId);
-    addPaneUp(axis);
+    let pane = addPaneUp(axis);
+    moveTab(tabId, pane);
   }
 
   function addPaneRight(axis) {
-    let pane = makePane();
+    let pane = $(makePane());
     axis.append(pane);
     return pane;
   }
 
   function addPaneLeft(axis) {
-    let pane = makePane();
+    let pane = $(makePane());
     axis.prepend(pane);
     return pane;
   }
 
   function addPaneDown(axis) {
-    let pane = makePane();
+    let pane = $(makePane());
     let newAxis = $(makeHorizontalAxis());
     newAxis.append(pane);
     axis.after(newAxis);
@@ -113,7 +117,7 @@ module.exports = (function() {
   }
 
   function addPaneUp(axis) {
-    let pane = makePane();
+    let pane = $(makePane());
     let newAxis = $(makeHorizontalAxis());
     newAxis.append(pane);
     axis.before(newAxis);
@@ -140,6 +144,17 @@ module.exports = (function() {
     }
   }
 
+  function moveTab(tabId, toPane) {
+    let tab = $(`#tab-${tabId}`);
+    let body = $(`#pane-body-${tabId}`);
+
+    let tabContainer = toPane.find('.tab-container');
+    let bodyContainer = toPane.find('.pane-body-container');
+
+    tab.appendTo(tabContainer);
+    body.appendTo(bodyContainer);
+  }
+
   function makeVerticalAxis() {
     return `
       <div class='pane-axis vertical' style='flex-grow: 1'>
@@ -160,7 +175,10 @@ module.exports = (function() {
     return `
       <div class='pane' style='flex-grow: 1'>
         <div class='tab-container'></div>
-        <div class='pane-content'></div>
+        <div class='pane-content'>
+          <div class='pane-body-container'>
+          </div>
+        </div>
       </div>
     `;
   }

@@ -2,7 +2,7 @@
 
 ### Development Environment Setup
 
-1. [Download and install iojs](https://iojs.org/)
+1. [Download and install nodejs](https://nodejs.org/en/)
 2. Clone the frontend repository (`git clone ...`)
 3. `cd` to the cloned repository
 4. execute `npm install`

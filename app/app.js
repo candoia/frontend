@@ -7,6 +7,7 @@ let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
 let repoManager = remote.require('./vendor/candoia/repo-manager');
+let dialog = remote.require('dialog');
 let paneManager = require('./vendor/candoia/pane-manager');
 let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
@@ -251,22 +252,31 @@ function makeAppModal(options) {
 
 function makeLocalAppModal(options) {
     return  `
-    <div class='modal' style='width:800px'>
+    <div class='modal' style='width:600px'>
       <div class='modal-header'><i class='fa fa-fw fa-rocket'></i> Install Local Application</div>
       <div class='modal-content'>
-        <label class='modal-label' for='input-app-local'>
-          Path to local application
-        </label>
-        <div class='modal-input'>
-          <input id='input-app-local' type='text'>
+        <label>Path to local application package.json</label>
+        <p class='note'>A path on your machine to the package.json for the app you want to install.</p>
+        <div class="input-group">
+          <input type="text" class="input-contrast" id='input-app-local' placeholder="/path/to/package.json">
+          <span class="input-group-button">
+            <button class="btn" id='input-app-local-browse'>
+              browse
+            </button>
+          </span>
         </div>
-        <label class='modal-label' for='input-app-mode'>
-          <input type='checkbox' id='input-app-mode'>
-          Developer mode
-        </label>
-        <p>Developer mode will give you chrome developer tools for your app.</p>
+        <div class="form-checkbox">
+          <label>
+            <input type="checkbox" id='input-app-dev'>
+            Developer mode
+          </label>
+          <p class="note">
+            Developer mode will give you chrome developer tools for your app.
+          </p>
+        </div>
+
         <div class='modal-actions form-actions'>
-            <button id='confirm-local-app-add' class='btn btn-sm btn-primary' type='button'>Install</button>
+          <button id='confirm-local-app-add' class='btn btn-sm btn-primary' type='button'>Install</button>
           <button id='cancel-local-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
         </div>
       </div>
@@ -440,8 +450,45 @@ function configRepo() {
   });
 }
 
+$(document).on('click', '#input-app-local-browse', function() {
+  dialog.showOpenDialog({
+    filters: [
+      { name: 'Package', extensions: ['json'] }
+    ],
+    properties: ['openFile']
+  }, function (fileNames) {
+    if (fileNames.length > 0) {
+      $('#input-app-local').val(fileNames[0]);
+    }
+  });
+});
+
 $(document).on('click', '#confirm-local-app-add', function() {
   let location = $('#input-app-local').val();
+  let dev = $('#input-app-dev').prop('checked');
+
+  appManager.installLocal(location, dev).then(function(app) {
+    appMenu.insert(0, new MenuItem({
+      'type': 'normal',
+      'label': app.package.productName,
+      'click': function(r) {
+        paneManager.createAppInstance(app, repos[curRepo]);
+      }
+    }));
+    $('.modal-content').html(`
+        <i class='fa fa-fw fa-rocket'></i> ${app.package.productName} has been installed! <br />
+        <div class='modal-actions form-actions'>
+          <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>close</button>
+        </div>
+    `);
+  }, function(err) {
+    $('.modal-content').html(`
+        <div class="flash flash-warn">
+          <i class="fa fa-fw fa-warning"></i>${err}
+        </div><br />
+        <button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>
+    `);
+  });
 });
 
 $(document).on('click', '.btn-install-app', function() {
@@ -478,8 +525,6 @@ $(document).on('click', '#confirm-repo-add', function() {
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
   $('.modal-content').css('text-align', 'center');
 
-  console.log('[ADD]', name, local, remote);
-
   repoManager.add(name, local, remote)
     .then(function(repo) {
       loadRepos();
@@ -504,9 +549,8 @@ $(document).on('click', '#confirm-repo-edit', function() {
       loadRepos();
       curtain.fadeOut(500);
       curtain.html('');
-    })
-    .catch(function(err) {
-      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
+    }, function(err) {
+      $('.modal-content').html(`<div class="flash flash-warn">${err}</div><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
     });
 });
 

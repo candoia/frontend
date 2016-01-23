@@ -68,7 +68,10 @@ module.exports = (function() {
   function createAppInstance(app, repo) {
     let deferred = Q.defer();
 
-    let src = `.apps/${app.name}/${app.package.main}`;
+    console.log(app);
+    console.log(process.cwd(), app.path);
+    let src = `${app.path}${app.package.main}`;
+    console.log(src);
 
     let pane = getActivePane();
     let icon = app.package.icon.name;
@@ -80,7 +83,8 @@ module.exports = (function() {
     let content = $(`
       <div class='pane-body' data-tabid='${id}' id='pane-body-${id}'>
         <webview class='app-container' src='${src}' preload='vendor/candoia/preload.js'></webview>
-      </div>`);
+      </div>
+    `);
 
     let tab = $(makeTab(id, icon, pName));
     pane.find('.tab-container').append(tab);

@@ -14,6 +14,7 @@ const meta = require('./app-meta');
 const db = require('./datastore');
 const jetpack = require('fs-jetpack');
 let Q = require('q');
+let path = require('path');
 
 module.exports = (function() {
   let info = function info(name) {
@@ -59,12 +60,14 @@ module.exports = (function() {
     db.appDb.find({ 'name' : name }, function(err, docs) {
       if (err) deferred.reject(err);
       if (docs.length > 0) {
-        var doc = docs[0];
-        let cnts = jetpack.read(`${process.cwd()}/${doc.location}/package.json`, 'json');
-        console.log('found.. ' + name);
+        let doc = docs[0];
+        let path = `${process.cwd()}/${doc.location}/`;
+        let cnts = jetpack.read(`${path}/package.json`, 'json');
         deferred.resolve({
           'name': doc.name,
           'dev': doc.dev,
+          'location': doc.location,
+          'path': path,
           'package': cnts
         });
       } else {
@@ -81,14 +84,16 @@ module.exports = (function() {
       if (err) deferred.reject(err);
       let response = [];
       for (let doc of docs) {
-        let cnts = jetpack.read(`${process.cwd()}/${doc.location}/package.json`, 'json');
+        let path = `${process.cwd()}/${doc.location}/`;
+        let cnts = jetpack.read(`${path}/package.json`, 'json');
         response.push({
           'name': doc.name,
           'dev': doc.dev,
+          'location': doc.location,
+          'path': path,
           'package': cnts
         });
       }
-      console.log(response);
       deferred.resolve(response);
     });
 
@@ -122,9 +127,7 @@ module.exports = (function() {
         let folder = e[0].entryName;
         let target = `.apps/${name}`;
         z.extractEntryTo(folder, target, false, true);
-        console.log(`${process.cwd()}/${target}/package.json`);
         let cnt = jetpack.read(`${process.cwd()}/${target}/package.json`, 'json');
-        console.log(cnt);
         if (valid(cnt)) {
           let item = {
             'name': cnt.name,
@@ -141,7 +144,7 @@ module.exports = (function() {
           });
         } else {
           deferred.reject(`
-            The target application has invalid package.json. This is most likely an issue
+            <strong>The target application has invalid package.json.</strong> This is most likely an issue
             that needs to be resolved by the application developer.
           `);
         }
@@ -152,16 +155,20 @@ module.exports = (function() {
   }
 
   let installLocal = function installLocal(location, dev) {
+    var rel = path.relative(process.cwd(), location);
+
+    rel = rel.substring(0, rel.length - 13);
+
     let deferred = Q.defer();
     dev = dev || false;
     var self = this;
-    let cnt = jetpack.read(`${location}/package.json`, 'json');
+    let cnt = jetpack.read(`${process.cwd()}/${rel}/package.json`, 'json');
 
     if (valid(cnt)) {
       let item = {
         'name': cnt.name,
-        'dev': false,
-        'location': location
+        'dev': dev,
+        'location': rel
       }
 
       db.appDb.update({ 'name' : item.name }, item, { upsert : true }, function(err, numRep, doc) {
@@ -172,7 +179,10 @@ module.exports = (function() {
         });
       });
     } else {
-      deferred.reject('The target application has invalid package.json, this is most likely an issue that needs to be resolved by the application developer.');
+      deferred.reject(`
+        <strong>The target application has invalid package.json.</strong> This is most likely an issue
+        that needs to be resolved by the application developer.
+      `);
     }
 
     return deferred.promise;

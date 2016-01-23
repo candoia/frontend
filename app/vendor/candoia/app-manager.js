@@ -165,7 +165,11 @@ module.exports = (function() {
       }
 
       db.appDb.update({ 'name' : item.name }, item, { upsert : true }, function(err, numRep, doc) {
-        deferred.resolve(this.find(item.name));
+        self.find(item.name).then(function(i) {
+          deferred.resolve(i);
+        }).catch(function(e) {
+          deferred.reject(e);
+        });
       });
     } else {
       deferred.reject('The target application has invalid package.json, this is most likely an issue that needs to be resolved by the application developer.');

@@ -8,6 +8,7 @@
 // let remote = require('remote');
 let datastore = require('./datastore');
 let Q = require('q');
+let isGithubUrl = require('is-github-url');
 
 module.exports = (function() {
 
@@ -38,11 +39,18 @@ module.exports = (function() {
    * Check if a repository is valid.
    */
   function isInvalidRepo(name, local, remote) {
-    if (name.length == 0)
+    if (name == undefined || name.length == 0)
       return "Repository must be given a name";
 
     if (local.length == 0 && remote.length == 0)
       return "Repository must contain a local or remote url";
+
+    if (remote.length > 0) {
+      var gurl = isGithubUrl(remote, {repository : true });
+      if (!gurl) {
+        return "<b><i class='fa fa-fw fa-lg fa-exclamation-triangle'></i> Invalid remote github repository.</b><br> It should be in the form: https://github.com/Owner/Repository";
+      }
+    }
 
     return false;
   }
@@ -54,7 +62,7 @@ module.exports = (function() {
     let deferred = Q.defer();
     let invalid = isInvalidRepo(name, local, remote);
 
-    if (invalid) {
+    if (!!invalid) {
       deferred.reject(invalid);
     } else {
       datastore.repoDb.insert({

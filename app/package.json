@@ -2,7 +2,7 @@
   "name": "candoia",
   "productName": "Candoia",
   "identifier": "org.candoia.ecosystem",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A platform and Ecosystem for Software Engineering Tools",
   "homepage": "https://candoia.org",
   "author": "Dr. Hridesh Rajan <hridesh@iastate.edu>",
@@ -24,6 +24,7 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "fs-jetpack": "^0.7.0",
+    "is-github-url": "^1.2.2",
     "jquery": "^2.1.4",
     "nedb": "^1.1.3",
     "q": "^1.4.1",

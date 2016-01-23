@@ -478,14 +478,15 @@ $(document).on('click', '#confirm-repo-add', function() {
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
   $('.modal-content').css('text-align', 'center');
 
+  console.log('[ADD]', name, local, remote);
+
   repoManager.add(name, local, remote)
     .then(function(repo) {
       loadRepos();
       curtain.fadeOut(500);
       curtain.html('');
-    })
-    .fail(function(err) {
-      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
+    }, function(err) {
+      $('.modal-content').html(`<div class="flash flash-warn">${err}</div><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
     });
 });
 

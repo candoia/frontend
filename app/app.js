@@ -7,6 +7,7 @@ let db = remote.require('./vendor/candoia/datastore');
 let appManager = remote.require('./vendor/candoia/app-manager');
 let instManager = remote.require('./vendor/candoia/instance-manager');
 let repoManager = remote.require('./vendor/candoia/repo-manager');
+let dialog = remote.require('dialog');
 let paneManager = require('./vendor/candoia/pane-manager');
 let pane = require('./vendor/candoia/pane');
 let meta = require('./vendor/candoia/app-meta');
@@ -15,6 +16,7 @@ let MenuItem = remote.require('menu-item');
 let request = remote.require('request');
 let jetpack = remote.require('fs-jetpack');
 let Q = require('q');
+
 
 var manifest = jetpack.read(`${__dirname}/package.json`, 'json');
 
@@ -46,8 +48,8 @@ function loadRepos() {
 
 function loadApps() {
   appMenu = new Menu();
-  db.appDb.find({}, function(err, docs) {
-    for (let app of docs) {
+  appManager.all().then(function(apps) {
+    for (let app of apps) {
       appMenu.append(new MenuItem({
         'type': 'normal',
         'label': app.package.productName,
@@ -221,7 +223,7 @@ function makeRepoModal(options) {
       </label>
       <p>If you do not have a .git repository downloaded, then add a remote github URL. For example : "https://github.com/junit-team/junit"</p>
       <div class='modal-input'>
-        <input id='input-repo-remote' type='text'>
+        <input id='input-repo-remote' type='text' value="https://github.com/">
       </div>
       <div class='modal-actions form-actions'>
         <button id='confirm-repo-add' class='modal-confirm btn btn-sm btn-primary' type='button'>confirm</button>
@@ -242,9 +244,43 @@ function makeAppModal(options) {
       <div class='modal-actions form-actions'>
         <!--<button id='confirm-app-add' class='modal-confirm btn btn-sm btn-primary' type='button'>install</button>-->
         <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
+        <button id='local-app-add' class='btn btn-sm' type='button'>install from local</button>
       </div>
     </div>
   </div>`
+}
+
+function makeLocalAppModal(options) {
+    return  `
+    <div class='modal' style='width:600px'>
+      <div class='modal-header'><i class='fa fa-fw fa-rocket'></i> Install Local Application</div>
+      <div class='modal-content'>
+        <label>Path to local application package.json</label>
+        <p class='note'>A path on your machine to the package.json for the app you want to install.</p>
+        <div class="input-group">
+          <input type="text" class="input-contrast" id='input-app-local' placeholder="/path/to/package.json">
+          <span class="input-group-button">
+            <button class="btn" id='input-app-local-browse'>
+              browse
+            </button>
+          </span>
+        </div>
+        <div class="form-checkbox">
+          <label>
+            <input type="checkbox" id='input-app-dev'>
+            Developer mode
+          </label>
+          <p class="note">
+            Developer mode will give you chrome developer tools for your app.
+          </p>
+        </div>
+
+        <div class='modal-actions form-actions'>
+          <button id='confirm-local-app-add' class='btn btn-sm btn-primary' type='button'>Install</button>
+          <button id='cancel-local-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
+        </div>
+      </div>
+    </div>`
 }
 
 function makeAboutModal(options) {
@@ -327,6 +363,16 @@ $(document).on('click', '#insert-repo', function() {
   });
 });
 
+$(document).on('click', '#local-app-add', function() {
+    let modal = $(makeLocalAppModal());
+    modal.hide();
+    curtain.html(modal);
+    curtain.fadeIn(250, function() {
+      modal.slideDown();
+    });
+});
+
+
 $(document).on('click', '#install-app', function() {
   let modal = $(makeAppModal());
   modal.hide();
@@ -340,39 +386,39 @@ $(document).on('click', '#install-app', function() {
 
     var drawApp = function(appMeta) {
       appList.html('');
-      appManager.local(appMeta.name).then(function(local) {
-      var btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>install</button>`;
+      appManager.find(appMeta.name).then(function(local) {
+        var btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>install</button>`;
 
-      // check if the app is already installed
-      if (local.length > 0) {
-        let cnt = meta.contents(local[0].name);
-        var compare = versionCompare(cnt.version, appMeta.version);
+        // check if the app is already installed
+        if (local.length > 0) {
+          let cnt = meta.contents(local.name);
+          var compare = versionCompare(cnt.version, appMeta.version);
 
-        if (compare < 0) {
-          btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>update</button>`;
-        } else {
-          btn = `<button type='button' class='btn btn-sm disabled'>installed</button>`;
+          if (compare < 0) {
+            btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>update</button>`;
+          } else {
+            btn = `<button type='button' class='btn btn-sm disabled'>installed</button>`;
+          }
         }
-      }
 
-      appList.append(`
-        <div class='app-list-item'>
-          <h4 class='app-list-item-name'>
-            <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
-            ${appMeta.productName}
-          </h4>
+        appList.append(`
+          <div class='app-list-item'>
+            <h4 class='app-list-item-name'>
+              <i class='fa fa-fw fa-${appMeta.icon.name}'></i>
+              ${appMeta.productName}
+            </h4>
 
-          <p class='app-list-item-desciption'>
-            ${appMeta.description}
-          </p>
+            <p class='app-list-item-desciption'>
+              ${appMeta.description}
+            </p>
 
-          <span class='app-list-item-version'>
-            v${appMeta.version}
-          </span>
+            <span class='app-list-item-version'>
+              v${appMeta.version}
+            </span>
 
-          ${btn}
-          <span class='clearfix'></span>
-        </div>`);
+            ${btn}
+            <span class='clearfix'></span>
+          </div>`);
 
       });
     }
@@ -404,6 +450,47 @@ function configRepo() {
   });
 }
 
+$(document).on('click', '#input-app-local-browse', function() {
+  dialog.showOpenDialog({
+    filters: [
+      { name: 'Package', extensions: ['json'] }
+    ],
+    properties: ['openFile']
+  }, function (fileNames) {
+    if (fileNames.length > 0) {
+      $('#input-app-local').val(fileNames[0]);
+    }
+  });
+});
+
+$(document).on('click', '#confirm-local-app-add', function() {
+  let location = $('#input-app-local').val();
+  let dev = $('#input-app-dev').prop('checked');
+
+  appManager.installLocal(location, dev).then(function(app) {
+    appMenu.insert(0, new MenuItem({
+      'type': 'normal',
+      'label': app.package.productName,
+      'click': function(r) {
+        paneManager.createAppInstance(app, repos[curRepo]);
+      }
+    }));
+    $('.modal-content').html(`
+        <i class='fa fa-fw fa-rocket'></i> ${app.package.productName} has been installed! <br />
+        <div class='modal-actions form-actions'>
+          <button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>close</button>
+        </div>
+    `);
+  }, function(err) {
+    $('.modal-content').html(`
+        <div class="flash flash-warn">
+          <i class="fa fa-fw fa-warning"></i>${err}
+        </div><br />
+        <button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>
+    `);
+  });
+});
+
 $(document).on('click', '.btn-install-app', function() {
   let name = $(this).data('name');
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i> Retrieving app meta data');
@@ -426,7 +513,7 @@ $(document).on('click', '.btn-install-app', function() {
       $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Encountered error while trying to download latest app version: ${error} <br /><div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
     });
   }).catch(function(error, o) {
-    $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Invalid application name. <br /> <div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
+    $('.modal-content').html(`<i class='fa fa-fw fa-warning'></i> Invalid application name. ${error} <br /> <div class='modal-actions form-actions'><button id='cancel-app-add' class='modal-cancel btn btn-sm' type='button'>cancel</button></div>`);
   });
 });
 
@@ -443,9 +530,8 @@ $(document).on('click', '#confirm-repo-add', function() {
       loadRepos();
       curtain.fadeOut(500);
       curtain.html('');
-    })
-    .fail(function(err) {
-      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
+    }, function(err) {
+      $('.modal-content').html(`<div class="flash flash-warn">${err}</div><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
     });
 });
 
@@ -463,9 +549,8 @@ $(document).on('click', '#confirm-repo-edit', function() {
       loadRepos();
       curtain.fadeOut(500);
       curtain.html('');
-    })
-    .catch(function(err) {
-      $('.modal-content').html(`<pre>${err}</pre><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
+    }, function(err) {
+      $('.modal-content').html(`<div class="flash flash-warn">${err}</div><br /><button type='button' id='cancel-repo-add' class='modal-cancel btn btn-sm'>cancel</button>`);
     });
 });
 

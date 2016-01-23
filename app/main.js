@@ -44,8 +44,11 @@ app.on('ready', function () {
   mainWindow.loadUrl('file://' + __dirname + '/app.html');
 
   if (env.name === 'development') {
+    process.chdir('build');
     devHelper.setDevMenu();
   } else {
+    process.chdir(process.resourcesPath + '/app');
+    // devHelper.setDevMenu();
     Menu.setApplicationMenu(null);
   }
 

@@ -5,11 +5,12 @@ let Q = require('q');
 let remote = require('remote');
 let jetpack = remote.require('fs-jetpack');
 let instManager = remote.require('./vendor/candoia/instance-manager');
+let path = remote.require('path');
 
 module.exports = (function() {
 
   let _id = 0;
-  let scaffoldingCSS = jetpack.read(`${__dirname}/../../css/scaffolding.css`);
+  let scaffoldingCSS = jetpack.read(path.join(__dirname, '../../css/scaffolding.css'));
 
   function genId() {
     return _id++;
@@ -68,10 +69,7 @@ module.exports = (function() {
   function createAppInstance(app, repo) {
     let deferred = Q.defer();
 
-    console.log(app);
-    console.log(process.cwd(), app.path);
-    let src = `${app.path}${app.package.main}`;
-    console.log(src);
+    let src = path.join(app.path, app.package.main);
 
     let pane = getActivePane();
     let icon = app.package.icon.name;

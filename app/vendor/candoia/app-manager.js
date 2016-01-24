@@ -61,13 +61,13 @@ module.exports = (function() {
       if (err) deferred.reject(err);
       if (docs.length > 0) {
         let doc = docs[0];
-        let path = `${process.cwd()}/${doc.location}/`;
-        let cnts = jetpack.read(`${path}/package.json`, 'json');
+        let p = path.join(process.cwd(), doc.location);
+        let cnts = jetpack.read(path.join(p, 'package.json'), 'json');
         deferred.resolve({
           'name': doc.name,
           'dev': doc.dev,
           'location': doc.location,
-          'path': path,
+          'path': p,
           'package': cnts
         });
       } else {
@@ -84,13 +84,13 @@ module.exports = (function() {
       if (err) deferred.reject(err);
       let response = [];
       for (let doc of docs) {
-        let path = `${process.cwd()}/${doc.location}/`;
-        let cnts = jetpack.read(`${path}/package.json`, 'json');
+        let p = path.join(process.cwd(), doc.location);
+        let cnts = jetpack.read(path.join(p, 'package.json'), 'json');
         response.push({
           'name': doc.name,
           'dev': doc.dev,
           'location': doc.location,
-          'path': path,
+          'path': p,
           'package': cnts
         });
       }
@@ -115,14 +115,14 @@ module.exports = (function() {
 
     console.log(`![HTTP REQ] ${options.url}`);
 
-    let out = fs.createWriteStream(`${process.cwd()}/.tmp/tmp.zip`);
+    let out = fs.createWriteStream(path.join(process.cwd(), '.tmp/tmp.zip'));
 
     let req = request(options);
     req.pipe(out);
     req.end();
     req.on('end', function() {
       out.on('finish', function() {
-        let z = new zip(`${process.cwd()}/.tmp/tmp.zip`);
+        let z = new zip(path.join(process.cwd(), '.tmp/tmp.zip'));
         var e = z.getEntries();
         let folder = e[0].entryName;
         let target = `.apps/${name}`;
@@ -162,7 +162,7 @@ module.exports = (function() {
     let deferred = Q.defer();
     dev = dev || false;
     var self = this;
-    let cnt = jetpack.read(`${process.cwd()}/${rel}/package.json`, 'json');
+    let cnt = jetpack.read(path.join(process.cwd(), rel, 'package.json'), 'json');
 
     if (valid(cnt)) {
       let item = {

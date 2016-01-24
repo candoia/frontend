@@ -13,6 +13,7 @@ let ipc = require('ipc');
 let jetpack = require('fs-jetpack');
 let im = require('./instance-manager');
 let manifest = jetpack.read(`${__dirname}/../../package.json`, 'json');
+let path = require('path');
 
 module.exports = (function() {
 
@@ -97,7 +98,9 @@ module.exports = (function() {
     let instance = im.get(event.sender.getId());
     let local = instance.repos.local;
 
-    let prog = `"${__dirname}/../../.apps/${instance.app.name}/${url}"`;
+    // let prog = `"${__dirname}/../../.apps/${instance.app.name}/${url}"`;
+    let prog = path.join(instance.app.path, url);
+    console.log(prog);
     let opts = {
       '-i': prog
     }

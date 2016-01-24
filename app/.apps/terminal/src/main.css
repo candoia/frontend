@@ -1,3 +1,6 @@
+html { height : 100vh; }
+body { height : 100vh; }
+
 .app {
   display: -webkit-flex;
   -webkit-flex: 1;

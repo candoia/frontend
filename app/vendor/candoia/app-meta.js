@@ -6,21 +6,22 @@
  */
 'use strict';
 
-const jetpack = require('fs-jetpack');
-const fs = require('fs');
-const ipc = require('ipc');
-const im = require('./instance-manager');
+let jetpack = require('fs-jetpack');
+let fs = require('fs');
+let ipc = require('ipc');
+let im = require('./instance-manager');
+let path = require('path');
 
 module.exports = (function() {
 
-  let contents = function contents(name) {
-    return jetpack.read(`${__dirname}/../../.apps/${name}/package.json`, 'json');
+  let contents = function contents(app) {
+    return jetpack.read(path.join(app.path, '/package.json'), 'json');
   }
 
   ipc.on('meta-get-package', function(event) {
     let id = event.sender.getId();
     let instance = im.get(id);
-    let cnts = contents(instance.app.name);
+    let cnts = contents(instance.app);
     event.returnValue = cnts;
   });
 

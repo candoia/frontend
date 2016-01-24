@@ -5,12 +5,12 @@
  */
 'use strict';
 
-var process = require('process');
-const ipc = require('ipc');
-const jetpack = require('fs-jetpack');
-const im = require('./instance-manager');
-const Datastore = require('nedb');
-const meta = require('./app-meta');
+let ipc = require('ipc');
+let jetpack = require('fs-jetpack');
+let im = require('./instance-manager');
+let Datastore = require('nedb');
+let meta = require('./app-meta');
+let path = require('path');
 
 
 module.exports = (function() {
@@ -18,7 +18,7 @@ module.exports = (function() {
   let getStore = function (event) {
     let id = event.sender.getId();
     let instance = im.get(id);
-    let metaContents = meta.contents(instance.app.name);
+    let metaContents = meta.contents(instance.app);
     let appname = metaContents.name;
     let fn = `${__dirname}/../../store/apps/${appname}.db`;
 
@@ -33,8 +33,7 @@ module.exports = (function() {
   ipc.on('store-get', function(event, key, opt) {
     let db = getStore(event);
     db.findOne({'key': key}, function (err, doc) {
-      //if(err != null) event.returnValue = err;
-      event.returnValue = doc;
+      event.returnValue = doc['value'];
     });
 
   });

@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  const ipc = require('ipc');
+  let ipc = require('ipc');
 
   let Public = {
     'get': function get(key, opt) {

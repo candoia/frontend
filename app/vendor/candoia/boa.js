@@ -98,9 +98,7 @@ module.exports = (function() {
     let instance = im.get(event.sender.getId());
     let local = instance.repos.local;
 
-    // let prog = `"${__dirname}/../../.apps/${instance.app.name}/${url}"`;
     let prog = path.join(instance.app.path, url);
-    console.log(prog);
     let opts = {
       '-i': prog
     }
@@ -127,7 +125,7 @@ module.exports = (function() {
     fmt = fmt || 'json';
     let instance = im.get(event.sender.getId());
     let local = instance.repos.local;
-    let file = `${__dirname}/../../.tmp/query.boa`;
+    let file = path.join(__dirname, '../../.tmp/query.boa');
     jetpack.write(file, code);
 
     let opts = {

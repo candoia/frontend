@@ -43,11 +43,15 @@ app.on('ready', function () {
 
   mainWindow.loadUrl('file://' + __dirname + '/app.html');
 
+
+  process.chdir(__dirname);
+
+  console.log(process.cwd());
   if (env.name === 'development') {
-    process.chdir('build');
+    // process.chdir('build');
     devHelper.setDevMenu();
   } else {
-    process.chdir(process.resourcesPath + '/app');
+    // process.chdir(process.resourcesPath + '/app');
     // devHelper.setDevMenu();
     Menu.setApplicationMenu(null);
   }

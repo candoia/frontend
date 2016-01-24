@@ -6,9 +6,9 @@
  */
 'use strict';
 
-const Datastore = require('nedb');
-const REPO_DB_LOC = `${__dirname}/../../store/repositories.db`;
-const APP_DB_LOC = `${__dirname}/../../store/apps.db`;
+let Datastore = require('nedb');
+let REPO_DB_LOC = `${__dirname}/../../store/repositories.db`;
+let APP_DB_LOC = `${__dirname}/../../store/apps.db`;
 
 module.exports = (function() {
   let repoDb = new Datastore({

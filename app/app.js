@@ -16,11 +16,11 @@ let MenuItem = remote.require('menu-item');
 let request = remote.require('request');
 let jetpack = remote.require('fs-jetpack');
 let Q = require('q');
+let fs = require('fs');
 
 
 var manifest = jetpack.read(`${__dirname}/package.json`, 'json');
 
-const fs = require('fs');
 
 let repos = [];
 let appMenu;
@@ -386,12 +386,12 @@ $(document).on('click', '#install-app', function() {
 
     var drawApp = function(appMeta) {
       appList.html('');
-      appManager.find(appMeta.name).then(function(local) {
+      appManager.find(appMeta.name).then(function(app) {
         var btn = `<button type='button' data-name='${appMeta.name}' class='btn btn-sm btn-install-app'>install</button>`;
 
         // check if the app is already installed
-        if (local.length > 0) {
-          let cnt = meta.contents(local.name);
+        if (app.length > 0) {
+          let cnt = meta.contents(app);
           var compare = versionCompare(cnt.version, appMeta.version);
 
           if (compare < 0) {

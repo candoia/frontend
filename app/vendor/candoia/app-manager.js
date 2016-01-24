@@ -6,13 +6,13 @@
  */
 'use strict';
 
-const http = require('https');
-const fs = require('fs');
-const request = require('request');
-const zip = require('adm-zip');
-const meta = require('./app-meta');
-const db = require('./datastore');
-const jetpack = require('fs-jetpack');
+let http = require('https');
+let fs = require('fs');
+let request = require('request');
+let zip = require('adm-zip');
+let meta = require('./app-meta');
+let db = require('./datastore');
+let jetpack = require('fs-jetpack');
 let Q = require('q');
 let path = require('path');
 
@@ -115,6 +115,7 @@ module.exports = (function() {
 
     console.log(`![HTTP REQ] ${options.url}`);
 
+    console.log(`saving to ${path.join(process.cwd(), '.tmp/tmp.zip')}`);
     let out = fs.createWriteStream(path.join(process.cwd(), '.tmp/tmp.zip'));
 
     let req = request(options);

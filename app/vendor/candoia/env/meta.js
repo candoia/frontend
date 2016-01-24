@@ -5,7 +5,7 @@
     '_data': false,
     'get': function get(prop) {
       this._data = this._data || api.ipc.sendSync('meta-get-package');
-      return this._data[prop];
+      return prop == undefined ? this._data : this._data[prop];
     }
   };
 

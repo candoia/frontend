@@ -5,7 +5,7 @@
  */
 'use strict';
 
-const ipc = require('ipc');
+let ipc = require('ipc');
 
 module.exports = (function() {
   let data = {};

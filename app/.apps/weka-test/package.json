@@ -1,0 +1,16 @@
+{
+  "name": "weka-test",
+  "productName": "Test app for weka api",
+  "version": "0.1.0",
+  "author": "Dalton, Nitin",
+  "description": "Testing weka functions",
+  "main": "main.html",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "icon": {
+  	"type": "fa",
+  	"name": "leaf"
+  }
+}

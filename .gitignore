@@ -10,3 +10,5 @@ Thumbs.db
 output.txt
 myTempFile.txt
 .CandoiaDataSet
+.vscode/
+.Rhistory

@@ -44,6 +44,10 @@ module.exports = (function() {
       return parsed;
     }
 
+    if (fmt == 'node-arff') {
+      return parsed; // convert boa output in arff format
+    }
+
     for (let chunk of parsed) {
       let pntr = json;
       let val = chunk.pop();

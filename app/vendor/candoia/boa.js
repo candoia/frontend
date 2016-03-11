@@ -39,16 +39,17 @@ module.exports = (function() {
 
         for (let part of subString) {
           let match = false;
+          part = part.replace( /\s/g, "");
           for (var value of strMap.values()) {
             if(value == part){
               match = true;
             }
           }
           if(!match){
-            console.log('map has'+counter+part);
+            // console.log('map has'+counter+part);
             if(part.length > 0){
               strMap.set(counter, part);
-              counter++;  
+              counter++;
             }
 
           }
@@ -59,14 +60,14 @@ module.exports = (function() {
       var size = strMap.size;
       for (let i = 0; i < size; i++) {
         parsedARFF += ',@attribute file'+i+ ' string \n';
-        console.log(strMap.get(i));
+        // console.log(strMap.get(i));
       }
       parsedARFF += ',@data\n';
        for (let line of lines) {
          line = line.substring(line.indexOf("=")+1);
          let size = strMap.size;
          for (let i = 0; i < size; i++) {
-           console.log(i+'and'+size);
+          //  console.log(i+'and'+size);
            if(line.includes(strMap.get(i))){
                parsedARFF += ','+strMap.get(i);
            }else{
@@ -175,7 +176,7 @@ module.exports = (function() {
       let remote = instance.repos.remote;
       let s = remote.split('/');
       let c = `${s[3]},${s[4]},null,null,null`;
-      console.log(c);
+      // console.log(c);
       opts['-g'] = c;
     } else {
       opts['-p'] = `"${local}"`;

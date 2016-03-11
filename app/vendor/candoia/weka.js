@@ -22,7 +22,7 @@ module.exports = (function() {
     if (fmt == 'raw') {
       return raw;
     }
-    
+
     let json = new Object;
     let parsed = [];
     let lines = raw.split('\n');
@@ -103,17 +103,17 @@ module.exports = (function() {
   filterCmd += filterOption;
   filterCmd += ' ' + filterFile + ' -o ';
   filterCmd += arffFile;
-  console.log(`[BOA] ${cmd}`);
+  //console.log(`[BOA] ${cmd}`);
   jetpack.write(filterFile, code);
 
-
+  console.log("filtering data");
   let childFilter = cp.execSync(filterCmd, {cwd: `${__dirname}/../../`}, function(error, stdout, stderr) {
     if (stderr) {
       reject(stderr);
     }
   });
 
-
+ console.log("associating...");
   let child = cp.exec(cmd, {cwd: `${__dirname}/../../`}, function(error, stdout, stderr) {
     if (stderr) {
       reject(stderr);
@@ -124,7 +124,7 @@ module.exports = (function() {
         console.log("Child has exited");
         if (raw) {
           let res = parseToJSON(raw, 'raw');
-          console.log(res);
+          // console.log(res);
           resolve(res);
         } else {
           // reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);
@@ -140,7 +140,7 @@ module.exports = (function() {
   });
 
   ipc.on('weka-assocApriory', function(event, code, options) {
-    console.log(code);
+    // console.log(code);
     let jarname = `weka.jar`;
     run(code, options).then(function(json) {
       event.returnValue = json;

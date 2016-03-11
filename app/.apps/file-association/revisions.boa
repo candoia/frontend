@@ -8,7 +8,7 @@ files: stirng;
 
 visit(p, visitor {
     before rev: Revision -> {
-    if(len(rev.files) < 3){
+    if(len(rev.files) < 5){
         foreach(i:int; rev.files[i]){
                 files = files+rev.files[i].name;
                 files = files + ",";

@@ -27,6 +27,7 @@
     "is-github-url": "^1.2.2",
     "jquery": "^2.1.4",
     "nedb": "^1.1.3",
+    "node-arff": "^1.0.0",
     "node-weka": "0.0.8",
     "q": "^1.4.1",
     "request": "^2.61.0"

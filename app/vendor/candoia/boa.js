@@ -11,7 +11,6 @@
 let cp = require('child_process');
 let ipc = require('ipc');
 let jetpack = require('fs-jetpack');
-let nodearff = require('node-arff');
 let im = require('./instance-manager');
 let manifest = jetpack.read(`${__dirname}/../../package.json`, 'json');
 let path = require('path');
@@ -21,20 +20,72 @@ module.exports = (function() {
   function parseToJSON(raw, fmt) {
     let json = new Object;
     let parsed = [];
+    let arffFormat = '';
     let lines = raw.split('\n');
     // let delims = /\[|\]|\t|\s+|\r/;
     let delims = /\,/;
 
-    if (fmt == 'node-arff') {
-      // you can read each line of boa output (results.txt) like so...
+    if (fmt == 'raw') {
+      return raw;
+    }
+
+    if (fmt == 'arff') {
+      let parsedARFF = '';
+      var strMap = new Map();
+      var counter = 0;
       for (let line of lines) {
-        console.log(line);
+        line = line.substring(line.indexOf("=")+1);
+        let subString = line.split(',');
+
+        for (let part of subString) {
+          let match = false;
+          for (var value of strMap.values()) {
+            if(value == part){
+              match = true;
+            }
+          }
+          if(!match){
+            console.log('map has'+counter+part);
+            if(part.length > 0){
+              strMap.set(counter, part);
+              counter++;  
+            }
+
+          }
+        }
       }
 
-      // 1. covert the `raw` variable to ARFF format
-      // 2. save the ARFF to a .arff file (use the jetpack module (https://www.npmjs.com/package/fs-jetpack)
-      // 3. Return nothing
-      return '';
+      parsedARFF = ',@relation weka\n';
+      var size = strMap.size;
+      for (let i = 0; i < size; i++) {
+        parsedARFF += ',@attribute file'+i+ ' string \n';
+        console.log(strMap.get(i));
+      }
+      parsedARFF += ',@data\n';
+       for (let line of lines) {
+         line = line.substring(line.indexOf("=")+1);
+         let size = strMap.size;
+         for (let i = 0; i < size; i++) {
+           console.log(i+'and'+size);
+           if(line.includes(strMap.get(i))){
+               parsedARFF += ','+strMap.get(i);
+           }else{
+             parsedARFF += ',?';
+           }
+         }
+         parsedARFF += '\n';
+       }
+
+       let finalARFF = '';
+       let rows = parsedARFF.split('\n');
+
+       for(let row of rows){
+         finalARFF += row.substring(1,row.length);
+         finalARFF += '\n';
+       }
+
+
+      return finalARFF; // convert boa output in arff format
     }
 
     for (let line of lines) {
@@ -55,6 +106,10 @@ module.exports = (function() {
 
     if (fmt == 'lta') {
       return parsed;
+    }
+
+    if (fmt == 'node-arff') {
+      return parsed; // convert boa output in arff format
     }
 
     for (let chunk of parsed) {
@@ -97,18 +152,7 @@ module.exports = (function() {
         let raw = jetpack.read(`${__dirname}}/../../output.txt`);
         if (raw) {
           let res = parseToJSON(raw, fmt);
-
-          if (fmt == 'node-arff') {
-            nodearff.load('PATH-TO-DATA.arff', function(err, data) {
-              if (err) {
-                resolve(err);
-              } else {
-                resolve(data);
-              }
-            );
-          } else {
-            resolve(res);
-          }
+          resolve(res);
         } else {
           reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);
         }

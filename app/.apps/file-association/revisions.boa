@@ -1,0 +1,20 @@
+# list of files modified per commit (impactful commits)
+
+p: Project = input;
+
+out : output collection[string] of string;
+
+files: stirng;
+
+visit(p, visitor {
+    before rev: Revision -> {
+    if(len(rev.files) < 3){
+        foreach(i:int; rev.files[i]){
+                files = files+rev.files[i].name;
+                files = files + ",";
+        }
+                out[formattime("%c", rev.commit_date)] << files;
+                files = " ";
+    }
+    }
+});

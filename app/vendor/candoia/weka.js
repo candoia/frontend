@@ -18,6 +18,11 @@ let path = require('path');
 module.exports = (function() {
 
   function parseToJSON(raw, fmt) {
+
+    if (fmt == 'raw') {
+      return raw;
+    }
+    
     let json = new Object;
     let parsed = [];
     let lines = raw.split('\n');
@@ -94,13 +99,10 @@ module.exports = (function() {
       }
   }
 
-
-
   let filterOption = ' weka.filters.unsupervised.attribute.StringToNominal -R 1-'+attribute+' -i';
   filterCmd += filterOption;
   filterCmd += ' ' + filterFile + ' -o ';
   filterCmd += arffFile;
-
   console.log(`[BOA] ${cmd}`);
   jetpack.write(filterFile, code);
 
@@ -118,10 +120,11 @@ module.exports = (function() {
     }
   });
       child.on('exit', function(code, signal) {
-        let raw = jetpack.read(`${__dirname}}/../../wekaResults.txt`);
+        let raw = jetpack.read(`${__dirname}/../../wekaResults.txt`);
         console.log("Child has exited");
         if (raw) {
-          let res = parseToJSON(raw, 'json');
+          let res = parseToJSON(raw, 'raw');
+          console.log(res);
           resolve(res);
         } else {
           // reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);

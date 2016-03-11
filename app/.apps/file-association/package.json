@@ -1,0 +1,16 @@
+{
+  "name": "file-association",
+  "productName": "file-association",
+  "version": "0.1.0",
+  "author": "Nitin",
+  "description": "Provides association between different files within the project",
+  "main": "main.html",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "icon": {
+  	"type": "fa",
+  	"name": "leaf"
+  }
+}

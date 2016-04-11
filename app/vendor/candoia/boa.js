@@ -155,7 +155,7 @@ module.exports = (function() {
           let res = parseToJSON(raw, fmt);
           resolve(res);
         } else {
-          reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);
+          // reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);
         }
       });
     });

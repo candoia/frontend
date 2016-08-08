@@ -91,6 +91,9 @@ module.exports = (function() {
 
     for (let line of lines) {
       line = line.replace(/\ = /g, ',');
+      line = line.replace('[', ',');
+      line = line.replace(']', '');
+      console.log(line);
       let matches = line.split(delims);
       // var exists = (n) => !!n; not implemented in io.js currently
 
@@ -177,11 +180,11 @@ module.exports = (function() {
       let s = remote.split('/');
       let c = `${s[3]},${s[4]},null,null,null`;
       // console.log(c);
-      opts['-g'] = c;
+      opts['-clone'] = c;
     } else {
-      opts['-p'] = `"${local}"`;
+      opts['-repo'] = `"${local}"`;
     }
-
+      opts['-output'] = `"./"`;
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {

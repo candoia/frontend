@@ -93,7 +93,7 @@ module.exports = (function() {
       line = line.replace(/\ = /g, ',');
       line = line.replace('[', ',');
       line = line.replace(']', '');
-      console.log(line);
+      // console.log(line);
       let matches = line.split(delims);
       // var exists = (n) => !!n; not implemented in io.js currently
 
@@ -177,10 +177,10 @@ module.exports = (function() {
 
     if (local == '') {
       let remote = instance.repos.remote;
-      let s = remote.split('/');
-      let c = `${s[3]},${s[4]},null,null,null`;
+      // let s = remote.split('/');
+      // let c = `${s[3]},${s[4]},null,null,null`;
       // console.log(c);
-      opts['-clone'] = c;
+      opts['-clone'] = remote;
     } else {
       opts['-repo'] = `"${local}"`;
     }

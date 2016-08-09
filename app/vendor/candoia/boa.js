@@ -132,7 +132,7 @@ module.exports = (function() {
         pntr = pntr[key];
       }
     }
-
+    console.log(json);
     return json;
   }
 
@@ -184,7 +184,7 @@ module.exports = (function() {
     } else {
       opts['-repo'] = `"${local}"`;
     }
-      opts['-output'] = `"./"`;
+      // opts['-output'] = `"./"`;
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {

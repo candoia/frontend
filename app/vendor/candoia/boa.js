@@ -180,11 +180,12 @@ module.exports = (function() {
       // let s = remote.split('/');
       // let c = `${s[3]},${s[4]},null,null,null`;
       // console.log(c);
-      opts['-clone'] = remote;
+      // Temporarily adding a code for username
+      opts['-clone'] = 'candoiauser@'+remote;
     } else {
       opts['-repo'] = `"${local}"`;
     }
-      // opts['-output'] = `"./"`;
+    opts['-output'] = `"./../"`;
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {

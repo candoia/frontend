@@ -90,6 +90,7 @@ module.exports = (function() {
     }
 
     for (let line of lines) {
+      line = line.replace(' ', '');
       line = line.replace(/\ = /g, ',');
       line = line.replace('[', ',');
       line = line.replace(']', '');
@@ -169,7 +170,7 @@ module.exports = (function() {
     fmt = fmt || 'json';
     let instance = im.get(event.sender.getId());
     let local = instance.repos.local;
-
+    let bug = instance.repos.bug;
     let prog = path.join(instance.app.path, url);
     let opts = {
       '-i': prog
@@ -186,6 +187,7 @@ module.exports = (function() {
       opts['-repo'] = `"${local}"`;
     }
     opts['-output'] = `"./../"`;
+    opts['-bug'] = bug;
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {

@@ -56,18 +56,18 @@ module.exports = (function() {
     return false;
   }
 
+
   /**
    * Add a repository to the datastore
    */
-  function add(name, local, remote) {
+  function add(name, local, remote, bug) {
     let deferred = Q.defer();
     let invalid = isInvalidRepo(name, local, remote);
-
     if (!!invalid) {
       deferred.reject(invalid);
     } else {
       datastore.repoDb.insert({
-        name, local, remote
+        name, local, remote, bug
       }, function(err, newDoc) {
         if (err) {
           deferred.reject(err);
@@ -76,9 +76,9 @@ module.exports = (function() {
         }
       });
     }
-
     return deferred.promise;
   }
+
 
   /**
    * Add a repository in the datastore

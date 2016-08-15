@@ -175,6 +175,9 @@ module.exports = (function() {
     let opts = {
       '-i': prog
     }
+    if (typeof value === "undefined") {
+      opts['-bug'] = "\"  \"";
+    }
 
     if (local == '') {
       let remote = instance.repos.remote;
@@ -187,7 +190,6 @@ module.exports = (function() {
       opts['-repo'] = `"${local}"`;
     }
     opts['-output'] = `"./../"`;
-    opts['-bug'] = bug;
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {

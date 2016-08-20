@@ -7,10 +7,10 @@
   "main": "main.html",
   "repository": {
     "type": "git",
-    "url": "https://github.com/candoia/noa-over-revisions"
+    "url": "https://github.com/candoia/top-performers"
   },
   "icon": {
-  	"type": "fa",
-  	"name": "pie-chart"
+    "type": "fa",
+    "name": "pie-chart"
   }
 }

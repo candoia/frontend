@@ -6,12 +6,12 @@ $(window).load(function() {
 	let count = 0;
 	let labels = [];
 	let dataset = [];
-	for(let index in json.out["[]"]) {
+	for(let index in json.out) {
 		count++;
 		let label =
-			$('#table-output-body').append(`<tr><td> ${count} </td> <td> ${index} </td> <td> ${json.out["[]"][index]} </td> </tr>`)
+			$('#table-output-body').append(`<tr><td> ${count} </td> <td> ${index} </td> <td> ${json.out[index]} </td> </tr>`)
 			labels.push(index);
-		dataset.push(json.out["[]"][index]);
+		dataset.push(json.out[index]);
 	}
 	let chartData = {
 			labels: labels,

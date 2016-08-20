@@ -13,12 +13,12 @@ $(window).load(function() {
   let chartData = [];
   let count = 0;
 
-  for(let index in json.DEVs) {
+  for(let index in json.out) {
     count++;
     $('#numToShow').append(`<option value="${count}"> ${count} </option>`);
     chartData.push({
         label: index,
-        value: json.DEVs[index],
+        value: json.out[index],
         color: '#' + _.sample(colors)
     });
   }
@@ -35,7 +35,7 @@ $(window).load(function() {
 
   display(1);
 
-  $('#app-title').html(`Number of Commits per Developer on ${instance.repos.name}`);
+  $('#app-title').html(`Number of Different findings displayed  ${instance.repos.name}`);
 
   function display(num) {
     let limitedData = _.first(chartData, num);

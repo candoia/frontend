@@ -18,6 +18,7 @@ let meta = require('./vendor/candoia/app-meta');
 let im = require('./vendor/candoia/instance-manager');
 let store = require('./vendor/candoia/store');
 let weka = require('./vendor/candoia/weka');
+let spmf = require('./vendor/candoia/spmf');
 let Menu = require('menu');
 
 let mainWindow;

@@ -8,5 +8,6 @@
     instance: require('./env/instance'),
     store: require('./env/store'),
     weka: require('./env/weka'),
+    spmf: require('./env/spmf'),
   };
 })();

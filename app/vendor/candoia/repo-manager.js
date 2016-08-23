@@ -47,7 +47,8 @@ module.exports = (function() {
 
     if (remote.length > 0) {
       var gurl = isGithubUrl(remote, {repository : true });
-      if (!gurl) {
+      // if (!gurl) {
+      if (false) {
         return "<b><i class='fa fa-fw fa-lg fa-exclamation-triangle'></i> Invalid remote github repository.</b><br> It should be in the form: https://github.com/Owner/Repository";
       }
     }
@@ -55,18 +56,18 @@ module.exports = (function() {
     return false;
   }
 
+
   /**
    * Add a repository to the datastore
    */
-  function add(name, local, remote) {
+  function add(name, local, remote, bug) {
     let deferred = Q.defer();
     let invalid = isInvalidRepo(name, local, remote);
-
     if (!!invalid) {
       deferred.reject(invalid);
     } else {
       datastore.repoDb.insert({
-        name, local, remote
+        name, local, remote, bug
       }, function(err, newDoc) {
         if (err) {
           deferred.reject(err);
@@ -75,9 +76,9 @@ module.exports = (function() {
         }
       });
     }
-
     return deferred.promise;
   }
+
 
   /**
    * Add a repository in the datastore

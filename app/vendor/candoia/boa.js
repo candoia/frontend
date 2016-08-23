@@ -90,7 +90,11 @@ module.exports = (function() {
     }
 
     for (let line of lines) {
+      line = line.replace(' ', '');
       line = line.replace(/\ = /g, ',');
+      line = line.replace('[', ',');
+      line = line.replace(']', '');
+      // console.log(line);
       let matches = line.split(delims);
       // var exists = (n) => !!n; not implemented in io.js currently
 
@@ -129,7 +133,7 @@ module.exports = (function() {
         pntr = pntr[key];
       }
     }
-
+    console.log(json);
     return json;
   }
 
@@ -166,22 +170,26 @@ module.exports = (function() {
     fmt = fmt || 'json';
     let instance = im.get(event.sender.getId());
     let local = instance.repos.local;
-
+    let bug = instance.repos.bug;
     let prog = path.join(instance.app.path, url);
     let opts = {
       '-i': prog
     }
+    if (typeof value === "undefined") {
+      opts['-bug'] = "\"  \"";
+    }
 
     if (local == '') {
       let remote = instance.repos.remote;
-      let s = remote.split('/');
-      let c = `${s[3]},${s[4]},null,null,null`;
+      // let s = remote.split('/');
+      // let c = `${s[3]},${s[4]},null,null,null`;
       // console.log(c);
-      opts['-g'] = c;
+      // Temporarily adding a code for username
+      opts['-clone'] = 'candoiauser@'+remote;
     } else {
-      opts['-p'] = `"${local}"`;
+      opts['-repo'] = `"${local}"`;
     }
-
+    opts['-output'] = `"./../"`;
     run(opts, fmt).then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {

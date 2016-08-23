@@ -145,6 +145,7 @@ let scaff = fs.readFileSync(`${__dirname}/css/scaffolding.css`, { encoding: 'utf
 
 function createAppInstance(app) {
   let repo = repos[curRepo];
+  console.log("repo:" + repo.remote + " and " + repo.bug);
   paneManager.createAppInstance(app, repo);
 }
 
@@ -225,6 +226,16 @@ function makeRepoModal(options) {
       <div class='modal-input'>
         <input id='input-repo-remote' type='text' value="https://github.com/">
       </div>
+
+      </div>
+      <label class='modal-label' for='input-repo-bug'>
+        Remote BugUrl
+      </label>
+      <p>Add a remote bug URL. For example : "https://github.com/junit-team/junit"</p>
+      <div class='modal-input'>
+        <input id='input-repo-bug' type='text' value="https://github.com/">
+      </div>
+
       <div class='modal-actions form-actions'>
         <button id='confirm-repo-add' class='modal-confirm btn btn-sm btn-primary' type='button'>confirm</button>
         <button id='cancel-repo-add' class='modal-cancel btn btn-sm' type='button'>cancel</button>
@@ -521,11 +532,11 @@ $(document).on('click', '#confirm-repo-add', function() {
   let name = $('#input-repo-name').val();
   let local = $('#input-repo-location').val();
   let remote = $('#input-repo-remote').val();
-
+  let bug = $('#input-repo-bug').val();
+  console.log('bug:' + bug);
   $('.modal-content').html('<i class="fa fa-fw fa-cog fa-spin fa-lg"></i>');
   $('.modal-content').css('text-align', 'center');
-
-  repoManager.add(name, local, remote)
+  repoManager.add(name, local, remote, bug)
     .then(function(repo) {
       loadRepos();
       curtain.fadeOut(500);

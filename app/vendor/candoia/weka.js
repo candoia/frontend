@@ -69,65 +69,58 @@ module.exports = (function() {
         pntr = pntr[key];
       }
     }
-
     return json;
   }
 
-  let run = function run(code, options) {
-  let jarname = `weka.jar`;
-  let filename = `weka.arff`;
-  // todo sanitize uri so user apps cannot execute random code
-  let promise = new Promise(function(resolve, reject) {
-  let cmd = `java -cp ${__dirname}/../../../libs/${jarname}`;
-  let arffFile = `${__dirname}/../../wekaInput.arff`;
-  let filterFile = `${__dirname}/../../wekaFilter.arff`;
+  let run_association = function run(code, options, algoname) {
+    let jarname = `weka.jar`;
+    let filename = `weka.arff`;
+    // todo sanitize uri so user apps cannot execute random code
+    let promise = new Promise(function(resolve, reject) {
+      let cmd = `java -cp ${__dirname}/../../../libs/${jarname}`;
+      let arffFile = `${__dirname}/../../wekaInput.arff`;
+      let filterFile = `${__dirname}/../../wekaFilter.arff`;
 
-  let filterCmd = cmd;
-  options = 'weka.associations.Apriori ' + options;
-  cmd += ' ' + options;
-  cmd += ' ' + arffFile;
-  cmd += ' ' + '> wekaResults.txt 2>&1';    // redirecting output
+      let filterCmd = cmd;
+      options = 'weka.associations.' + algoname + ' ' + options;
+      cmd += ' ' + options;
+      cmd += ' ' + arffFile;
+      cmd += ' ' + '> wekaResults.txt 2>&1';    // redirecting output
 
-  /*
-    Get the number of attributes in the arff file
-  */
-  let attribute = 0;
-  let details = code.split('\n');
-  for (let part of details) {
-      if(part.includes('@attribute ')){
-        attribute++;
+      /*
+         Get the number of attributes in the arff file
+      */
+      let attribute = 0;
+      let details = code.split('\n');
+      for (let part of details) {
+        if(part.includes('@attribute ')){
+          attribute++;
+        }
       }
-  }
+      let filterOption = ' weka.filters.unsupervised.attribute.StringToNominal -R 1-'+attribute+' -i';
+      filterCmd += filterOption;
+      filterCmd += ' ' + filterFile + ' -o ';
+      filterCmd += arffFile;
+      jetpack.write(filterFile, code);
 
-  let filterOption = ' weka.filters.unsupervised.attribute.StringToNominal -R 1-'+attribute+' -i';
-  filterCmd += filterOption;
-  filterCmd += ' ' + filterFile + ' -o ';
-  filterCmd += arffFile;
-  //console.log(`[BOA] ${cmd}`);
-  jetpack.write(filterFile, code);
+      let childFilter = cp.execSync(filterCmd, {cwd: `${__dirname}/../../`}, function(error, stdout, stderr) {
+        if (stderr) {
+          reject(stderr);
+        }
+      });
 
-  console.log("filtering data");
-  let childFilter = cp.execSync(filterCmd, {cwd: `${__dirname}/../../`}, function(error, stdout, stderr) {
-    if (stderr) {
-      reject(stderr);
-    }
-  });
-
- console.log("associating...");
-  let child = cp.exec(cmd, {cwd: `${__dirname}/../../`}, function(error, stdout, stderr) {
-    if (stderr) {
-      reject(stderr);
-    }
-  });
+      let child = cp.exec(cmd, {cwd: `${__dirname}/../../`}, function(error, stdout, stderr) {
+        if (stderr) {
+          reject(stderr);
+        }
+      });
       child.on('exit', function(code, signal) {
         let raw = jetpack.read(`${__dirname}/../../wekaResults.txt`);
-        console.log("Child has exited");
         if (raw) {
           let res = parseToJSON(raw, 'raw');
-          // console.log(res);
           resolve(res);
         } else {
-          // reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);
+          reject(`The boa compiler did not produce any output. Cwd: ${child.process.cwd()}, Look: ${__dirname}/../../, Code: ${code}. Signal: ${signal}`);
           resolve('Error occured in the program');
         }
       });
@@ -140,16 +133,24 @@ module.exports = (function() {
   });
 
   ipc.on('weka-assocApriory', function(event, code, options) {
-    // console.log(code);
     let jarname = `weka.jar`;
-    run(code, options).then(function(json) {
+    run_association(code, options, "Apriori").then(function(json) {
       event.returnValue = json;
     }).catch(function(e) {
       event.returnValue = {error: e};
       console.log(`[BOA][ERROR] ${e}`);
     });
-    // event.returnValue = cmd;
   });
 
-  return { run };
+  ipc.on('weka-assocFPGrowth', function(event, code, options) {
+    let jarname = `weka.jar`;
+    run_association(code, options, "FPGrowth").then(function(json) {
+      event.returnValue = json;
+    }).catch(function(e) {
+      event.returnValue = {error: e};
+      console.log(`[BOA][ERROR] ${e}`);
+    });
+  });
+
+  return { run_association };
 })();

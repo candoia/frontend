@@ -7,6 +7,9 @@
     },
     'associationApriory': function associationApriory(data, output) {
       return api.ipc.sendSync('weka-assocApriory', data, output);
+    },
+    'associationFPGrowth': function associationApriory(data, output) {
+      return api.ipc.sendSync('weka-assocFPGrowth', data, output);
     }
   };
 

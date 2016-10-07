@@ -7,6 +7,9 @@
     },
     'exec': function exec(code, fmt) {
       return api.ipc.sendSync('boa-exec', code, fmt);
+    },
+    'fars': function fars(code, fmt) {
+      return api.ipc.sendSync('fars-run', code, fmt);
     }
   };
 

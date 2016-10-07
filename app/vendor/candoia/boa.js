@@ -198,6 +198,43 @@ module.exports = (function() {
     });
   });
 
+
+  ipc.on('fars-run', function(event, url, fmt) {
+    console.log("fars run method has been called");
+    fmt = fmt || 'json';
+    let instance = im.get(event.sender.getId());
+    let local = instance.repos.local;
+    let prog = path.join(instance.app.path, url);
+    let opts = {
+      '-i': prog
+    }
+
+    if (local == '') {
+      console.log("Error! You must provide a local dataset for Transportation analysis");
+    } else {
+      opts['-data'] = `"${local}"`;
+    }
+    let domain = instance.repos.domain;
+
+    opts['-domain'] = "fars";
+    opts['-output'] = `"./../"`;
+
+    console.log("fars run method gonna call run method with option: " + opts);
+
+    run(opts, fmt).then(function(json) {
+      event.returnValue = json;
+    }).catch(function(e) {
+      event.returnValue = {error: e};
+      console.log(`[BOA][ERROR] ${e}`);
+    });
+  });
+
+
+
+
+
+
+
   ipc.on('boa-exec', function(event, code, fmt) {
     fmt = fmt || 'json';
     let instance = im.get(event.sender.getId());

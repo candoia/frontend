@@ -12,3 +12,9 @@ myTempFile.txt
 .CandoiaDataSet
 .vscode/
 .Rhistory
+*.svg
+*.ico
+*.png
+*.plist
+*.nsi
+*.icns

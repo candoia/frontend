@@ -75,6 +75,7 @@ module.exports = (function() {
   let run_association = function run(code, options, algoname) {
     let jarname = `weka.jar`;
     let filename = `weka.arff`;
+    code = code + '';
     // todo sanitize uri so user apps cannot execute random code
     let promise = new Promise(function(resolve, reject) {
       let cmd = `java -cp ${__dirname}/../../../libs/${jarname}`;

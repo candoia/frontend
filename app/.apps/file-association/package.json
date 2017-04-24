@@ -1,9 +1,9 @@
 {
-  "name": "file-association",
-  "productName": "file-association",
+  "name": "file-association-bugfixing-revs-apriory",
+  "productName": "file-association-bugfixing-revs",
   "version": "0.1.0",
   "author": "Nitin",
-  "description": "Provides association between different files within the project",
+  "description": "Provides association between different files of fixing revisions within the project",
   "main": "main.html",
   "repository": {
     "type": "git",

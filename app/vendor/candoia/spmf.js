@@ -75,7 +75,7 @@ module.exports = (function() {
 
   let run = function run(code, options, name) {
   let jarname = `spmf.jar`;
-
+  code = code + '';
   // todo sanitize uri so user apps cannot execute random code
   let promise = new Promise(function(resolve, reject) {
   let cmd = `java -jar ${__dirname}/../../../libs/${jarname}`;

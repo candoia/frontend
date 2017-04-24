@@ -1,20 +1,42 @@
-# list of files modified per commit (impactful commits)
-
 p: Project = input;
-
 out : output collection[string] of string;
+issues: set of string;
+fileslist: string = "";
+bugfix: bool;
 
-files: stirng;
+isBugFixing := function(logging: string, issueRecord: set of string): bool{
+  lst := getAsArray(issueRecord);
+  foreach(i: int; def(lst[i])){
+    if(strfind(lst[i], logging) > -1){
+      return true;
+    }
+  }
+  return false;
+};
 
 visit(p, visitor {
-    before rev: Revision -> {
-    if(len(rev.files) < 5){
-        foreach(i:int; rev.files[i]){
-                files = files+rev.files[i].name;
-                files = files + ",";
-        }
-                out[formattime("%c", rev.commit_date)] << files;
-                files = " ";
+  before node: Issue -> {
+    add(issues, node.number);
+  }
+});
+
+visit(p, visitor {
+  before rev: Revision -> {
+    comment :string = rev.log;
+    # bugfix= isBugFixing(comment, issues);
+    if((len(rev.files) > 5)){
+        stop;
     }
-    }
+  }
+
+  before node: ChangedFile ->{
+    fileslist = fileslist + node.name;
+    fileslist = fileslist + ",";
+  }
+
+  after node: Revision -> {
+    out[formattime("%c", node.commit_date)] << fileslist;
+    fileslist = "";
+    bugfix = false;
+  }
 });

@@ -7,7 +7,7 @@ rev_date := "";
 
 visit(p, visitor {
 	before rev : Revision -> {
-	    rev_date = formattime("%y,%b", rev.commit_date);
+	    rev_date = formattime("%y,%b,", rev.commit_date);
 	}
 
 	before node: Declaration ->

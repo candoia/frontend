@@ -2,5 +2,4 @@
 {"name":"top-performers","dev":false,"location": ".apps/top-performers","_id":"YsQBtHdi5CNN3eOD"}
 {"name":"top-ten-commits","dev":false,"location": ".apps/top-ten-commits","_id":"PqeCt29XCG0UaSH2"}
 {"name":"terminal","dev":false,"location": ".apps/terminal","_id":"PqeCt29XCG0UBAD2"}
-{"name":"weka-test","dev":false,"location": ".apps/weka-test","_id":"PqeCt29XCG0UBAD3"}
 {"name":"file-association","dev":true,"location": ".apps/file-association","_id":"PqeCt29XCG0UBAD9"}

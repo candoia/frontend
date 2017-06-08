@@ -5,7 +5,7 @@
 1. [Download and install nodejs](https://nodejs.org/en/)
 2. Clone the frontend repository (`git clone ...`)
 3. `cd` to the cloned repository
-4. execute `npm install`
+4. execute `npm install` (To install it is necessary the python version is within  Python >= v2.5.0 & < 3.0.0. If multiple version of python is installed and you get error related to python version then make sure you install a supported python version and use the command `npm install --python=python2.7` )
 
 ### Tasks:
 
